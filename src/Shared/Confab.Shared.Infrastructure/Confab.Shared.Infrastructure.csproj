@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Confab.Shared.Abstractions\Confab.Shared.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
 </Project>
