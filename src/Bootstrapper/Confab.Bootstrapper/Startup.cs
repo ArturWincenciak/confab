@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Confab.Modules.Conferences.Api;
 
 namespace Confab.Bootstrapper
 {
@@ -15,6 +12,7 @@ namespace Confab.Bootstrapper
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddConferences();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
