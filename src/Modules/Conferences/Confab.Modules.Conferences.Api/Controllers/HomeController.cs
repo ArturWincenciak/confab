@@ -2,8 +2,8 @@
 
 namespace Confab.Modules.Conferences.Api.Controllers
 {
-    [Route("conferences-module")]
-    internal class HomeController : ControllerBase
+    [Route(BasePath)]
+    internal class HomeController : ConferencesControllerBase
     {
         [HttpGet]
         public ActionResult<string> Get() => "Conferences API";
