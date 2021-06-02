@@ -90,7 +90,7 @@ namespace Confab.Modules.Conferences.Core.Services
                 throw new CannotDeleteHostException(host.Id);
             }
 
-            await _hostRepository.DeleteAsync(id);
+            await _hostRepository.DeleteAsync(host);
         }
 
         private static T Map<T>(Host host) where T : HostDto, new() =>
