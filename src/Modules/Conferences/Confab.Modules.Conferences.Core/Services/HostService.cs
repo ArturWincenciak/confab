@@ -53,14 +53,15 @@ namespace Confab.Modules.Conferences.Core.Services
                 Localization = c.Localization,
                 LogoUrl = c.LogoUrl,
                 ParticipantsLimit = c.ParticipantsLimit
-            });
+            }).ToList();
+            
             return dto;
         }
 
-        public async Task<IEnumerable<HostDto>> BrowseAsync()
+        public async Task<IReadOnlyList<HostDto>> BrowseAsync()
         {
             var hosts = await _hostRepository.BrowseAsync();
-            return hosts.Select(Map<HostDto>);
+            return hosts.Select(Map<HostDto>).ToList();
         }
 
         public async Task UpdateAsync(HostDetailsDto dto)

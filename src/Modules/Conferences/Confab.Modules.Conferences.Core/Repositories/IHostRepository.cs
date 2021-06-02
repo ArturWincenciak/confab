@@ -9,7 +9,7 @@ namespace Confab.Modules.Conferences.Core.Repositories
     {
         Task AddAsync(Host host);
         Task<Host> GetAsync(Guid id);
-        Task<IEnumerable<Host>> BrowseAsync();
+        Task<IReadOnlyList<Host>> BrowseAsync();
         Task UpdateAsync(Host host);
         Task DeleteAsync(Host host);
     }

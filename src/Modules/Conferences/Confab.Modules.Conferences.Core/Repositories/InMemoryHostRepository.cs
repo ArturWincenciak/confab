@@ -18,7 +18,7 @@ namespace Confab.Modules.Conferences.Core.Repositories
 
         public Task<Host> GetAsync(Guid id) => Task.FromResult(_hosts.SingleOrDefault(h => h.Id == id));
 
-        public async Task<IEnumerable<Host>> BrowseAsync()
+        public async Task<IReadOnlyList<Host>> BrowseAsync()
         {
             await Task.CompletedTask;
             return _hosts;
