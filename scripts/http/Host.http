@@ -1,0 +1,19 @@
+
+@host = http://localhost:5000
+@base = conferences-module
+@api = {{host}}/{{base}}
+
+### Get hello conferences API message
+GET {{api}}
+
+### Get hosts
+### GET {{api}}/host
+
+### Add new host
+POST {{api}}
+Content-Type: application/json
+
+{
+    "Name": "Name of host",
+    "Description": "Description of host"
+}
