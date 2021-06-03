@@ -10,10 +10,17 @@ GET {{api}}
 GET {{api}}/hosts
 
 ### Add new host
+# @name new_host_created_location
 POST {{api}}/hosts
 Content-Type: application/json
 
 {
-    "Name": "Name of host",
-    "Description": "Description of host"
+    "Name": "Name of host #1",
+    "Description": "Description of host #1"
 }
+
+### Temp arleady created host location variable
+@hostLocation = {{new_host_created_location.response.headers.Location}}
+
+### Get arleady created host
+GET {{hostLocation}}
