@@ -42,7 +42,7 @@ namespace Confab.Modules.Conferences.Core.Services
 
             var dto = Map<HostDetailsDto>(host);
 
-            dto.Conferences = host.Conferences.Select(c => new ConferenceDto
+            dto.Conferences = host.Conferences?.Select(c => new ConferenceDto
             {
                 Id = c.Id,
                 HostId = c.HostId,
