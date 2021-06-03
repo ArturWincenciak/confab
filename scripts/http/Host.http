@@ -7,10 +7,10 @@
 GET {{api}}
 
 ### Get hosts
-GET {{api}}/host
+GET {{api}}/hosts
 
 ### Add new host
-POST {{api}}/host
+POST {{api}}/hosts
 Content-Type: application/json
 
 {
