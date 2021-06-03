@@ -24,3 +24,18 @@ Content-Type: application/json
 
 ### Get arleady created host
 GET {{hostLocation}}
+
+@hostId = f264d031-d58b-49c2-bc60-8eca58454265
+
+### Get host
+GET {{api}}/hosts/{{hostId}}
+
+### Update host
+PUT {{api}}/hosts/{{hostId}}
+Content-Type: application/json
+
+{
+    "Name": "Edited name",
+    "Description": "Edited description",
+    "Conferences": [ ]
+}
