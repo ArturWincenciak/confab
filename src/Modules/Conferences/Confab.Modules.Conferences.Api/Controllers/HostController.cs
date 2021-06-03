@@ -28,7 +28,7 @@ namespace Confab.Modules.Conferences.Api.Controllers
         public async Task<ActionResult> AddAsync(HostDto dto)
         {
             await _hostService.AddAsync(dto);
-            return CreatedAtAction(nameof(GetAsync), new {id = dto.Id}, null);
+            return CreatedAtAction("Get", new {id = dto.Id}, null);
         }
 
         [HttpPut("{id:guid}")]
