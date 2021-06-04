@@ -2,9 +2,9 @@
 
 namespace Confab.Shared.Abstractions.Exceptions
 {
-    public class ConfabException : Exception
+    public abstract class ConfabException : Exception
     {
-        public ConfabException(string message)
+        protected ConfabException(string message)
             : base(message)
         {
             
