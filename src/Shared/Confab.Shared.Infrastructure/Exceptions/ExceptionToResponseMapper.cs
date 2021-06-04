@@ -6,6 +6,23 @@ using Humanizer;
 
 namespace Confab.Shared.Infrastructure.Exceptions
 {
+    internal class ExToRespMapper2 : IExceptionToResponseMapper
+    {
+        public ExceptionResponse Map(Exception ex)
+        {
+            return new("ex to resp 2", HttpStatusCode.InternalServerError);
+        }
+    }
+
+    internal class ExToRespMapper3 : IExceptionToResponseMapper
+    {
+        public ExceptionResponse Map(Exception ex)
+        {
+            return new("ex to resp 3", HttpStatusCode.InternalServerError);
+        }
+    }
+
+
     internal class ExceptionToResponseMapper : IExceptionToResponseMapper
     {
         private static ConcurrentDictionary<Type, string> _codes = new();
