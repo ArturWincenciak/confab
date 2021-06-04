@@ -106,7 +106,7 @@ namespace Confab.Modules.Conferences.Core.Services
             {
                 Id = entity.Id,
                 HostId = entity.HostId,
-                HostName = entity.Host.Name,
+                HostName = entity.Host?.Name,
                 Name = entity.Name,
                 Localization = entity.Localization,
                 From = entity.From,
