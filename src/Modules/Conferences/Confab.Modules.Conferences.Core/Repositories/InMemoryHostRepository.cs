@@ -8,7 +8,7 @@ namespace Confab.Modules.Conferences.Core.Repositories
 {
     internal class InMemoryHostRepository : IHostRepository
     {
-        private readonly List<Host> _hosts = new List<Host>();
+        private readonly List<Host> _hosts = new();
 
         public async Task AddAsync(Host host)
         {
