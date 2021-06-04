@@ -10,8 +10,6 @@ namespace Confab.Shared.Infrastructure.Exceptions
             services
                 .AddScoped<ErrorHandlerMiddleware>()
                 .AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>()
-                .AddSingleton<IExceptionToResponseMapper, ExToRespMapper2>()
-                .AddSingleton<IExceptionToResponseMapper, ExToRespMapper3>()
                 .AddSingleton<IExceptionCompositionRoot, ExceptionCompositionRoot>();
 
         public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app) =>
