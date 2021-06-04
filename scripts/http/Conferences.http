@@ -1,0 +1,54 @@
+@host = http://localhost:5000
+@api = {{host}}/conferences-module
+@url = {{api}}/conferences
+
+### Get hello Conferences Module API message
+GET {{api}}
+
+### Get
+GET {{url}}
+
+### Add new
+# @name new_created_location
+POST {{url}}
+Content-Type: application/json
+
+{
+    "HostId": "f5d9488b-1ad9-442c-a7b7-fa974457548b",
+    "Name": "Name of conference #1",
+    "Description": "Description of conference #1",
+    "From": "2021-05-01",
+    "To": "2021-05-03",
+    "Localization": "Melbourne",
+    "ParticipantsLimit": 100,
+    "LogoUrl": null
+}
+
+### ID variable
+@conferenceId = 2de70676-8852-4103-8bf3-4e674d3aea57
+
+### Get
+GET {{url}}/{{conferenceId}}
+
+### Update
+PUT {{url}}/{{conferenceId}}
+Content-Type: application/json
+
+{
+    "Name": "Name of conference #1",
+    "Description": "Description of conference #1",
+    "From": "2021-05-01",
+    "To": "2021-05-03",
+    "Localization": "Melbourne",
+    "ParticipantsLimit": 100,
+    "LogoUrl": null
+}
+
+### Delete
+DELETE {{url}}/{{conferenceId}}
+
+### Arleady created location variable
+@hostLocation = {{new_created_location.response.headers.Location}}
+
+### Get arleady created
+GET {{hostLocation}}

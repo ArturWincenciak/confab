@@ -1,37 +1,31 @@
-
 @host = http://localhost:5000
-@base = conferences-module
-@api = {{host}}/{{base}}
+@api = {{host}}/conferences-module
+@url = {{api}}/hosts
 
-### Get hello conferences API message
+### Get hello Conferences Module API message
 GET {{api}}
 
-### Get hosts
-GET {{api}}/hosts
+### Get
+GET {{url}}
 
-### Add new host
-# @name new_host_created_location
-POST {{api}}/hosts
+### Add new
+# @name new_created_location
+POST {{url}}
 Content-Type: application/json
 
 {
-    "Name": "Name of host #1",
-    "Description": "Description of host #1"
+    "Name": "Name of host #111",
+    "Description": "Description of host #111"
 }
 
-### Temp arleady created host location variable
-@hostLocation = {{new_host_created_location.response.headers.Location}}
+### ID variable
+@hostId = 55c631f3-d286-42aa-951e-b21f81ca4242
 
-### Get arleady created host
-GET {{hostLocation}}
+### Get
+GET {{url}}/{{hostId}}
 
-@hostId = f264d031-d58b-49c2-bc60-8eca58454265
-
-### Get host
-GET {{api}}/hosts/{{hostId}}
-
-### Update host
-PUT {{api}}/hosts/{{hostId}}
+### Update
+PUT {{url}}/{{hostId}}
 Content-Type: application/json
 
 {
@@ -39,3 +33,12 @@ Content-Type: application/json
     "Description": "Edited description",
     "Conferences": [ ]
 }
+
+### Delete
+DELETE {{url}}/{{hostId}}
+
+### Arleady created location variable
+@hostLocation = {{new_created_location.response.headers.Location}}
+
+### Get arleady created
+GET {{hostLocation}}
