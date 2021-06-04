@@ -1,12 +1,14 @@
 ﻿using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions;
 using Confab.Shared.Infrastructure.Api;
+using Confab.Shared.Infrastructure.Exceptions;
 using Confab.Shared.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo(assemblyName: "Confab.Bootstrapper")]
+
 namespace Confab.Shared.Infrastructure
 {
     internal static class Extensions
@@ -18,7 +20,7 @@ namespace Confab.Shared.Infrastructure
                 {
                     manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
                 });
-
+            services.AddErrorHandling();
             services.AddSingleton<IClock, UtcClock>();
 
             return services;
@@ -26,8 +28,8 @@ namespace Confab.Shared.Infrastructure
 
         public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
         {
+            app.UseErrorHandling();
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
