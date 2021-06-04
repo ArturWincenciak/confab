@@ -12,4 +12,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Humanizer" Version="2.10.1" />
+  </ItemGroup>
+
 </Project>
