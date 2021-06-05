@@ -13,8 +13,8 @@ namespace Confab.Shared.Infrastructure.Exceptions
         public ExceptionResponse Map(Exception ex) =>
             ex switch
             {
-                ConfabException confabException => new ExceptionResponse(
-                    Response: new ErrorResponse(Errors: new Error(Code: GetErrorCode(ex), Message: ex.Message)),
+                ConfabException confabEx => new ExceptionResponse(
+                    Response: new ErrorResponse(Errors: new Error(Code: GetErrorCode(confabEx), Message: ex.Message)),
                     StatusCode: HttpStatusCode.BadRequest),
                 _ => new ExceptionResponse(
                     Response: new ErrorResponse(Errors: new Error(Code: "error", Message: "There was an error.")),
@@ -25,9 +25,9 @@ namespace Confab.Shared.Infrastructure.Exceptions
 
         private record ErrorResponse(params Error[] Errors);
 
-        private static string GetErrorCode(object exception)
+        private static string GetErrorCode(Exception ex)
         {
-            var type = exception.GetType();
+            var type = ex.GetType();
             var code = type.Name.Underscore().Replace("_exception", string.Empty);
             return _codes.GetOrAdd(type, code);
         }
