@@ -46,6 +46,9 @@ bld/
 # Visual Studio 2015 cache/options directory
 .vs/
 
+# Visual Studio Code catch/option dirctory
+.vscode/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
