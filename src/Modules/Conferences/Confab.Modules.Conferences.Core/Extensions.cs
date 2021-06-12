@@ -18,12 +18,12 @@ namespace Confab.Modules.Conferences.Core
 
             services.AddScoped<IHostService, HostService>();
             //services.AddSingleton<IHostRepository, InMemoryHostRepository>();
-            services.AddSingleton<IHostRepository, HostRepository>();
+            services.AddScoped<IHostRepository, HostRepository>();
             services.AddSingleton<IHostDeletionPolice, HostDeletionPolice>();
 
             services.AddScoped<IConferenceService, ConferenceService>();
             //services.AddSingleton<IConferenceRepository, InMemoryConferenceRepository>();
-            services.AddSingleton<IConferenceRepository, ConferenceRepository>();
+            services.AddScoped<IConferenceRepository, ConferenceRepository>();
             services.AddSingleton<IConferenceDeletionPolice, ConferenceDeletionPolice>();
             
             return services;
