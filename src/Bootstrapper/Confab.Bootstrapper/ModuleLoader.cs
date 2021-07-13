@@ -20,18 +20,24 @@ namespace Confab.Bootstrapper
                 Console.WriteLine($"*[{logInc++}] [{x.ImageRuntimeVersion}] [{x.Location}] [{x.IsDynamic}]");
             });
 
-            var locations = assemblies.Where(x => !x.IsDynamic).Select(x => x.Location).ToList();
+            var loadedLocations = assemblies.Where(x => !x.IsDynamic).Select(x => x.Location).ToList();
 
             logInc = 1;
             Console.WriteLine("\n\nFiltered - all not dynamic assemblies' locations:");
-            locations.ForEach(x => Console.WriteLine($"*[{logInc++}] [{x}]"));
+            loadedLocations.ForEach(x => Console.WriteLine($"*[{logInc++}] [{x}]"));
 
             var baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
             Console.WriteLine($"\n\nCurrent app domain base directory: [{baseDir}].");
 
-            var files = Directory.GetFiles(baseDir, "*.dll")
-                .Where(file => !locations.Contains(file, StringComparer.InvariantCultureIgnoreCase))
+            var files = Directory.GetFiles(baseDir, "*.dll").ToList();
+
+            logInc = 1;
+            Console.WriteLine("\n\nAll dll files in current app domain base directory:");
+            files.ForEach(file => Console.WriteLine($"*[{logInc++}] [{file}]"));
+
+            files = files
+                .Where(file => !loadedLocations.Contains(file, StringComparer.InvariantCultureIgnoreCase))
                 .ToList();
 
             logInc = 1;
@@ -46,7 +52,8 @@ namespace Confab.Bootstrapper
             });
 
             logInc = 1;
-            Console.WriteLine("\n\nApp domain assemblies after loaded dll files from current app domain base directory:");
+            Console.WriteLine(
+                "\n\nApp domain assemblies after loaded dll files from current app domain base directory:");
             assemblies.ForEach(x =>
             {
                 Console.WriteLine($"*[{logInc++}] [{x.ImageRuntimeVersion}] [{x.Location}] [{x.IsDynamic}]");
