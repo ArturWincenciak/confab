@@ -5,6 +5,7 @@ namespace Confab.Shared.Infrastructure.Postgres
 {
     public static class Extensions
     {
+        //todo: it is never used ...
         public static IServiceCollection AddPostgres(this IServiceCollection services)
         {
             var options = services.GetOptions<PostgresOptions>("postgres");
