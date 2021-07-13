@@ -34,7 +34,7 @@ namespace Confab.Shared.Infrastructure.Services
                 var dbContext = scope.ServiceProvider.GetRequiredService(dbContextType) as DbContext;
                 _logger.LogInformation($"Migration of '{dbContextType.FullName}' ...");
                 await dbContext.Database.MigrateAsync(cancellationToken);
-                _logger.LogInformation($"Done migration of '{dbContextType.FullName}'.");
+                _logger.LogInformation($"Migration of '{dbContextType.FullName}' has been completed.");
             }
 
             _logger.LogInformation("App has been initialized.");
