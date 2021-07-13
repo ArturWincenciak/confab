@@ -22,6 +22,8 @@ namespace Confab.Shared.Infrastructure.Services
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("App initializer starting ...");
+
             var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
                 .Where(x => typeof(DbContext).IsAssignableFrom(x) && !x.IsInterface && x != typeof(DbContext));
@@ -34,6 +36,8 @@ namespace Confab.Shared.Infrastructure.Services
                 await dbContext.Database.MigrateAsync(cancellationToken);
                 _logger.LogInformation($"Done migration of '{dbContextType.FullName}'.");
             }
+
+            _logger.LogInformation("App has been initialized.");
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
