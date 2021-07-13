@@ -28,7 +28,10 @@ namespace Confab.Shared.Infrastructure.Exceptions
         private static string GetErrorCode(Exception ex)
         {
             var type = ex.GetType();
-            var code = type.Name.Underscore().Replace("_exception", string.Empty);
+            if (_codes.TryGetValue(type, out string code))
+                return code;
+
+            code = type.Name.Underscore().Replace("_exception", string.Empty);
             return _codes.GetOrAdd(type, code);
         }
     }
