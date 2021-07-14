@@ -23,16 +23,17 @@ namespace Confab.Bootstrapper
 
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine("Registering common types in IoC ...");
             services.AddInfrastructure();
 
             foreach (var module in _modules)
             {
+                Console.WriteLine($"Module '{module.Name}' is registering its type in IoC container ...");
                 module.Register(services);
             }
 
-            Console.WriteLine(
-                $"\n\nConfigured services of modules: " +
-                $"{string.Join(" | ", _modules.Select(module => module.Name))}\n\n");
+            Console.WriteLine("All common and module types has been registered in IoC container. " +
+                $"Modules: [{string.Join(" | ", _modules.Select(module => module.Name))}].\n\n");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
