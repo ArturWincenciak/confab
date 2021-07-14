@@ -22,7 +22,7 @@ namespace Confab.Shared.Infrastructure.Services
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("App initializer starting ...");
+            _logger.LogInformation("Hosted service named AppInitializer starting StartAsync method ...");
 
             var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(x => x.GetTypes())
@@ -32,12 +32,12 @@ namespace Confab.Shared.Infrastructure.Services
             foreach (var dbContextType in dbContextTypes)
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService(dbContextType) as DbContext;
-                _logger.LogInformation($"Migration of '{dbContextType.FullName}' ...");
+                _logger.LogInformation($"Migrating of '{dbContextType.FullName}' DB context ...");
                 await dbContext.Database.MigrateAsync(cancellationToken);
                 _logger.LogInformation($"Migration of '{dbContextType.FullName}' has been completed.");
             }
 
-            _logger.LogInformation("App has been initialized.");
+            _logger.LogInformation("Hosted service named AppInitializer has called all StartAsync method ...");
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
