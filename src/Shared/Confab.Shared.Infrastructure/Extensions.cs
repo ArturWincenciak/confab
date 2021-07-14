@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions;
 using Confab.Shared.Infrastructure.Api;
 using Confab.Shared.Infrastructure.Exceptions;
@@ -38,6 +39,8 @@ namespace Confab.Shared.Infrastructure
 
         public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
         {
+            Console.WriteLine($"Build Service Provider by call GetOption of '{typeof(T)}' type to get option '{sectionName}' name.");
+
             using var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetService<IConfiguration>();
             return configuration.GetOptions<T>(sectionName);

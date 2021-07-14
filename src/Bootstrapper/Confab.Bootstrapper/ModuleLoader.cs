@@ -74,6 +74,7 @@ namespace Confab.Bootstrapper
 
             Console.WriteLine("\nModules:");
             modules.ForEach(module => Console.WriteLine($"\t* [{module.Name}]"));
+            Console.WriteLine("\n");
 
             return modules;
         }
