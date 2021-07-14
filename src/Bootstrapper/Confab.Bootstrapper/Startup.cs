@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Confab.Shared.Infrastructure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Confab.Bootstrapper
@@ -15,9 +16,9 @@ namespace Confab.Bootstrapper
     {
         private readonly IList<IModule> _modules;
 
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            var assemblies = ModuleLoader.LoadAssemblies();
+            var assemblies = ModuleLoader.LoadAssemblies(configuration);
             _modules = ModuleLoader.LoadModules(assemblies);
         }
 

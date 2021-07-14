@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Confab.Shared.Abstractions.Modules;
+using Microsoft.Extensions.Configuration;
 
 namespace Confab.Bootstrapper
 {
     internal static class ModuleLoader
     {
-        public static IList<Assembly> LoadAssemblies()
+        public static IList<Assembly> LoadAssemblies(IConfiguration configuration)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
 
@@ -44,6 +45,40 @@ namespace Confab.Bootstrapper
             Console.WriteLine("\n\nAll dll files in current app domain base directory that not loaded yet:");
             files.ForEach(file => Console.WriteLine($"*[{logInc++}] [{file}]"));
 
+            Console.WriteLine("\n\nSwitching on/off module by configuration ...");
+            const string modulePart = "Confab.Modules.";
+            var disabledModules = new List<string>();
+            foreach (var file in files)
+            {
+                if (!file.Contains(modulePart))
+                {
+                    continue;
+                }
+
+                Console.WriteLine($"Working on '{file}' to check configuration enabled flag.");
+                var splitByModulePart = file.Split(modulePart);
+                var secondPartContainsModuleName = splitByModulePart[1];
+                var splitByDot = secondPartContainsModuleName.Split(".");
+                var moduleName = splitByDot[0];
+                moduleName = moduleName.ToLowerInvariant();
+                var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
+                Console.WriteLine($"Configuration enabled property of '{moduleName}' module has value: '{enabled}'.");
+                if (!enabled)
+                {
+                    disabledModules.Add(file);
+                }
+            }
+
+            foreach (var disabledModule in disabledModules)
+            {
+                Console.WriteLine($"Module '{disabledModule}' is disabled.");
+                files.Remove(disabledModule);
+            }
+
+            logInc = 1;
+            Console.WriteLine("\n\nFinally the new dll files that will be loaded:");
+            files.ForEach(file => Console.WriteLine($"*[{logInc++}] [{file}]"));
+
             files.ForEach(file =>
             {
                 AssemblyName assemblyName = AssemblyName.GetAssemblyName(file);
@@ -52,8 +87,7 @@ namespace Confab.Bootstrapper
             });
 
             logInc = 1;
-            Console.WriteLine(
-                "\n\nApp domain assemblies after loaded dll files from current app domain base directory:");
+            Console.WriteLine("\n\nAll app domain assemblies dll files loaded: ");
             assemblies.ForEach(x =>
             {
                 Console.WriteLine($"*[{logInc++}] [{x.ImageRuntimeVersion}] [{x.Location}] [{x.IsDynamic}]");
@@ -72,9 +106,16 @@ namespace Confab.Bootstrapper
                 .Cast<IModule>()
                 .ToList();
 
-            Console.WriteLine("\nModules:");
-            modules.ForEach(module => Console.WriteLine($"\t* [{module.Name}]"));
-            Console.WriteLine("\n");
+            if (modules.Any())
+            {
+                Console.WriteLine("\n***\nModules enabled and loaded:");
+                modules.ForEach(module => Console.WriteLine($"\t* [{module.Name}]"));
+                Console.WriteLine("\n***\n");
+            }
+            else
+            {
+                Console.WriteLine("\n***\nThere is no one enabled module.\n***\n");
+            }
 
             return modules;
         }
