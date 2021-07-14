@@ -31,8 +31,8 @@ namespace Confab.Shared.Infrastructure.Modules
                     $"\n\nEnvironment configurations settings:\n* {string.Join("\n* ", fallbackEnvironmentSettings)}");
 
                 IEnumerable<string> GetSettings(string pattern) =>
-                    Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath, $"module.{pattern}.json",
-                        SearchOption.AllDirectories);
+                    Directory.EnumerateFiles(path: ctx.HostingEnvironment.ContentRootPath,
+                        searchPattern: $"module.{pattern}.json", searchOption: SearchOption.AllDirectories);
             });
         }
     }
