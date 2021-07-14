@@ -38,21 +38,25 @@ namespace Confab.Bootstrapper
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            logger.LogInformation("Configure of uses common middleware/infrastructure " +
+                                  $"(environment name: '{env.EnvironmentName}') ...");
+
             app.UseInfrastructure();
 
             foreach (var module in _modules)
             {
+                logger.LogInformation($"Module '{module.Name}' is configuring of uses its infrastructure ...");
                 module.Use(app);
             }
-
-            logger.LogInformation(
-                $"Configured app with modules: {string.Join(" | ", _modules.Select(module => module.Name))}");
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapGet("/", async context => await context.Response.WriteAsync("Confab API!"));
             });
+
+            logger.LogInformation("All common and module uses of infrastructure has been configured. " +
+                $"Modules: [{string.Join(" | ", _modules.Select(module => module.Name))}].\n\n");
         }
     }
 }
