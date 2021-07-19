@@ -10,6 +10,8 @@ namespace Confab.Shared.Infrastructure.Modules
     {
         internal static IHostBuilder ConfigureModules(this IHostBuilder builder)
         {
+            Console.WriteLine("Configuring modules setting by host builder configuration...");
+
             return builder.ConfigureAppConfiguration((ctx, cfg) =>
             {
                 var allSettings = GetSettings("*");
@@ -21,14 +23,16 @@ namespace Confab.Shared.Infrastructure.Modules
                 Console.WriteLine(
                     $"\n\nAll configurations settings:\n* {string.Join("\n* ", allSettings)}");
 
-                var fallbackEnvironmentSettings = GetSettings($"*.{ctx.HostingEnvironment.EnvironmentName}");
+                var environmentName = ctx.HostingEnvironment.EnvironmentName;
+                var fallbackEnvironmentSettings = GetSettings($"*.{environmentName}");
                 foreach (var settings in fallbackEnvironmentSettings)
                 {
                     cfg.AddJsonFile(settings);
                 }
 
                 Console.WriteLine(
-                    $"\n\nEnvironment configurations settings:\n* {string.Join("\n* ", fallbackEnvironmentSettings)}");
+                    $"\n\nConfigurations settings for environment '{environmentName}':\n* " +
+                    $"{string.Join("\n* ", fallbackEnvironmentSettings)}");
 
                 IEnumerable<string> GetSettings(string pattern) =>
                     Directory.EnumerateFiles(path: ctx.HostingEnvironment.ContentRootPath,
