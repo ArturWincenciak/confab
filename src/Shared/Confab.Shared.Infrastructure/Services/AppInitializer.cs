@@ -37,7 +37,7 @@ namespace Confab.Shared.Infrastructure.Services
                 _logger.LogInformation($"Migration of '{dbContextType.FullName}' has been completed.");
             }
 
-            _logger.LogInformation("Hosted service named AppInitializer has called all StartAsync method ...");
+            _logger.LogInformation("Has been called all StartAsync method of AppInitializer hosted service.");
         }
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
