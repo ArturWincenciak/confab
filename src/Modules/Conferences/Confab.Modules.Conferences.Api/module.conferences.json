@@ -2,7 +2,7 @@
   "conferences": {
     "module": {
       "name": "Conferences",
-      "enabled": false 
+      "enabled": true
     }
   }
 }
