@@ -58,7 +58,7 @@ namespace Confab.Bootstrapper
             });
 
             logger.LogInformation("All common and module uses of infrastructure has been configured. " +
-                $"Modules: [{string.Join(" | ", _modules.Select(module => module.Name))}].\n\n");
+                $"Modules: [{string.Join(" | ", _modules.Select(module => module.Name))}].");
         }
     }
 }
