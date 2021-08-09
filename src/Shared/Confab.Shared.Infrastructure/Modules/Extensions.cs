@@ -20,7 +20,7 @@ namespace Confab.Shared.Infrastructure.Modules
                     cfg.AddJsonFile(settings);
                 }
 
-                Console.WriteLine($"\n\nAll configurations settings:\n* {string.Join("\n* ", allSettings)}");
+                Console.WriteLine($"\n\nAll configurations settings added:\n* {string.Join("\n* ", allSettings)}");
 
                 var environmentName = ctx.HostingEnvironment.EnvironmentName;
                 var fallbackEnvironmentSettings = GetSettings($"*.{environmentName}");
@@ -30,7 +30,7 @@ namespace Confab.Shared.Infrastructure.Modules
                 }
 
                 Console.WriteLine(
-                    $"\n\nConfigurations settings for environment '{environmentName}':\n* " +
+                    $"\n\nConfigurations settings for environment '{environmentName}' added:\n* " +
                     $"{string.Join("\n* ", fallbackEnvironmentSettings)}");
 
                 IEnumerable<string> GetSettings(string pattern) =>
