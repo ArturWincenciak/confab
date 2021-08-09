@@ -22,16 +22,16 @@ namespace Confab.Bootstrapper
 
             await host.RunAsync();
 
-            Console.WriteLine("\n---\nHost has been run.");
+            Console.WriteLine("\n---\nHost has been run.\n---\n");
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
-            Console.WriteLine("\n---\nStarting create host builder method..., creating default builder...");
+            Console.WriteLine("\n---\nStarting create host builder method..., creating default builder...\n---\n");
 
             var defaultBuilder = Host.CreateDefaultBuilder(args);
 
-            Console.WriteLine("\n---\nDefault host builder has been created..., configuring web host defaults...");
+            Console.WriteLine("\n---\nDefault host builder has been created..., configuring web host defaults...\n---\n");
 
             var configureWebHostDefaults = defaultBuilder.ConfigureWebHostDefaults(webBuilder =>
             {
