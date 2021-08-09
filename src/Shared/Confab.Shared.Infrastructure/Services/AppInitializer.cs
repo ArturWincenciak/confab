@@ -31,7 +31,15 @@ namespace Confab.Shared.Infrastructure.Services
             using var scope = _serviceProvider.CreateScope();
             foreach (var dbContextType in dbContextTypes)
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService(dbContextType) as DbContext;
+                var dbContext = scope.ServiceProvider.GetService(dbContextType) as DbContext;
+                if (dbContext is null)
+                {
+                    _logger.LogInformation($"DB context '{dbContextType}' doesn't exist. " +
+                                           $"Probably module with the DB context is switched off " +
+                                           $"so then do nothing with them.");
+                    continue;
+                }
+
                 _logger.LogInformation($"Migrating of '{dbContextType.FullName}' DB context ...");
                 await dbContext.Database.MigrateAsync(cancellationToken);
                 _logger.LogInformation($"Migration of '{dbContextType.FullName}' has been completed.");
