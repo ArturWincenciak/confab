@@ -16,7 +16,7 @@ namespace Confab.Shared.Infrastructure.Modules
             {
                 var allSettings = GetSettings("*");
                 foreach (var settings in allSettings)
-                {
+                {   //todo: here also will be set config with env name and can override mean config, consider this
                     cfg.AddJsonFile(settings);
                 }
 
