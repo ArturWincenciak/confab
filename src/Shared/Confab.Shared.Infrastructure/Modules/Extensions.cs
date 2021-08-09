@@ -20,8 +20,7 @@ namespace Confab.Shared.Infrastructure.Modules
                     cfg.AddJsonFile(settings);
                 }
 
-                Console.WriteLine(
-                    $"\n\nAll configurations settings:\n* {string.Join("\n* ", allSettings)}");
+                Console.WriteLine($"\n\nAll configurations settings:\n* {string.Join("\n* ", allSettings)}");
 
                 var environmentName = ctx.HostingEnvironment.EnvironmentName;
                 var fallbackEnvironmentSettings = GetSettings($"*.{environmentName}");
