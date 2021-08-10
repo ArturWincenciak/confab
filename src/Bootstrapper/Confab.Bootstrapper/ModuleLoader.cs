@@ -45,35 +45,7 @@ namespace Confab.Bootstrapper
             Console.WriteLine("\n\nAll dll files in current app domain base directory that not loaded yet:");
             files.ForEach(file => Console.WriteLine($"*[{logInc++}] [{file}]"));
 
-            Console.WriteLine("\n\nSwitching on/off module by configuration ...");
-            const string modulePart = "Confab.Modules.";
-            var disabledModules = new List<string>();
-            foreach (var file in files)
-            {
-                if (!file.Contains(modulePart))
-                {
-                    continue;
-                }
-
-                Console.WriteLine($"Working on '{file}' to check configuration enabled flag.");
-                var splitByModulePart = file.Split(modulePart);
-                var secondPartContainsModuleName = splitByModulePart[1];
-                var splitByDot = secondPartContainsModuleName.Split(".");
-                var moduleName = splitByDot[0];
-                moduleName = moduleName.ToLowerInvariant();
-                var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
-                Console.WriteLine($"Configuration enabled property of '{moduleName}' module has value: '{enabled}'.");
-                if (!enabled)
-                {
-                    disabledModules.Add(file);
-                }
-            }
-
-            foreach (var disabledModule in disabledModules)
-            {
-                Console.WriteLine($"Module '{disabledModule}' is disabled.");
-                files.Remove(disabledModule);
-            }
+            FilterFilesToLoadBasedOnConfiguration(files, configuration);
 
             logInc = 1;
             Console.WriteLine("\n\nFinally the new dll files that will be loaded:");
@@ -118,6 +90,39 @@ namespace Confab.Bootstrapper
             }
 
             return modules;
+        }
+
+        private static void FilterFilesToLoadBasedOnConfiguration(List<string> files, IConfiguration configuration)
+        {
+            Console.WriteLine("\n\nSwitching on/off module by configuration ...");
+            const string modulePart = "Confab.Modules.";
+            var disabledModules = new List<string>();
+            foreach (var file in files)
+            {
+                if (!file.Contains(modulePart))
+                {
+                    continue;
+                }
+
+                Console.WriteLine($"Working on '{file}' to check configuration enabled flag.");
+                var splitByModulePart = file.Split(modulePart);
+                var secondPartContainsModuleName = splitByModulePart[1];
+                var splitByDot = secondPartContainsModuleName.Split(".");
+                var moduleName = splitByDot[0];
+                moduleName = moduleName.ToLowerInvariant();
+                var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
+                Console.WriteLine($"Configuration enabled property of '{moduleName}' module has value: '{enabled}'.");
+                if (!enabled)
+                {
+                    disabledModules.Add(file);
+                }
+            }
+
+            foreach (var disabledModule in disabledModules)
+            {
+                Console.WriteLine($"Module '{disabledModule}' is disabled.");
+                files.Remove(disabledModule);
+            }
         }
     }
 }
