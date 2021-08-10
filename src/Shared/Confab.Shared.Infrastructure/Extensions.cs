@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions;
 using Confab.Shared.Infrastructure.Api;
 using Confab.Shared.Infrastructure.Exceptions;
+using Confab.Shared.Infrastructure.Postgres;
 using Confab.Shared.Infrastructure.Services;
 using Confab.Shared.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
@@ -45,6 +46,11 @@ namespace Confab.Shared.Infrastructure
                 }
             }
 
+            services.AddPostgres();
+            services.AddErrorHandling();
+            services.AddSingleton<IClock, UtcClock>();
+            services.AddHostedService<AppInitializer>();
+
             services.AddControllers()
                 .ConfigureApplicationPartManager(manager =>
                 {
@@ -74,10 +80,6 @@ namespace Confab.Shared.Infrastructure
                     Console.WriteLine("Configure application part manager done.");
                 });
 
-            services.AddErrorHandling();
-            services.AddSingleton<IClock, UtcClock>();
-            services.AddHostedService<AppInitializer>();
-
             return services;
         }
 
@@ -85,7 +87,7 @@ namespace Confab.Shared.Infrastructure
         {
             app.UseErrorHandling();
             app.UseRouting();
-            
+
             return app;
         }
 
