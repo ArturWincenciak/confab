@@ -38,7 +38,6 @@ namespace Confab.Shared.Infrastructure.Exceptions
             var response = errorResponse?.Response;
             if (response is null)
             {
-                //todo: log error message
                 return;
             }
             await context.Response.WriteAsJsonAsync(response);
