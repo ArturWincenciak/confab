@@ -23,7 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confab.Shared.Abstractions"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confab.Shared.Infrastructure", "src\Shared\Confab.Shared.Infrastructure\Confab.Shared.Infrastructure.csproj", "{FD01A4AD-CE59-4CB4-83CA-DA42CFF6DBEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Confab.Modules.Conferences.Core", "src\Modules\Conferences\Confab.Modules.Conferences.Core\Confab.Modules.Conferences.Core.csproj", "{3022082E-18AB-4479-A851-0C9D5CCAB24D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confab.Modules.Conferences.Core", "src\Modules\Conferences\Confab.Modules.Conferences.Core\Confab.Modules.Conferences.Core.csproj", "{3022082E-18AB-4479-A851-0C9D5CCAB24D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Speakers", "Speakers", "{6C217269-75B8-4073-9470-CCC70253B28F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confab.Modules.Speakers.Api", "src\Modules\Speakers\Confab.Modules.Speakers.Api\Confab.Modules.Speakers.Api.csproj", "{8E684DE3-030C-46FE-9843-55C0C49527C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Confab.Modules.Speakers.Core", "src\Modules\Speakers\Confab.Modules.Speakers.Core\Confab.Modules.Speakers.Core.csproj", "{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +101,30 @@ Global
 		{3022082E-18AB-4479-A851-0C9D5CCAB24D}.Release|x64.Build.0 = Release|Any CPU
 		{3022082E-18AB-4479-A851-0C9D5CCAB24D}.Release|x86.ActiveCfg = Release|Any CPU
 		{3022082E-18AB-4479-A851-0C9D5CCAB24D}.Release|x86.Build.0 = Release|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Debug|x64.Build.0 = Debug|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Debug|x86.Build.0 = Debug|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Release|x64.ActiveCfg = Release|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Release|x64.Build.0 = Release|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Release|x86.ActiveCfg = Release|Any CPU
+		{8E684DE3-030C-46FE-9843-55C0C49527C8}.Release|x86.Build.0 = Release|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Debug|x64.Build.0 = Debug|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Debug|x86.Build.0 = Debug|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Release|x64.ActiveCfg = Release|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Release|x64.Build.0 = Release|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Release|x86.ActiveCfg = Release|Any CPU
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +139,9 @@ Global
 		{EFB1443E-1E30-4BD5-A3F0-C6E671AF24D3} = {708E0CA5-BD9D-4A1A-B405-F2F46ADDC170}
 		{FD01A4AD-CE59-4CB4-83CA-DA42CFF6DBEE} = {708E0CA5-BD9D-4A1A-B405-F2F46ADDC170}
 		{3022082E-18AB-4479-A851-0C9D5CCAB24D} = {DCA60734-0019-4BA3-AB9A-3DD380882B4D}
+		{6C217269-75B8-4073-9470-CCC70253B28F} = {396C32F0-50B0-4BEC-9995-C5B53A242AA3}
+		{8E684DE3-030C-46FE-9843-55C0C49527C8} = {6C217269-75B8-4073-9470-CCC70253B28F}
+		{B36BEC42-ABCD-4AC7-AE3F-7ED61F72E5B0} = {6C217269-75B8-4073-9470-CCC70253B28F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6F0B21BF-EE64-4A67-AFAE-9A4B96D59984}
