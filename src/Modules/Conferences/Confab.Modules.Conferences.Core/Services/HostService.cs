@@ -54,7 +54,7 @@ namespace Confab.Modules.Conferences.Core.Services
                 LogoUrl = c.LogoUrl,
                 ParticipantsLimit = c.ParticipantsLimit
             }).ToList();
-            
+
             return dto;
         }
 
