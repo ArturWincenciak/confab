@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions;
-using Confab.Shared.Abstractions.Modules;
 using Confab.Shared.Infrastructure.Api;
 using Confab.Shared.Infrastructure.Exceptions;
 using Confab.Shared.Infrastructure.Services;
@@ -20,8 +18,7 @@ namespace Confab.Shared.Infrastructure
 {
     internal static class Extensions
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-            IList<Assembly> assemblies, IList<IModule> modules) //todo: use this args
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             var disabledModules = new List<string>();
             using (var serviceProvider = services.BuildServiceProvider())

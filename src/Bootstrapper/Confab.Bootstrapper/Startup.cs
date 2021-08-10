@@ -16,7 +16,7 @@ namespace Confab.Bootstrapper
     public class Startup
     {
         private readonly IList<IModule> _modules;
-        private IList<Assembly> _assemblies;
+        private readonly IList<Assembly> _assemblies;
 
         public Startup(IConfiguration configuration)
         {
@@ -27,7 +27,7 @@ namespace Confab.Bootstrapper
         public void ConfigureServices(IServiceCollection services)
         {
             Console.WriteLine("Registering common types in IoC ...");
-            services.AddInfrastructure(_assemblies, _modules);
+            services.AddInfrastructure();
 
             foreach (var module in _modules)
             {
