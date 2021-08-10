@@ -25,7 +25,7 @@ namespace Confab.Modules.Conferences.Core
             //services.AddSingleton<IConferenceRepository, InMemoryConferenceRepository>();
             services.AddScoped<IConferenceRepository, ConferenceRepository>();
             services.AddSingleton<IConferenceDeletionPolice, ConferenceDeletionPolice>();
-            
+
             return services;
         }
     }
