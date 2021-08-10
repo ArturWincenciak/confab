@@ -3,34 +3,47 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Confab.Modules.Speakers.Core.Entities;
 using Confab.Modules.Speakers.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Speakers.Core.DAL.Repositories
 {
     internal class SpeakRepository : ISpeakerRepository
     {
-        public Task AddAsync(Speaker speaker)
+        private readonly SpeakersDbContext _dbContext;
+        private readonly DbSet<Speaker> _speakers;
+
+        public SpeakRepository(SpeakersDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+            _speakers = _dbContext.Speakers;
+        }
+
+        public async Task AddAsync(Speaker speaker)
+        {
+            await _speakers.AddAsync(speaker);
+            await _dbContext.SaveChangesAsync();
         }
 
         public Task<Speaker> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
+        {   //todo: when null i want to return from API NotFound
+            return _speakers.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<IReadOnlyList<Speaker>> BrowseAsync()
+        public async Task<IReadOnlyList<Speaker>> BrowseAsync()
         {
-            throw new NotImplementedException();
+            return await _speakers.ToListAsync();
         }
 
-        public Task UpdateAsync(Speaker speaker)
+        public async Task UpdateAsync(Speaker speaker)
         {
-            throw new NotImplementedException();
+            _speakers.Update(speaker);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Speaker speaker)
+        public async Task DeleteAsync(Speaker speaker)
         {
-            throw new NotImplementedException();
+            _speakers.Remove(speaker);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
