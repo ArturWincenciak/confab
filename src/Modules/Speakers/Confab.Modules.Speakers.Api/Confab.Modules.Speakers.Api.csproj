@@ -5,6 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="module.speakers.development.json" />
+    <None Remove="module.speakers.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="module.speakers.development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="module.speakers.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Confab.Modules.Speakers.Core\Confab.Modules.Speakers.Core.csproj" />
   </ItemGroup>
 
