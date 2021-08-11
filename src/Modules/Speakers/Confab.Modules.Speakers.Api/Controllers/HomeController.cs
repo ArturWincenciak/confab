@@ -3,7 +3,7 @@
 namespace Confab.Modules.Speakers.Api.Controllers
 {
     [Route(SpeakersModule.BasePath)]
-    internal class HomeController : SpeakerControllerBase
+    internal class HomeController : SpeakersControllerBase
     {
         [HttpGet]
         public ActionResult<string> Get() => "Speakers API";

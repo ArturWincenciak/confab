@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Confab.Modules.Speakers.Api.Controllers
 {
-    internal class SpeakerController : SpeakerControllerBase
+    internal class SpeakersController : SpeakersControllerBase
     {
         private readonly ISpeakerService _service;
 
-        public SpeakerController(ISpeakerService service)
+        public SpeakersController(ISpeakerService service)
         {
             _service = service;
         }
