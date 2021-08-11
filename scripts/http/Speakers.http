@@ -1,0 +1,43 @@
+@host = http://localhost:5000
+@api = {{host}}/speakers-module
+@url = {{api}}/speakers
+
+### Get hello Speakers Module API message
+GET {{api}}
+
+### Get
+GET {{url}}
+
+### Add new
+# @name new_created_location
+POST {{url}}
+Content-Type: application/json
+
+{
+    "FullName": "Teo Vincent",
+    "Bio": "A bio desctipiton."
+}
+
+### ID variable
+@speakerId = 55c631f3-d286-42aa-951e-b21f81ca4242
+
+### Get
+GET {{url}}/{{speakerId}}
+
+### Update
+PUT {{url}}/{{speakerId}}
+Content-Type: application/json
+
+{
+    "FullName": "Edit Full Name",
+    "Bio": "Edited the bio.",
+}
+
+### Delete
+DELETE {{url}}/{{speakerId}}
+
+### Arleady created location variable
+@speakerLocation = {{new_created_location.response.headers.Location}}
+
+### Get arleady created
+GET {{speakerLocation}}
