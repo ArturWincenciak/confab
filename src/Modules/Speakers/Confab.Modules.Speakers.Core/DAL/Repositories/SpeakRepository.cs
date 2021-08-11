@@ -25,7 +25,7 @@ namespace Confab.Modules.Speakers.Core.DAL.Repositories
         }
 
         public Task<Speaker> GetAsync(Guid id)
-        {   //todo: when null i want to return from API NotFound
+        {
             return _speakers.SingleOrDefaultAsync(x => x.Id == id);
         }
 
