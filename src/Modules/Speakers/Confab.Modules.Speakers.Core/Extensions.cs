@@ -1,4 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+using Confab.Modules.Speakers.Core.DAL;
+using Confab.Modules.Speakers.Core.DAL.Repositories;
+using Confab.Modules.Speakers.Core.Repositories;
+using Confab.Modules.Speakers.Core.Services;
+using Confab.Shared.Infrastructure.Postgres;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo(assemblyName: "Confab.Modules.Speakers.Api")]
@@ -8,17 +13,10 @@ namespace Confab.Modules.Speakers.Core
     {
         public static IServiceCollection AddCore(this IServiceCollection services)
         {
-            //services.AddPostgres<ConferencesDbContext>();
+            services.AddPostgres<SpeakersDbContext>();
 
-            //services.AddScoped<IHostService, HostService>();
-            ////services.AddSingleton<IHostRepository, InMemoryHostRepository>();
-            //services.AddScoped<IHostRepository, HostRepository>();
-            //services.AddSingleton<IHostDeletionPolice, HostDeletionPolice>();
-
-            //services.AddScoped<IConferenceService, ConferenceService>();
-            ////services.AddSingleton<IConferenceRepository, InMemoryConferenceRepository>();
-            //services.AddScoped<IConferenceRepository, ConferenceRepository>();
-            //services.AddSingleton<IConferenceDeletionPolice, ConferenceDeletionPolice>();
+            services.AddScoped<ISpeakerService, SpeakerService>();
+            services.AddScoped<ISpeakerRepository, SpeakerRepository>();
 
             return services;
         }

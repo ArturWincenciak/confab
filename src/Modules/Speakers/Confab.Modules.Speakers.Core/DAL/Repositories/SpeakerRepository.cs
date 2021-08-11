@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Speakers.Core.DAL.Repositories
 {
-    internal class SpeakRepository : ISpeakerRepository
+    internal class SpeakerRepository : ISpeakerRepository
     {
         private readonly SpeakersDbContext _dbContext;
         private readonly DbSet<Speaker> _speakers;
 
-        public SpeakRepository(SpeakersDbContext dbContext)
+        public SpeakerRepository(SpeakersDbContext dbContext)
         {
             _dbContext = dbContext;
             _speakers = _dbContext.Speakers;
