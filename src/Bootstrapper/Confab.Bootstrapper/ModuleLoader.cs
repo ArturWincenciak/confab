@@ -124,7 +124,7 @@ namespace Confab.Bootstrapper
             {
                 Console.WriteLine(!x.IsDynamic
                     ? $"*[{logInc++}] [{x.ImageRuntimeVersion}] [{x.Location}] [{x.IsDynamic}]"
-                    : $"*[{logInc++}] [{x.ImageRuntimeVersion}] [Dynamic] [{x.IsDynamic}]");
+                    : $"*[{logInc++}] [{x.ImageRuntimeVersion}] [Dynamic] [{x.FullName}] [{x.IsDynamic}]");
             });
         }
     }
