@@ -29,6 +29,11 @@ namespace Confab.Modules.Speakers.Core.DAL.Repositories
             return _speakers.SingleOrDefaultAsync(x => x.Id == id);
         }
 
+        public Task<Speaker> GetAsync(string email)
+        {
+            return _speakers.SingleOrDefaultAsync(x => x.Email == email);
+        }
+
         public async Task<IReadOnlyList<Speaker>> BrowseAsync()
         {
             return await _speakers.ToListAsync();

@@ -3,15 +3,17 @@ using System;
 using Confab.Modules.Speakers.Core.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Confab.Modules.Speakers.Core.DAL.Migrations
 {
     [DbContext(typeof(SpeakersDbContext))]
-    partial class SpeakersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210813165321_Speakers_Module_Add_Email")]
+    partial class Speakers_Module_Add_Email
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

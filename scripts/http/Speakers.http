@@ -15,11 +15,12 @@ Content-Type: application/json
 
 {
     "FullName": "Teo Vincent",
+    "Email": "art@gmail.com",
     "Bio": "A bio desctipiton."
 }
 
 ### ID variable
-@speakerId = 55c631f3-d286-42aa-951e-b21f81ca4242
+@speakerId = 5b6dcb39-a99f-432d-b9ab-69aec171e708
 
 ### Get
 GET {{url}}/{{speakerId}}
@@ -30,6 +31,7 @@ Content-Type: application/json
 
 {
     "FullName": "Edit Full Name",
+    "Email": "art2@gmail.com",
     "Bio": "Edited the bio."
 }
 

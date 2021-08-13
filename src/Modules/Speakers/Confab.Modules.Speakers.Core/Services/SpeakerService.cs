@@ -21,7 +21,17 @@ namespace Confab.Modules.Speakers.Core.Services
         public async Task AddAsync(SpeakerDto dto)
         {
             dto.Id = Guid.NewGuid();
-            await _repository.AddAsync(new Speaker{ Id = dto.Id, FullName = dto.FullName, Bio = dto.Bio});
+
+            var entity = await _repository.GetAsync(dto.Email);
+            if (entity is not null)
+            {
+                throw new SpeakerAlreadyExistsException(dto.Email);
+            }
+
+            await _repository.AddAsync(new Speaker
+            {
+                Id = dto.Id, Email = dto.Email, FullName = dto.FullName, Bio = dto.Bio
+            });
         }
 
         public async Task<SpeakerDto> GetAsync(Guid id)
@@ -32,13 +42,15 @@ namespace Confab.Modules.Speakers.Core.Services
                 throw new SpeakerNotFoundException(id);
             }
 
-            return new SpeakerDto { Id = entity.Id, FullName = entity.FullName, Bio = entity.Bio };
+            return new SpeakerDto {Id = entity.Id, Email = entity.Email, FullName = entity.FullName, Bio = entity.Bio};
         }
 
         public async Task<IReadOnlyList<SpeakerDto>> BrowseAsync()
         {
             var entities = await _repository.BrowseAsync();
-            return entities.Select(x => new SpeakerDto {Id = x.Id, FullName = x.FullName, Bio = x.Bio}).ToList();
+            return entities
+                .Select(x => new SpeakerDto {Id = x.Id, Email = x.Email, FullName = x.FullName, Bio = x.Bio})
+                .ToList();
         }
 
         public async Task UpdateAsync(SpeakerDto dto)
@@ -49,7 +61,13 @@ namespace Confab.Modules.Speakers.Core.Services
                 throw new SpeakerNotFoundException(dto.Id);
             }
 
+            if (await _repository.GetAsync(dto.Email) is not null)
+            {
+                throw new SpeakerAlreadyExistsException(dto.Email);
+            }
+
             entity.FullName = dto.FullName;
+            entity.Email = dto.Email;
             entity.Bio = dto.Bio;
 
             await _repository.UpdateAsync(entity);

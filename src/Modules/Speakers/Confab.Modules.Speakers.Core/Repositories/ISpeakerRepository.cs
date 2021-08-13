@@ -9,6 +9,7 @@ namespace Confab.Modules.Speakers.Core.Repositories
     {
         Task AddAsync(Speaker speaker);
         Task<Speaker> GetAsync(Guid id);
+        Task<Speaker> GetAsync(string email);
         Task<IReadOnlyList<Speaker>> BrowseAsync();
         Task UpdateAsync(Speaker speaker);
         Task DeleteAsync(Speaker speaker);
