@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Speakers.Core.Entities;
 using Confab.Modules.Speakers.Core.Repositories;
@@ -34,9 +35,9 @@ namespace Confab.Modules.Speakers.Core.DAL.Repositories
             return _speakers.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<Speaker> GetAsync(string email)
+        public IEnumerable<Speaker> GetAllAsNoTracking(string email)
         {
-            return _speakers.SingleOrDefaultAsync(x => x.Email == email);
+            return _speakers.Where(x => x.Email == email).AsNoTracking();
         }
 
         public async Task<IReadOnlyList<Speaker>> BrowseAsync()
