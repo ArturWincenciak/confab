@@ -8,5 +8,6 @@ namespace Confab.Modules.Speakers.Core.Entities
         public string Email { get; set; }
         public string FullName { get; set; }
         public string Bio { get; set; }
+        public string AvatarUrl { get; set; }
     }
 }

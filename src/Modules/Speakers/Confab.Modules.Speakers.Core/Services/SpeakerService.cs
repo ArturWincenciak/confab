@@ -30,7 +30,11 @@ namespace Confab.Modules.Speakers.Core.Services
 
             await _repository.AddAsync(new Speaker
             {
-                Id = dto.Id, Email = dto.Email, FullName = dto.FullName, Bio = dto.Bio
+                Id = dto.Id,
+                Email = dto.Email,
+                FullName = dto.FullName,
+                Bio = dto.Bio,
+                AvatarUrl = dto.AvatarUrl
             });
         }
 
@@ -42,14 +46,28 @@ namespace Confab.Modules.Speakers.Core.Services
                 throw new SpeakerNotFoundException(id);
             }
 
-            return new SpeakerDto {Id = entity.Id, Email = entity.Email, FullName = entity.FullName, Bio = entity.Bio};
+            return new SpeakerDto
+            {
+                Id = entity.Id,
+                Email = entity.Email,
+                FullName = entity.FullName,
+                Bio = entity.Bio,
+                AvatarUrl = entity.AvatarUrl
+            };
         }
 
         public async Task<IReadOnlyList<SpeakerDto>> BrowseAsync()
         {
             var entities = await _repository.BrowseAsync();
             return entities
-                .Select(x => new SpeakerDto {Id = x.Id, Email = x.Email, FullName = x.FullName, Bio = x.Bio})
+                .Select(x => new SpeakerDto
+                {
+                    Id = x.Id,
+                    Email = x.Email,
+                    FullName = x.FullName,
+                    Bio = x.Bio,
+                    AvatarUrl = x.AvatarUrl
+                })
                 .ToList();
         }
 
@@ -69,6 +87,7 @@ namespace Confab.Modules.Speakers.Core.Services
             entity.FullName = dto.FullName;
             entity.Email = dto.Email;
             entity.Bio = dto.Bio;
+            entity.AvatarUrl = dto.AvatarUrl;
 
             await _repository.UpdateAsync(entity);
         }

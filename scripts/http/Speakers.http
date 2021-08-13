@@ -16,7 +16,8 @@ Content-Type: application/json
 {
     "FullName": "Teo Vincent",
     "Email": "art@gmail.com",
-    "Bio": "A bio desctipiton."
+    "Bio": "A bio desctipiton.",
+    "AvatarUrl": ""
 }
 
 ### ID variable
@@ -32,7 +33,8 @@ Content-Type: application/json
 {
     "FullName": "Edit Full Name",
     "Email": "art2@gmail.com",
-    "Bio": "Edited the bio."
+    "Bio": "Edited the bio.",
+    "AvatarUrl": ""
 }
 
 ### Delete
