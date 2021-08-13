@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Confab.Modules.Speakers.Core.DTO;
 using Confab.Modules.Speakers.Core.Entities;
 using Confab.Modules.Speakers.Core.Exceptions;
+using Confab.Modules.Speakers.Core.Mappings;
 using Confab.Modules.Speakers.Core.Repositories;
 
 namespace Confab.Modules.Speakers.Core.Services
@@ -28,14 +29,7 @@ namespace Confab.Modules.Speakers.Core.Services
                 throw new SpeakerAlreadyExistsException(dto.Email);
             }
 
-            await _repository.AddAsync(new Speaker
-            {
-                Id = dto.Id,
-                Email = dto.Email,
-                FullName = dto.FullName,
-                Bio = dto.Bio,
-                AvatarUrl = dto.AvatarUrl
-            });
+            await _repository.AddAsync(dto.AsEntity());
         }
 
         public async Task<SpeakerDto> GetAsync(Guid id)
@@ -46,35 +40,20 @@ namespace Confab.Modules.Speakers.Core.Services
                 throw new SpeakerNotFoundException(id);
             }
 
-            return new SpeakerDto
-            {
-                Id = entity.Id,
-                Email = entity.Email,
-                FullName = entity.FullName,
-                Bio = entity.Bio,
-                AvatarUrl = entity.AvatarUrl
-            };
+            return entity.AsDto();
         }
 
         public async Task<IReadOnlyList<SpeakerDto>> BrowseAsync()
         {
             var entities = await _repository.BrowseAsync();
             return entities
-                .Select(x => new SpeakerDto
-                {
-                    Id = x.Id,
-                    Email = x.Email,
-                    FullName = x.FullName,
-                    Bio = x.Bio,
-                    AvatarUrl = x.AvatarUrl
-                })
+                .Select(x => x.AsDto())
                 .ToList();
         }
 
         public async Task UpdateAsync(SpeakerDto dto)
         {
-            var entity = await _repository.GetAsync(dto.Id);
-            if (entity is null)
+            if (await _repository.ExistsAsync(dto.Id) is false)
             {
                 throw new SpeakerNotFoundException(dto.Id);
             }
@@ -84,12 +63,7 @@ namespace Confab.Modules.Speakers.Core.Services
                 throw new SpeakerAlreadyExistsException(dto.Email);
             }
 
-            entity.FullName = dto.FullName;
-            entity.Email = dto.Email;
-            entity.Bio = dto.Bio;
-            entity.AvatarUrl = dto.AvatarUrl;
-
-            await _repository.UpdateAsync(entity);
+            await _repository.UpdateAsync(dto.AsEntity());
         }
 
         public async Task DeleteAsync(Guid id)

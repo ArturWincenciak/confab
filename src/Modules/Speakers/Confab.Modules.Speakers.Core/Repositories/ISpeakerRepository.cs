@@ -7,6 +7,7 @@ namespace Confab.Modules.Speakers.Core.Repositories
 {
     internal interface ISpeakerRepository
     {
+        Task<bool> ExistsAsync(Guid id);
         Task AddAsync(Speaker speaker);
         Task<Speaker> GetAsync(Guid id);
         Task<Speaker> GetAsync(string email);
