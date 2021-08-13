@@ -14,16 +14,12 @@ namespace Confab.Bootstrapper
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
 
-            int logInc = 1;
             Console.WriteLine("\n\nCurrent app domain assemblies:");
-            assemblies.ForEach(x =>
-            {
-                Console.WriteLine($"*[{logInc++}] [{x.ImageRuntimeVersion}] [{x.Location}] [{x.IsDynamic}]");
-            });
+            LogAssembliesInfo(assemblies);
 
             var loadedLocations = assemblies.Where(x => !x.IsDynamic).Select(x => x.Location).ToList();
 
-            logInc = 1;
+            var logInc = 1;
             Console.WriteLine("\n\nFiltered - all not dynamic assemblies' locations:");
             loadedLocations.ForEach(x => Console.WriteLine($"*[{logInc++}] [{x}]"));
 
@@ -58,12 +54,8 @@ namespace Confab.Bootstrapper
                 assemblies.Add(assembly);
             });
 
-            logInc = 1;
             Console.WriteLine("\n\nAll app domain assemblies dll files loaded: ");
-            assemblies.ForEach(x =>
-            {
-                Console.WriteLine($"*[{logInc++}] [{x.ImageRuntimeVersion}] [{x.Location}] [{x.IsDynamic}]");
-            });
+            LogAssembliesInfo(assemblies);
 
             return assemblies;
         }
@@ -123,6 +115,17 @@ namespace Confab.Bootstrapper
                 Console.WriteLine($"Module '{disabledModule}' is disabled.");
                 files.Remove(disabledModule);
             }
+        }
+
+        private static void LogAssembliesInfo(List<Assembly> assemblies)
+        {
+            var logInc = 1;
+            assemblies.ForEach(x =>
+            {
+                Console.WriteLine(!x.IsDynamic
+                    ? $"*[{logInc++}] [{x.ImageRuntimeVersion}] [{x.Location}] [{x.IsDynamic}]"
+                    : $"*[{logInc++}] [{x.ImageRuntimeVersion}] [Dynamic] [{x.IsDynamic}]");
+            });
         }
     }
 }
