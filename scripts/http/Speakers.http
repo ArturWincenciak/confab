@@ -30,7 +30,7 @@ Content-Type: application/json
 
 {
     "FullName": "Edit Full Name",
-    "Bio": "Edited the bio.",
+    "Bio": "Edited the bio."
 }
 
 ### Delete
