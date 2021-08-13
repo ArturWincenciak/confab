@@ -52,7 +52,7 @@ namespace Confab.Modules.Speakers.Core.Services
             entity.FullName = dto.FullName;
             entity.Bio = dto.Bio;
 
-            await _repository.UpdateAsync(new Speaker { Id = dto.Id, FullName = dto.FullName, Bio = dto.Bio});
+            await _repository.UpdateAsync(entity);
         }
 
         public async Task DeleteAsync(Guid id)
