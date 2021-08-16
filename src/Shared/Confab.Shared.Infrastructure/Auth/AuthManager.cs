@@ -28,6 +28,7 @@ namespace Confab.Shared.Infrastructure.Auth
             _clock = clock;
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.IssuerSigningKey));
             _signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+            _issuer = options.Issuer;
         }
 
         public JsonWebToken CreateToken(string userId, string role = null, string audience = null,
