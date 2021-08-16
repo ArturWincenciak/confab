@@ -7,8 +7,6 @@ using System.Text;
 using Confab.Shared.Abstractions;
 using Confab.Shared.Abstractions.Auth;
 using Microsoft.IdentityModel.Tokens;
-using JsonWebToken = Confab.Shared.Abstractions.Auth.JsonWebToken;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Confab.Shared.Infrastructure.Auth
 {
