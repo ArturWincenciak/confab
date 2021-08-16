@@ -8,10 +8,8 @@
     <Folder Include="DAL\Configurations\" />
     <Folder Include="DAL\Migrations\" />
     <Folder Include="DAL\Repositories\" />
-    <Folder Include="DTO\" />
     <Folder Include="Enities\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Services\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 

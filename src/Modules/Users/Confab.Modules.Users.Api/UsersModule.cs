@@ -8,9 +8,11 @@ namespace Confab.Modules.Users.Api
 {
     public class UsersModule : IModule
     {
-        public string Name { get; }
-        public string Path { get; }
-        public IEnumerable<string> Policies { get; }
+        public const string BasePath = "users-module";
+        public string Name => "Users";
+        public string Path => BasePath;
+        public IEnumerable<string> Policies { get; } = new[] {"users"};
+
         public void Register(IServiceCollection services)
         {
             throw new NotImplementedException();
