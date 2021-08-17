@@ -27,7 +27,7 @@ namespace Confab.Bootstrapper
         public void ConfigureServices(IServiceCollection services)
         {
             Console.WriteLine("Registering common types in IoC ...");
-            services.AddInfrastructure();
+            services.AddInfrastructure(_modules);
 
             foreach (var module in _modules)
             {

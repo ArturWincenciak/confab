@@ -5,7 +5,7 @@ using Confab.Shared.Abstractions.Auth;
 
 namespace Confab.Modules.Users.Core.Services
 {
-    public interface IIdentityService
+    internal interface IIdentityService
     {
         Task<AccountDto> GetAsync(Guid id);
         Task<JsonWebToken> SignInAsync(SignInDto dto);
