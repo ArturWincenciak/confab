@@ -1,0 +1,37 @@
+@host = http://localhost:5000
+@api = {{host}}/users-module
+
+@email = teo@vincent.com
+@password = sicret
+@role = user
+@accesToken = ...
+
+### Get hello Conferences Module API message
+GET {{api}}
+
+### Get all accounts
+GET {{api}}/account
+Authorization: Bearer {{accesToken}}
+
+### Create new user
+POST {{api}}/account/sign-up
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "{{password}}": "{{password}}",
+    "role": "{{role}}",
+    "claims": {
+        "permissions": "[ conferences, hosts, speakers, users ]"
+    }
+}
+
+### Get access token for the user
+POST {{api}}/account/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "{{password}}": "{{password}}"
+}
+
