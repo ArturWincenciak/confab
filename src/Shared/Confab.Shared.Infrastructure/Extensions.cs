@@ -50,9 +50,6 @@ namespace Confab.Shared.Infrastructure
                 }
             }
 
-            services.AddSingleton<IContextFactory, ContextFactory>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient(serviceProvider => serviceProvider.GetRequiredService<IContextFactory>().Create());
             services.AddAuth(modules);
             services.AddErrorHandling();
             services.AddPostgres();
