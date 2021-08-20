@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Confab.Modules.Conferences.Api.Controllers;
 using Confab.Modules.Conferences.Core;
 using Confab.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,12 @@ namespace Confab.Modules.Conferences.Api
         public const string BasePath = "conferences-module";
         public string Name { get; } = "Conferences";
         public string Path { get; } = BasePath;
-        public IEnumerable<string> Policies { get; } = new[] { "conferences", "hosts" };
+
+        public IEnumerable<string> Policies { get; } = new[]
+        {
+            ConferencesController.Policy,
+            HostsController.Policy
+        };
 
         public void Register(IServiceCollection services)
         {

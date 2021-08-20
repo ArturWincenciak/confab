@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Confab.Modules.Speakers.Api.Controllers;
 using Confab.Modules.Speakers.Core;
 using Confab.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
@@ -11,7 +12,11 @@ namespace Confab.Modules.Speakers.Api
         public const string BasePath = "speakers-module";
         public string Name { get; } = "Speakers";
         public string Path { get; } = BasePath;
-        public IEnumerable<string> Policies { get; } = new[] {"speakers"};
+
+        public IEnumerable<string> Policies { get; } = new[]
+        {
+            SpeakersController.Policy
+        };
 
         public void Register(IServiceCollection services)
         {
