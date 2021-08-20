@@ -83,7 +83,7 @@ namespace Confab.Shared.Infrastructure.Auth
             services.AddAuthorization(authrization =>
             {
                 foreach (var policy in policies)
-                    authrization.AddPolicy(policy, policyBuilder => policyBuilder.RequireClaim("permission", policy));
+                    authrization.AddPolicy(policy, policyBuilder => policyBuilder.RequireClaim("permissions", policy));
             });
 
             return services;

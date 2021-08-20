@@ -4,14 +4,14 @@
 @email = teo@vincent.com
 @password = sicret
 @role = user
-@accesToken = ...
+@accessToken = {{access_token.response.body.accessToken}}
 
 ### Get hello Conferences Module API message
 GET {{api}}
 
 ### Get all accounts
 GET {{api}}/account
-Authorization: Bearer {{accesToken}}
+Authorization: Bearer {{accessToken}}
 
 ### Create new user
 POST {{api}}/account/sign-up
@@ -22,11 +22,12 @@ Content-Type: application/json
     "password": "{{password}}",
     "role": "{{role}}",
     "claims": {
-        "permissions": "[ conferences, hosts, speakers, users ]"
+        "permissions": [ "conferences", "hosts", "speakers", "users" ]
     }
 }
 
 ### Get access token for the user
+# @name access_token
 POST {{api}}/account/sign-in
 Content-Type: application/json
 

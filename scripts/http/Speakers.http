@@ -2,6 +2,21 @@
 @api = {{host}}/speakers-module
 @url = {{api}}/speakers
 
+@email = teo@vincent.com
+@password = sicret
+@accessToken = {{access_token.response.body.accessToken}}
+
+### Get access token for the user
+# @name access_token
+POST {{host}}/users-module/account/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+
 ### Get hello Speakers Module API message
 GET {{api}}
 
@@ -12,6 +27,7 @@ GET {{url}}
 # @name new_created_location
 POST {{url}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
     "FullName": "Teo Vincent",
@@ -29,6 +45,7 @@ GET {{url}}/{{speakerId}}
 ### Update
 PUT {{url}}/{{speakerId}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
     "FullName": "Edit Full Name",
@@ -39,6 +56,7 @@ Content-Type: application/json
 
 ### Delete
 DELETE {{url}}/{{speakerId}}
+Authorization: Bearer {{accessToken}}
 
 ### Arleady created location variable
 @speakerLocation = {{new_created_location.response.headers.Location}}

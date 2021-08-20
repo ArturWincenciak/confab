@@ -2,6 +2,21 @@
 @api = {{host}}/conferences-module
 @url = {{api}}/hosts
 
+@email = teo@vincent.com
+@password = sicret
+@accessToken = {{access_token.response.body.accessToken}}
+
+### Get access token for the user
+# @name access_token
+POST {{host}}/users-module/account/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+
 ### Get hello Conferences Module API message
 GET {{api}}
 
@@ -12,6 +27,7 @@ GET {{url}}
 # @name new_created_location
 POST {{url}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
     "Name": "Name of host #111",
@@ -27,6 +43,7 @@ GET {{url}}/{{hostId}}
 ### Update
 PUT {{url}}/{{hostId}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
     "Name": "Edited name",
@@ -36,6 +53,7 @@ Content-Type: application/json
 
 ### Delete
 DELETE {{url}}/{{hostId}}
+Authorization: Bearer {{accessToken}}
 
 ### Arleady created location variable
 @hostLocation = {{new_created_location.response.headers.Location}}
