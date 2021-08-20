@@ -44,9 +44,11 @@ namespace Confab.Shared.Infrastructure.Auth
                 new(JwtRegisteredClaimNames.Iat, new DateTimeOffset(now).ToUnixTimeMilliseconds().ToString())
             };
 
-            if (!string.IsNullOrWhiteSpace(role)) jwtClaims.Add(new Claim(ClaimTypes.Role, role));
+            if (!string.IsNullOrWhiteSpace(role))
+                jwtClaims.Add(new Claim(ClaimTypes.Role, role));
 
-            if (!string.IsNullOrWhiteSpace(audience)) jwtClaims.Add(new Claim(JwtRegisteredClaimNames.Aud, audience));
+            if (!string.IsNullOrWhiteSpace(audience))
+                jwtClaims.Add(new Claim(JwtRegisteredClaimNames.Aud, audience));
 
             if (claims?.Any() is true)
             {
@@ -67,10 +69,10 @@ namespace Confab.Shared.Infrastructure.Auth
             return new JsonWebToken
             {
                 AccessToken = token,
-                RefreshToken = String.Empty,
+                RefreshToken = string.Empty,
                 Expires = new DateTimeOffset(expires).ToUnixTimeMilliseconds(),
                 Id = userId,
-                Role = role ?? String.Empty,
+                Role = role ?? string.Empty,
                 Claims = claims ?? EmptyClaims
             };
         }

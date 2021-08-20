@@ -15,8 +15,6 @@ namespace Confab.Shared.Infrastructure.Auth
         public static IServiceCollection AddAuth(this IServiceCollection services, IList<IModule> modules = null,
             Action<JwtBearerOptions> optionsFactory = null)
         {
-            services.AddSingleton<IAuthManager, AuthManager>();
-
             var options = services.GetOptions<AuthOptions>("auth");
             if (options.AuthenticationDisabled)
                 services.AddSingleton<IPolicyEvaluator, DisabledAuthenticationPolicyEvaluator>();
@@ -63,11 +61,13 @@ namespace Confab.Shared.Infrastructure.Auth
                 o.RequireHttpsMetadata = options.RequireHttpsMetadata;
                 o.IncludeErrorDetails = options.IncludeErrorDetails;
                 o.TokenValidationParameters = tokenValidationParameters;
-                if (!string.IsNullOrWhiteSpace(options.Challenge)) o.Challenge = options.Challenge;
+                if (!string.IsNullOrWhiteSpace(options.Challenge))
+                    o.Challenge = options.Challenge;
 
                 optionsFactory?.Invoke(o);
             });
 
+            services.AddSingleton<IAuthManager, AuthManager>();
             services.AddSingleton(options);
             services.AddSingleton(tokenValidationParameters);
 
