@@ -48,6 +48,9 @@ namespace Confab.Shared.Infrastructure.Auth
             if (!string.IsNullOrWhiteSpace(options.AuthenticationType))
                 tokenValidationParameters.AuthenticationType = options.AuthenticationType;
 
+            if (!string.IsNullOrWhiteSpace(options.NameClaimType))
+                tokenValidationParameters.NameClaimType = options.NameClaimType;
+
             if (!string.IsNullOrWhiteSpace(options.RoleClaimType))
                 tokenValidationParameters.RoleClaimType = options.RoleClaimType;
 
