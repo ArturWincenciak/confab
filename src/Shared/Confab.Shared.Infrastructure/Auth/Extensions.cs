@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Confab.Shared.Abstractions.Auth;
 using Confab.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,6 +41,9 @@ namespace Confab.Shared.Infrastructure.Auth
 
             if (string.IsNullOrWhiteSpace(options.IssuerSigningKey))
                 throw new ArgumentException("Missing issuer signing key.", nameof(options.IssuerSigningKey));
+
+            var rawKey = Encoding.UTF8.GetBytes(options.IssuerSigningKey);
+            tokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(rawKey);
 
             if (!string.IsNullOrWhiteSpace(options.AuthenticationType))
                 tokenValidationParameters.AuthenticationType = options.AuthenticationType;
