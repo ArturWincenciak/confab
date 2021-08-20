@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
     "email": "{{email}}",
-    "{{password}}": "{{password}}",
+    "password": "{{password}}",
     "role": "{{role}}",
     "claims": {
         "permissions": "[ conferences, hosts, speakers, users ]"
@@ -32,6 +32,6 @@ Content-Type: application/json
 
 {
     "email": "{{email}}",
-    "{{password}}": "{{password}}"
+    "password": "{{password}}"
 }
 
