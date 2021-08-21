@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Confab.Shared.Abstractions.Contexts;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Confab.Shared.Infrastructure.Context
 {

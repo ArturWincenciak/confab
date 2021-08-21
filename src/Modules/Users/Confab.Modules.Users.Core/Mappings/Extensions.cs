@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Confab.Modules.Users.Core.DTO;
+﻿using Confab.Modules.Users.Core.DTO;
 using Confab.Modules.Users.Core.Entities;
 
 namespace Confab.Modules.Users.Core.Mappings
