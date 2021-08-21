@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 [assembly: InternalsVisibleTo("Confab.Bootstrapper")]
 
@@ -60,6 +61,15 @@ namespace Confab.Shared.Infrastructure
                         .WithHeaders("Content-Type", "Authorization");
                 });
             });
+            services.AddSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(type => type.FullName);
+                options.SwaggerDoc(name: "v1", info: new OpenApiInfo
+                {
+                    Title = "Confab API",
+                    Version = "v1"
+                });
+            });
             services.AddAuth(modules);
             services.AddErrorHandling();
             services.AddPostgres();
@@ -102,6 +112,17 @@ namespace Confab.Shared.Infrastructure
         {
             app.UseCors(CorsPolicy);
             app.UseErrorHandling();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Confab Api"));
+            app.UseReDoc(options =>
+            {
+                options.RoutePrefix = "docs";
+                options.SpecUrl("/swagger/v1/swagger.json");
+                options.DocumentTitle = "Confab API";
+            });
+
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
