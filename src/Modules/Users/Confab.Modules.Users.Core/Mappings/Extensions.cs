@@ -14,7 +14,6 @@ namespace Confab.Modules.Users.Core.Mappings
                 Role = user.Role,
                 Claims = user.Claims,
                 CreateAt = user.CreatedAt
-                // TODO: CreateAt = ???
             };
         }
     }
