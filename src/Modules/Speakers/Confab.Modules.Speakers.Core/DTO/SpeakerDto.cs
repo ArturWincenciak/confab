@@ -7,9 +7,7 @@ namespace Confab.Modules.Speakers.Core.DTO
     {
         public Guid Id { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Required] [EmailAddress] public string Email { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength = 3)]

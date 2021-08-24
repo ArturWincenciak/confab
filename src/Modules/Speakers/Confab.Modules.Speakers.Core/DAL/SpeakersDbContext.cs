@@ -5,12 +5,12 @@ namespace Confab.Modules.Speakers.Core.DAL
 {
     internal class SpeakersDbContext : DbContext
     {
-        public DbSet<Speaker> Speakers { get; set; }
-
         public SpeakersDbContext(DbContextOptions<SpeakersDbContext> options)
             : base(options)
         {
         }
+
+        public DbSet<Speaker> Speakers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

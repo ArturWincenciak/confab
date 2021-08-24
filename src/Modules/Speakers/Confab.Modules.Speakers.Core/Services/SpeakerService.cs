@@ -24,9 +24,7 @@ namespace Confab.Modules.Speakers.Core.Services
 
             var allWithTheEmail = _repository.GetAllAsNoTracking(dto.Email);
             if (allWithTheEmail.Any())
-            {
                 throw new SpeakerAlreadyExistsException(dto.Email);
-            }
 
             await _repository.AddAsync(dto.AsEntity());
         }
@@ -35,9 +33,7 @@ namespace Confab.Modules.Speakers.Core.Services
         {
             var entity = await _repository.GetAsync(id);
             if (entity == null)
-            {
                 throw new SpeakerNotFoundException(id);
-            }
 
             return entity.AsDto();
         }
@@ -53,15 +49,11 @@ namespace Confab.Modules.Speakers.Core.Services
         public async Task UpdateAsync(SpeakerDto dto)
         {
             if (await _repository.ExistsAsync(dto.Id) is false)
-            {
                 throw new SpeakerNotFoundException(dto.Id);
-            }
 
             var allWithTheEmail = _repository.GetAllAsNoTracking(dto.Email);
             if (allWithTheEmail.Any(x => x.Id != dto.Id))
-            {
                 throw new SpeakerAlreadyExistsException(dto.Email);
-            }
 
             await _repository.UpdateAsync(dto.AsEntity());
         }
@@ -70,9 +62,7 @@ namespace Confab.Modules.Speakers.Core.Services
         {
             var entity = await _repository.GetAsync(id);
             if (entity is null)
-            {
                 throw new SpeakerNotFoundException(id);
-            }
 
             await _repository.DeleteAsync(entity);
         }
