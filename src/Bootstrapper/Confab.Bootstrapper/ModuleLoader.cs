@@ -49,8 +49,8 @@ namespace Confab.Bootstrapper
 
             files.ForEach(file =>
             {
-                AssemblyName assemblyName = AssemblyName.GetAssemblyName(file);
-                Assembly assembly = AppDomain.CurrentDomain.Load(assemblyName);
+                var assemblyName = AssemblyName.GetAssemblyName(file);
+                var assembly = AppDomain.CurrentDomain.Load(assemblyName);
                 assemblies.Add(assembly);
             });
 
@@ -92,9 +92,7 @@ namespace Confab.Bootstrapper
             foreach (var file in files)
             {
                 if (!file.Contains(modulePart))
-                {
                     continue;
-                }
 
                 Console.WriteLine($"Working on '{file}' to check configuration enabled flag.");
                 var splitByModulePart = file.Split(modulePart);
@@ -105,9 +103,7 @@ namespace Confab.Bootstrapper
                 var enabled = configuration.GetValue<bool>($"{moduleName}:module:enabled");
                 Console.WriteLine($"Configuration enabled property of '{moduleName}' module has value: '{enabled}'.");
                 if (!enabled)
-                {
                     disabledModules.Add(file);
-                }
             }
 
             foreach (var disabledModule in disabledModules)

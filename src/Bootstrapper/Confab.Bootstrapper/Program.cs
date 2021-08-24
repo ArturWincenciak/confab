@@ -1,8 +1,8 @@
 ﻿using System;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 using Confab.Shared.Infrastructure.Modules;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace Confab.Bootstrapper
 {
@@ -31,7 +31,8 @@ namespace Confab.Bootstrapper
 
             var defaultBuilder = Host.CreateDefaultBuilder(args);
 
-            Console.WriteLine("\n---\nDefault host builder has been created..., configuring web host defaults...\n---\n");
+            Console.WriteLine("\n---\nDefault host builder has been created...," +
+                              "configuring web host defaults...\n---\n");
 
             var configureWebHostDefaults = defaultBuilder.ConfigureWebHostDefaults(webBuilder =>
             {
