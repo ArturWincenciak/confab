@@ -22,13 +22,17 @@ namespace Confab.Modules.Conferences.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<HostDetailsDto>> GetAsync(Guid id) =>
-            OkOrNotFound(await _hostService.GetAsync(id));
+        public async Task<ActionResult<HostDetailsDto>> GetAsync(Guid id)
+        {
+            return OkOrNotFound(await _hostService.GetAsync(id));
+        }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<HostDto>>> BrowseAsync() =>
-            Ok(await _hostService.BrowseAsync());
+        public async Task<ActionResult<IReadOnlyList<HostDto>>> BrowseAsync()
+        {
+            return Ok(await _hostService.BrowseAsync());
+        }
 
         [HttpPost]
         public async Task<ActionResult> AddAsync(HostDto dto)

@@ -11,9 +11,7 @@ namespace Confab.Modules.Conferences.Api.Controllers
         protected ActionResult<T> OkOrNotFound<T>(T model)
         {
             if (model is null)
-            {
                 return NotFound();
-            }
 
             return Ok(model);
         }

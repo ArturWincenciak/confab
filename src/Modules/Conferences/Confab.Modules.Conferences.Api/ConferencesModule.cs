@@ -26,7 +26,6 @@ namespace Confab.Modules.Conferences.Api
 
         public void Use(IApplicationBuilder app)
         {
-
         }
     }
 }

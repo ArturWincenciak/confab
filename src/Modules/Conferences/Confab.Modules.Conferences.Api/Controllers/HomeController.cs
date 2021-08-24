@@ -6,6 +6,9 @@ namespace Confab.Modules.Conferences.Api.Controllers
     internal class HomeController : ConferencesControllerBase
     {
         [HttpGet]
-        public ActionResult<string> Get() => "Conferences API";
+        public ActionResult<string> Get()
+        {
+            return "Conferences API";
+        }
     }
 }

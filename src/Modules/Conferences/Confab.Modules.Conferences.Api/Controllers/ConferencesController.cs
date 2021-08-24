@@ -24,14 +24,18 @@ namespace Confab.Modules.Conferences.Api.Controllers
         [HttpGet("{id:guid}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ConferenceDetailsDto>> GetAsync(Guid id) =>
-            OkOrNotFound(await _conferenceService.GetAsync(id));
+        public async Task<ActionResult<ConferenceDetailsDto>> GetAsync(Guid id)
+        {
+            return OkOrNotFound(await _conferenceService.GetAsync(id));
+        }
 
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<IReadOnlyList<ConferenceDto>>> BrowseAsync() =>
-            Ok(await _conferenceService.BrowseAsync());
+        public async Task<ActionResult<IReadOnlyList<ConferenceDto>>> BrowseAsync()
+        {
+            return Ok(await _conferenceService.BrowseAsync());
+        }
 
         [HttpPost]
         [ProducesResponseType(201)]
