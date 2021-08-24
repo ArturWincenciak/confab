@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using Confab.Shared.Abstractions.Contexts;
 
-namespace Confab.Shared.Infrastructure.Context
+namespace Confab.Shared.Infrastructure.Contexts
 {
     internal class IdentityContext : IIdentityContext
     {

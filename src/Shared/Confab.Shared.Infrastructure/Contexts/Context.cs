@@ -2,7 +2,7 @@
 using Confab.Shared.Abstractions.Contexts;
 using Microsoft.AspNetCore.Http;
 
-namespace Confab.Shared.Infrastructure.Context
+namespace Confab.Shared.Infrastructure.Contexts
 {
     internal class Context : IContext
     {

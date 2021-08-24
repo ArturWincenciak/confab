@@ -1,6 +1,6 @@
 ﻿using Confab.Shared.Abstractions.Contexts;
 
-namespace Confab.Shared.Infrastructure.Context
+namespace Confab.Shared.Infrastructure.Contexts
 {
     internal interface IContextFactory
     {
