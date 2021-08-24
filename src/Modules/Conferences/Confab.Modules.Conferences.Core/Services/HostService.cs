@@ -88,7 +88,7 @@ namespace Confab.Modules.Conferences.Core.Services
 
         private static T Map<T>(Host host) where T : HostDto, new()
         {
-            return new()
+            return new T
             {
                 Id = host.Id,
                 Name = host.Name,

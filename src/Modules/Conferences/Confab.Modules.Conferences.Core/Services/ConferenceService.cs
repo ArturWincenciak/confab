@@ -93,7 +93,7 @@ namespace Confab.Modules.Conferences.Core.Services
 
         private static T Map<T>(Conference entity) where T : ConferenceDto, new()
         {
-            return new()
+            return new T
             {
                 Id = entity.Id,
                 HostId = entity.HostId,
