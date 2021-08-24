@@ -20,7 +20,6 @@ namespace Confab.Modules.Users.Api
 
         public void Use(IApplicationBuilder app)
         {
-
         }
     }
 }

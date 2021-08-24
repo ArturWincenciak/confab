@@ -6,6 +6,9 @@ namespace Confab.Modules.Users.Api.Controllers
     internal class HomeController : UsersBaseController
     {
         [HttpGet]
-        public ActionResult<string> Get() => "Users API";
+        public ActionResult<string> Get()
+        {
+            return "Users API";
+        }
     }
 }
