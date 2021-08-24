@@ -5,12 +5,12 @@ namespace Confab.Modules.Users.Core.DAL
 {
     internal class UsersDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-
         public UsersDbContext(DbContextOptions<UsersDbContext> options)
             : base(options)
         {
         }
+
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -8,7 +8,8 @@ using Confab.Shared.Infrastructure.Postgres;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: InternalsVisibleTo(assemblyName: "Confab.Modules.Users.Api")]
+[assembly: InternalsVisibleTo("Confab.Modules.Users.Api")]
+
 namespace Confab.Modules.Users.Core
 {
     internal static class Extensions
