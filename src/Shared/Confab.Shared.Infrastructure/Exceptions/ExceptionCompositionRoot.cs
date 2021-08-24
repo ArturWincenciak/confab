@@ -24,9 +24,7 @@ namespace Confab.Shared.Infrastructure.Exceptions
                 .SingleOrDefault(x => x is not null);
 
             if (result is not null)
-            {
                 return result;
-            }
 
             var defaultMapper = mappers.SingleOrDefault(x => x is ExceptionToResponseMapper);
 

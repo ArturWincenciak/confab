@@ -3,8 +3,11 @@ using Confab.Shared.Abstractions;
 
 namespace Confab.Shared.Infrastructure.Time
 {
-    class UtcClock : IClock
+    internal class UtcClock : IClock
     {
-        public DateTime CurrentDate() => DateTime.UtcNow;
+        public DateTime CurrentDate()
+        {
+            return DateTime.UtcNow;
+        }
     }
 }

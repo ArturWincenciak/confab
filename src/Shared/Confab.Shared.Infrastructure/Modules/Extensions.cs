@@ -27,7 +27,7 @@ namespace Confab.Shared.Infrastructure.Modules
 
         internal static void MapModuleInfo(this IEndpointRouteBuilder endpointRouteBuilder)
         {
-            endpointRouteBuilder.MapGet(pattern: "modules", requestDelegate: context =>
+            endpointRouteBuilder.MapGet("modules", context =>
             {
                 var moduleInfoProvider = context.RequestServices.GetRequiredService<ModuleInfoProvider>();
                 return context.Response.WriteAsJsonAsync(moduleInfoProvider.Modules);
@@ -42,26 +42,24 @@ namespace Confab.Shared.Infrastructure.Modules
             {
                 var allSettings = GetSettings("*");
                 foreach (var settings in allSettings)
-                {
                     cfg.AddJsonFile(settings);
-                }
 
                 Console.WriteLine($"\n\nAll configurations settings added:\n* {string.Join("\n* ", allSettings)}");
 
                 var environmentName = ctx.HostingEnvironment.EnvironmentName;
                 var fallbackEnvironmentSettings = GetSettings($"*.{environmentName}");
                 foreach (var settings in fallbackEnvironmentSettings)
-                {
                     cfg.AddJsonFile(settings);
-                }
 
                 Console.WriteLine(
                     $"\n\nConfigurations settings for environment '{environmentName}' added:\n* " +
                     $"{string.Join("\n* ", fallbackEnvironmentSettings)}");
 
-                IEnumerable<string> GetSettings(string pattern) =>
-                    Directory.EnumerateFiles(path: ctx.HostingEnvironment.ContentRootPath,
-                        searchPattern: $"module.{pattern}.json", searchOption: SearchOption.AllDirectories);
+                IEnumerable<string> GetSettings(string pattern)
+                {
+                    return Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath,
+                        $"module.{pattern}.json", SearchOption.AllDirectories);
+                }
             });
         }
     }

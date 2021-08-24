@@ -11,8 +11,8 @@ namespace Confab.Shared.Infrastructure.Services
 {
     internal class AppInitializer : IHostedService
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<AppInitializer> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
         public AppInitializer(IServiceProvider serviceProvider, ILogger<AppInitializer> logger)
         {
@@ -35,8 +35,8 @@ namespace Confab.Shared.Infrastructure.Services
                 if (dbContext is null)
                 {
                     _logger.LogInformation($"DB context '{dbContextType}' doesn't exist. " +
-                                           $"Probably module with the DB context is switched off " +
-                                           $"so then do nothing with them.");
+                                           "Probably module with the DB context is switched off " +
+                                           "so then do nothing with them.");
                     continue;
                 }
 
@@ -48,6 +48,9 @@ namespace Confab.Shared.Infrastructure.Services
             _logger.LogInformation("Has been called all StartAsync method of AppInitializer hosted service.");
         }
 
-        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

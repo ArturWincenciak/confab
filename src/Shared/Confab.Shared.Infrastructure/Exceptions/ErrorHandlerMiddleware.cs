@@ -37,9 +37,8 @@ namespace Confab.Shared.Infrastructure.Exceptions
             context.Response.StatusCode = (int) (errorResponse?.StatusCode ?? HttpStatusCode.InternalServerError);
             var response = errorResponse?.Response;
             if (response is null)
-            {
                 return;
-            }
+
             await context.Response.WriteAsJsonAsync(response);
         }
     }

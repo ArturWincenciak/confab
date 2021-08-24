@@ -37,24 +37,22 @@ namespace Confab.Shared.Infrastructure
                 {
                     Console.WriteLine($"Key: '{key}', Value: '{value}'");
                     if (!key.Contains(":module:enabled"))
-                    {
                         continue;
-                    }
 
                     if (!bool.Parse(value))
                     {
                         var splitKey = key.Split(":");
                         var moduleName = splitKey[0];
                         disabledModules.Add(moduleName);
-                        Console.WriteLine(
-                            $"---\nDisabled module '{moduleName}' by key '{key}' with value '{value}'\n---");
+                        Console.WriteLine($"---\nDisabled module '{moduleName}'" +
+                                          $"by key '{key}' with value '{value}'\n---");
                     }
                 }
             }
 
             services.AddCors(corsOption =>
             {
-                corsOption.AddPolicy(name: CorsPolicy, configurePolicy: builder =>
+                corsOption.AddPolicy(CorsPolicy, builder =>
                 {
                     builder
                         .WithOrigins("*")
@@ -65,7 +63,7 @@ namespace Confab.Shared.Infrastructure
             services.AddSwaggerGen(options =>
             {
                 options.CustomSchemaIds(type => type.FullName);
-                options.SwaggerDoc(name: "v1", info: new OpenApiInfo
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Confab API",
                     Version = "v1"
@@ -95,11 +93,9 @@ namespace Confab.Shared.Infrastructure
                     }
 
                     foreach (var part in removedParts)
-                    {
                         manager.ApplicationParts.Remove(part);
-                    }
 
-                    Console.WriteLine($"Removed application parts: " +
+                    Console.WriteLine("Removed application parts: " +
                                       $"[{string.Join(" | ", removedParts.Select(x => x.Name))}].");
 
                     manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
@@ -134,7 +130,8 @@ namespace Confab.Shared.Infrastructure
 
         public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
         {
-            Console.WriteLine($"Build Service Provider by call GetOption of '{typeof(T)}' type to get option '{sectionName}' name.");
+            Console.WriteLine(
+                $"Build Service Provider by call GetOption of '{typeof(T)}' type to get option '{sectionName}' name.");
 
             using var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetService<IConfiguration>();

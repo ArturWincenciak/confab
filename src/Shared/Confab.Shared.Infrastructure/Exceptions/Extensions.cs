@@ -6,13 +6,17 @@ namespace Confab.Shared.Infrastructure.Exceptions
 {
     internal static class Extensions
     {
-        public static IServiceCollection AddErrorHandling(this IServiceCollection services) =>
-            services
+        public static IServiceCollection AddErrorHandling(this IServiceCollection services)
+        {
+            return services
                 .AddScoped<ErrorHandlerMiddleware>()
                 .AddSingleton<IExceptionToResponseMapper, ExceptionToResponseMapper>()
                 .AddSingleton<IExceptionCompositionRoot, ExceptionCompositionRoot>();
+        }
 
-        public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app) =>
-            app.UseMiddleware<ErrorHandlerMiddleware>();
+        public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app)
+        {
+            return app.UseMiddleware<ErrorHandlerMiddleware>();
+        }
     }
 }
