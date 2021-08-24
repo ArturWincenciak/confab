@@ -22,13 +22,17 @@ namespace Confab.Modules.Speakers.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<SpeakerDto>> GetAsync(Guid id) =>
-            OkOrNotFound(await _service.GetAsync(id));
+        public async Task<ActionResult<SpeakerDto>> GetAsync(Guid id)
+        {
+            return OkOrNotFound(await _service.GetAsync(id));
+        }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<SpeakerDto>>> BrowseAsync() =>
-            Ok(await _service.BrowseAsync());
+        public async Task<ActionResult<IReadOnlyList<SpeakerDto>>> BrowseAsync()
+        {
+            return Ok(await _service.BrowseAsync());
+        }
 
         [HttpPost]
         public async Task<ActionResult> AddAsync(SpeakerDto dto)

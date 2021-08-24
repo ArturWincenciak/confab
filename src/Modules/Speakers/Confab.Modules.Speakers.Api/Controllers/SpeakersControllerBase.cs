@@ -9,9 +9,7 @@ namespace Confab.Modules.Speakers.Api.Controllers
         protected ActionResult<T> OkOrNotFound<T>(T model)
         {
             if (model is null)
-            {
                 return NotFound();
-            }
 
             return Ok(model);
         }

@@ -25,7 +25,6 @@ namespace Confab.Modules.Speakers.Api
 
         public void Use(IApplicationBuilder app)
         {
-
         }
     }
 }
