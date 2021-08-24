@@ -7,6 +7,7 @@ using Confab.Shared.Abstractions.Modules;
 using Confab.Shared.Infrastructure.Api;
 using Confab.Shared.Infrastructure.Auth;
 using Confab.Shared.Infrastructure.Exceptions;
+using Confab.Shared.Infrastructure.Modules;
 using Confab.Shared.Infrastructure.Postgres;
 using Confab.Shared.Infrastructure.Services;
 using Confab.Shared.Infrastructure.Time;
@@ -70,6 +71,7 @@ namespace Confab.Shared.Infrastructure
                     Version = "v1"
                 });
             });
+            services.AddModuleInfo(modules);
             services.AddAuth(modules);
             services.AddErrorHandling();
             services.AddPostgres();

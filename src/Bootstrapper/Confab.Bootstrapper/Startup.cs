@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Confab.Shared.Infrastructure;
+using Confab.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -56,6 +57,7 @@ namespace Confab.Bootstrapper
             {
                 endpoints.MapControllers();
                 endpoints.MapGet("/", async context => await context.Response.WriteAsync("Confab API!"));
+                endpoints.MapModuleInfo();
             });
 
             logger.LogInformation("All common and module uses of infrastructure has been configured. " +
