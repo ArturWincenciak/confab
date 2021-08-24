@@ -12,9 +12,9 @@ namespace Confab.Modules.Conferences.Core.Services
 {
     internal class ConferenceService : IConferenceService
     {
+        private readonly IConferenceDeletionPolice _conferenceDeletionPolice;
         private readonly IConferenceRepository _conferenceRepository;
         private readonly IHostRepository _hostRepository;
-        private readonly IConferenceDeletionPolice _conferenceDeletionPolice;
 
         public ConferenceService(IConferenceRepository conferenceRepository, IHostRepository hostRepository,
             IConferenceDeletionPolice conferenceDeletionPolice)
@@ -27,9 +27,7 @@ namespace Confab.Modules.Conferences.Core.Services
         public async Task AddAsync(ConferenceDetailsDto dto)
         {
             if (await _hostRepository.GetAsync(dto.HostId) is null)
-            {
                 throw new HostNotFoundException(dto.HostId);
-            }
 
             dto.Id = Guid.NewGuid();
             await _conferenceRepository.AddAsync(new Conference
@@ -50,9 +48,7 @@ namespace Confab.Modules.Conferences.Core.Services
         {
             var conference = await _conferenceRepository.GetAsync(id);
             if (conference is null)
-            {
                 return null;
-            }
 
             var dto = Map<ConferenceDetailsDto>(conference);
             dto.Description = conference.Description;
@@ -70,9 +66,7 @@ namespace Confab.Modules.Conferences.Core.Services
         {
             var conference = await _conferenceRepository.GetAsync(dto.Id);
             if (conference is null)
-            {
                 throw new ConferenceNotFoundException(dto.Id);
-            }
 
             conference.Name = dto.Name;
             conference.Description = dto.Description;
@@ -89,20 +83,17 @@ namespace Confab.Modules.Conferences.Core.Services
         {
             var conference = await _conferenceRepository.GetAsync(id);
             if (conference is null)
-            {
                 throw new ConferenceNotFoundException(id);
-            }
 
             if (await _conferenceDeletionPolice.CanDeleteAsync(conference) is false)
-            {
                 throw new CannotDeleteConferenceException(id);
-            }
 
             await _conferenceRepository.DeleteAsync(conference);
         }
 
-        private static T Map<T>(Conference entity) where T : ConferenceDto, new() =>
-            new()
+        private static T Map<T>(Conference entity) where T : ConferenceDto, new()
+        {
+            return new()
             {
                 Id = entity.Id,
                 HostId = entity.HostId,
@@ -114,5 +105,6 @@ namespace Confab.Modules.Conferences.Core.Services
                 LogoUrl = entity.LogoUrl,
                 ParticipantsLimit = entity.ParticipantsLimit
             };
+        }
     }
 }

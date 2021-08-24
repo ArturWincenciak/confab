@@ -16,7 +16,10 @@ namespace Confab.Modules.Conferences.Core.Repositories
             await Task.CompletedTask;
         }
 
-        public Task<Host> GetAsync(Guid id) => Task.FromResult(_hosts.SingleOrDefault(h => h.Id == id));
+        public Task<Host> GetAsync(Guid id)
+        {
+            return Task.FromResult(_hosts.SingleOrDefault(h => h.Id == id));
+        }
 
         public async Task<IReadOnlyList<Host>> BrowseAsync()
         {
@@ -24,7 +27,10 @@ namespace Confab.Modules.Conferences.Core.Repositories
             return _hosts;
         }
 
-        public Task UpdateAsync(Host host) => Task.CompletedTask;
+        public Task UpdateAsync(Host host)
+        {
+            return Task.CompletedTask;
+        }
 
         public Task DeleteAsync(Host host)
         {

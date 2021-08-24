@@ -5,13 +5,13 @@ namespace Confab.Modules.Conferences.Core.DAL
 {
     internal class ConferencesDbContext : DbContext
     {
-        public DbSet<Conference> Conferences { get; set; }
-        public DbSet<Host> Hosts { get; set; }
-
         public ConferencesDbContext(DbContextOptions<ConferencesDbContext> options)
             : base(options)
         {
         }
+
+        public DbSet<Conference> Conferences { get; set; }
+        public DbSet<Host> Hosts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

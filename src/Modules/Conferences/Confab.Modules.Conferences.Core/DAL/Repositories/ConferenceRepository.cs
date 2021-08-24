@@ -9,8 +9,8 @@ namespace Confab.Modules.Conferences.Core.DAL.Repositories
 {
     internal class ConferenceRepository : IConferenceRepository
     {
-        private readonly ConferencesDbContext _context;
         private readonly DbSet<Conference> _conferences;
+        private readonly ConferencesDbContext _context;
 
         public ConferenceRepository(ConferencesDbContext context)
         {
@@ -24,13 +24,17 @@ namespace Confab.Modules.Conferences.Core.DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task<Conference> GetAsync(Guid id) =>
-            _conferences
+        public Task<Conference> GetAsync(Guid id)
+        {
+            return _conferences
                 .Include(c => c.Host)
                 .SingleOrDefaultAsync(c => c.Id == id);
+        }
 
-        public async Task<IReadOnlyList<Conference>> BrowseAsync() =>
-            await _conferences.ToListAsync();
+        public async Task<IReadOnlyList<Conference>> BrowseAsync()
+        {
+            return await _conferences.ToListAsync();
+        }
 
         public async Task UpdateAsync(Conference conference)
         {

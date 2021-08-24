@@ -4,10 +4,11 @@ using Confab.Modules.Conferences.Core.DAL.Repositories;
 using Confab.Modules.Conferences.Core.Policies;
 using Confab.Modules.Conferences.Core.Repositories;
 using Confab.Modules.Conferences.Core.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Confab.Shared.Infrastructure.Postgres;
+using Microsoft.Extensions.DependencyInjection;
 
-[assembly: InternalsVisibleTo(assemblyName: "Confab.Modules.Conferences.Api")]
+[assembly: InternalsVisibleTo("Confab.Modules.Conferences.Api")]
+
 namespace Confab.Modules.Conferences.Core
 {
     internal static class Extensions

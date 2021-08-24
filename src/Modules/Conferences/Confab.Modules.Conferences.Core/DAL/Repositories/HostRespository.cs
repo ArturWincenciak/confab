@@ -24,13 +24,17 @@ namespace Confab.Modules.Conferences.Core.DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task<Host> GetAsync(Guid id) =>
-            _hosts
+        public Task<Host> GetAsync(Guid id)
+        {
+            return _hosts
                 .Include(h => h.Conferences)
                 .SingleOrDefaultAsync(h => h.Id == id);
+        }
 
-        public async Task<IReadOnlyList<Host>> BrowseAsync() =>
-            await _hosts.ToListAsync();
+        public async Task<IReadOnlyList<Host>> BrowseAsync()
+        {
+            return await _hosts.ToListAsync();
+        }
 
         public async Task UpdateAsync(Host host)
         {

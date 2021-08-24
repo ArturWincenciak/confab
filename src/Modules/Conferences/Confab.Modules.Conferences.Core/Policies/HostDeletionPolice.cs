@@ -16,17 +16,11 @@ namespace Confab.Modules.Conferences.Core.Policies
         public async Task<bool> CanDeleteAsync(Host host)
         {
             if (host.Conferences is null || !host.Conferences.Any())
-            {
                 return true;
-            }
 
             foreach (var conference in host.Conferences)
-            {
                 if (await _conferenceDeletionPolice.CanDeleteAsync(conference) is false)
-                {
                     return false;
-                }
-            }
 
             return true;
         }

@@ -12,8 +12,8 @@ namespace Confab.Modules.Conferences.Core.Services
 {
     internal class HostService : IHostService
     {
-        private readonly IHostRepository _hostRepository;
         private readonly IHostDeletionPolice _hostDeletionPolice;
+        private readonly IHostRepository _hostRepository;
 
         public HostService(IHostRepository hostRepository, IHostDeletionPolice hostDeletionPolice)
         {
@@ -36,9 +36,7 @@ namespace Confab.Modules.Conferences.Core.Services
         {
             var host = await _hostRepository.GetAsync(id);
             if (host is null)
-            {
                 return null;
-            }
 
             var dto = Map<HostDetailsDto>(host);
 
@@ -68,9 +66,7 @@ namespace Confab.Modules.Conferences.Core.Services
         {
             var host = await _hostRepository.GetAsync(dto.Id);
             if (host is null)
-            {
                 throw new HostNotFoundException(dto.Id);
-            }
 
             host.Name = dto.Name;
             host.Description = dto.Description;
@@ -82,24 +78,22 @@ namespace Confab.Modules.Conferences.Core.Services
         {
             var host = await _hostRepository.GetAsync(id);
             if (host is null)
-            {
                 throw new HostNotFoundException(id);
-            }
 
             if (await _hostDeletionPolice.CanDeleteAsync(host) is false)
-            {
                 throw new CannotDeleteHostException(host.Id);
-            }
 
             await _hostRepository.DeleteAsync(host);
         }
 
-        private static T Map<T>(Host host) where T : HostDto, new() =>
-            new()
+        private static T Map<T>(Host host) where T : HostDto, new()
+        {
+            return new()
             {
                 Id = host.Id,
                 Name = host.Name,
                 Description = host.Description
             };
+        }
     }
 }
