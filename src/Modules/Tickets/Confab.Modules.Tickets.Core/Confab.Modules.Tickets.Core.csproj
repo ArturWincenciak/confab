@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="DAL\" />
-    <Folder Include="DTO\" />
     <Folder Include="Servicies\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
