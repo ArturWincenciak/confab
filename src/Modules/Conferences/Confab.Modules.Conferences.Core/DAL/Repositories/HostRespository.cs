@@ -33,7 +33,9 @@ namespace Confab.Modules.Conferences.Core.DAL.Repositories
 
         public async Task<IReadOnlyList<Host>> BrowseAsync()
         {
-            return await _hosts.ToListAsync();
+            return await _hosts
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task UpdateAsync(Host host)

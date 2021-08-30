@@ -10,7 +10,7 @@ namespace Confab.Modules.Speakers.Core.Repositories
         Task<bool> ExistsAsync(Guid id);
         Task AddAsync(Speaker speaker);
         Task<Speaker> GetAsync(Guid id);
-        IEnumerable<Speaker> GetAllAsNoTracking(string email);
+        IEnumerable<Speaker> GetAsNoTrackingAsync(string email);
         Task<IReadOnlyList<Speaker>> BrowseAsync();
         Task UpdateAsync(Speaker speaker);
         Task DeleteAsync(Speaker speaker);

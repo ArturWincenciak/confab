@@ -33,7 +33,9 @@ namespace Confab.Modules.Conferences.Core.DAL.Repositories
 
         public async Task<IReadOnlyList<Conference>> BrowseAsync()
         {
-            return await _conferences.ToListAsync();
+            return await _conferences
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task UpdateAsync(Conference conference)

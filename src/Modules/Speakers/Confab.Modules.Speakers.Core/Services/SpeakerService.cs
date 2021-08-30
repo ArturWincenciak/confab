@@ -22,7 +22,7 @@ namespace Confab.Modules.Speakers.Core.Services
         {
             dto.Id = Guid.NewGuid();
 
-            var allWithTheEmail = _repository.GetAllAsNoTracking(dto.Email);
+            var allWithTheEmail = _repository.GetAsNoTrackingAsync(dto.Email);
             if (allWithTheEmail.Any())
                 throw new SpeakerAlreadyExistsException(dto.Email);
 
@@ -51,7 +51,7 @@ namespace Confab.Modules.Speakers.Core.Services
             if (await _repository.ExistsAsync(dto.Id) is false)
                 throw new SpeakerNotFoundException(dto.Id);
 
-            var allWithTheEmail = _repository.GetAllAsNoTracking(dto.Email);
+            var allWithTheEmail = _repository.GetAsNoTrackingAsync(dto.Email);
             if (allWithTheEmail.Any(x => x.Id != dto.Id))
                 throw new SpeakerAlreadyExistsException(dto.Email);
 
