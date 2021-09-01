@@ -17,7 +17,7 @@ namespace Confab.Modules.Tickets.Core.Entities
         public DateTime? UsedAt { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public Ticket(Guid userId, DateTime? purchasedAt, decimal? price)
+        public void Purchase(Guid userId, DateTime? purchasedAt, decimal? price)
         {
             if (UserId.HasValue)
                 throw new TicketAlreadyPurchasedException(ConferenceId, UserId.Value);

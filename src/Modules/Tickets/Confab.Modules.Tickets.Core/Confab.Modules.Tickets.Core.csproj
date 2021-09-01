@@ -8,8 +8,4 @@
     <ProjectReference Include="..\..\..\Shared\Confab.Shared.Infrastructure\Confab.Shared.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Servicies\" />
-  </ItemGroup>
-
 </Project>
