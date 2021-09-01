@@ -11,6 +11,4 @@ namespace Confab.Modules.Tickets.Api.Controllers
             return "Tickets API";
         }
     }
-
-    
 }
