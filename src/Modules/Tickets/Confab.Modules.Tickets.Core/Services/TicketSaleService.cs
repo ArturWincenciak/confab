@@ -15,13 +15,14 @@ namespace Confab.Modules.Tickets.Core.Services
     {
         private readonly IClock _clock;
         private readonly IConferenceRepository _conferenceRepository;
-        private readonly ILogger _logger;
+        private readonly ILogger<TicketSaleService> _logger;
         private readonly ITicketGenerator _ticketGenerator;
         private readonly ITicketRepository _ticketRepository;
         private readonly ITicketSaleRepository _ticketSaleRepository;
 
         public TicketSaleService(IConferenceRepository conferenceRepository, ITicketSaleRepository ticketSaleRepository,
-            ITicketRepository ticketRepository, ITicketGenerator ticketGenerator, IClock clock, ILogger logger)
+            ITicketRepository ticketRepository, ITicketGenerator ticketGenerator, IClock clock,
+            ILogger<TicketSaleService> logger)
         {
             _conferenceRepository = conferenceRepository;
             _ticketSaleRepository = ticketSaleRepository;
