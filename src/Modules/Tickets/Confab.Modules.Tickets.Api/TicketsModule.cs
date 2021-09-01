@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Confab.Modules.Tickets.Api.Controllers;
 using Confab.Modules.Tickets.Core;
 using Confab.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
@@ -16,7 +17,7 @@ namespace Confab.Modules.Tickets.Api
 
         public IEnumerable<string> Policies { get; } = new[]
         {
-            "tickets"
+            SalesController.Policy
         };
 
         public void Register(IServiceCollection services)

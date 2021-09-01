@@ -21,12 +21,15 @@ namespace Confab.Modules.Tickets.Core.Services
         private readonly ITicketSaleRepository _ticketSaleRepository;
 
         public TicketService(IClock clock, IConferenceRepository conferenceRepository,
-            ITicketRepository ticketRepository, ITicketSaleRepository ticketSaleRepository)
+            ITicketRepository ticketRepository, ITicketSaleRepository ticketSaleRepository, ITicketGenerator generator,
+            ILogger<TicketService> logger)
         {
             _clock = clock;
             _conferenceRepository = conferenceRepository;
             _ticketRepository = ticketRepository;
             _ticketSaleRepository = ticketSaleRepository;
+            _generator = generator;
+            _logger = logger;
         }
 
         public async Task PurchaseAsync(Guid conferenceId, Guid userId)
