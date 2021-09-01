@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions;
 using Confab.Shared.Abstractions.Modules;
 using Confab.Shared.Infrastructure.Api;
 using Confab.Shared.Infrastructure.Auth;
 using Confab.Shared.Infrastructure.Contexts;
+using Confab.Shared.Infrastructure.Events;
 using Confab.Shared.Infrastructure.Exceptions;
 using Confab.Shared.Infrastructure.Modules;
 using Confab.Shared.Infrastructure.Postgres;
@@ -27,7 +29,8 @@ namespace Confab.Shared.Infrastructure
     {
         private const string CorsPolicy = "cors";
 
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<IModule> modules)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<IModule> modules,
+            IEnumerable<Assembly> assemblies)
         {
             var disabledModules = new List<string>();
             using (var serviceProvider = services.BuildServiceProvider())
@@ -77,6 +80,7 @@ namespace Confab.Shared.Infrastructure
             services.AddModuleInfo(modules);
             services.AddAuth(modules);
             services.AddErrorHandling();
+            services.AddEvents(assemblies);
             services.AddPostgres();
             services.AddSingleton<IClock, UtcClock>();
             services.AddHostedService<AppInitializer>();

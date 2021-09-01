@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Confab.Shared.Infrastructure\Confab.Shared.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Conferences\Confab.Modules.Conferences.Messages\Confab.Modules.Conferences.Messages.csproj" />
   </ItemGroup>
 
 </Project>

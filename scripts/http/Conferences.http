@@ -29,9 +29,9 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "HostId": "f5d9488b-1ad9-442c-a7b7-fa974457548b",
-    "Name": "Name of conference #1",
-    "Description": "Description of conference #1",
+    "HostId": "7826b6a9-a9c3-4658-8470-1feb5988b8df",
+    "Name": "Publish Event Conf",
+    "Description": "Conf for testing event publishing",
     "From": "2021-05-01",
     "To": "2021-05-03",
     "Localization": "Melbourne",

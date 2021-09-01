@@ -7,6 +7,8 @@ using Confab.Modules.Conferences.Core.Entities;
 using Confab.Modules.Conferences.Core.Exceptions;
 using Confab.Modules.Conferences.Core.Policies;
 using Confab.Modules.Conferences.Core.Repositories;
+using Confab.Modules.Conferences.Messages.Events;
+using Confab.Shared.Abstractions.Events;
 
 namespace Confab.Modules.Conferences.Core.Services
 {
@@ -14,14 +16,16 @@ namespace Confab.Modules.Conferences.Core.Services
     {
         private readonly IConferenceDeletionPolice _conferenceDeletionPolice;
         private readonly IConferenceRepository _conferenceRepository;
+        private readonly IEventDispatcher _eventDispatcher;
         private readonly IHostRepository _hostRepository;
 
         public ConferenceService(IConferenceRepository conferenceRepository, IHostRepository hostRepository,
-            IConferenceDeletionPolice conferenceDeletionPolice)
+            IConferenceDeletionPolice conferenceDeletionPolice, IEventDispatcher eventDispatcher)
         {
             _conferenceRepository = conferenceRepository;
             _hostRepository = hostRepository;
             _conferenceDeletionPolice = conferenceDeletionPolice;
+            _eventDispatcher = eventDispatcher;
         }
 
         public async Task AddAsync(ConferenceDetailsDto dto)
@@ -30,7 +34,7 @@ namespace Confab.Modules.Conferences.Core.Services
                 throw new HostNotFoundException(dto.HostId);
 
             dto.Id = Guid.NewGuid();
-            await _conferenceRepository.AddAsync(new Conference
+            var conference = new Conference
             {
                 Id = dto.Id,
                 HostId = dto.HostId,
@@ -41,7 +45,11 @@ namespace Confab.Modules.Conferences.Core.Services
                 Localization = dto.Localization,
                 LogoUrl = dto.LogoUrl,
                 ParticipantsLimit = dto.ParticipantsLimit
-            });
+            };
+            await _conferenceRepository.AddAsync(conference);
+            await _eventDispatcher.PublishAsync(new ConferenceCreated(conference.Id, conference.Name,
+                conference.ParticipantsLimit,
+                conference.From, conference.To));
         }
 
         public async Task<ConferenceDetailsDto> GetAsync(Guid id)
