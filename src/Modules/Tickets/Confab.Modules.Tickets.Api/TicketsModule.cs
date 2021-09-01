@@ -14,7 +14,10 @@ namespace Confab.Modules.Tickets.Api
 
         public string Path => BasePath;
 
-        public IEnumerable<string> Policies { get; } = new[] {"tickets"};
+        public IEnumerable<string> Policies { get; } = new[]
+        {
+            "tickets"
+        };
 
         public void Register(IServiceCollection services)
         {
