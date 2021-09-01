@@ -8,8 +8,8 @@ namespace Confab.Modules.Tickets.Core.DAL.Repositories
 {
     internal class ConferenceRepository : IConferenceRepository
     {
-        private readonly TicketsDbContext _context;
         private readonly DbSet<Conference> _conferences;
+        private readonly TicketsDbContext _context;
 
         public ConferenceRepository(TicketsDbContext context)
         {

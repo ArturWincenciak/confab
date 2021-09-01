@@ -15,7 +15,7 @@ namespace Confab.Modules.Tickets.Core.Services
 
         public Ticket Generate(Guid conferenceId, Guid ticketSaleId, decimal? price)
         {
-            return new()
+            return new Ticket
             {
                 Id = Guid.NewGuid(),
                 TicketSaleId = ticketSaleId,

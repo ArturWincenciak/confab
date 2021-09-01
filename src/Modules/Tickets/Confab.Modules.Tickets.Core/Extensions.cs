@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Modules.Tickets.Api")]
+
 namespace Confab.Modules.Tickets.Core
 {
     internal static class Extensions
