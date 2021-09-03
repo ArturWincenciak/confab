@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Confab.Modules.Conferences.Messages.Events;
 using Confab.Modules.Tickets.Core.Entities;
 using Confab.Modules.Tickets.Core.Repositories;
 using Confab.Shared.Abstractions.Events;
