@@ -35,11 +35,12 @@ namespace Confab.Modules.Speakers.Core.DAL.Repositories
             return _speakers.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public IEnumerable<Speaker> GetAsNoTrackingAsync(string email)
+        public async Task<IEnumerable<Speaker>> GetAsNoTrackingAsync(string email)
         {
-            return _speakers
+            return await _speakers
                 .Where(x => x.Email == email)
-                .AsNoTracking();
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<IReadOnlyList<Speaker>> BrowseAsync()
