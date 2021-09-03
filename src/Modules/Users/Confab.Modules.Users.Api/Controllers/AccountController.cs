@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Modules.Users.Core.Services;
 using Confab.Shared.Abstractions.Auth;
@@ -11,8 +10,8 @@ namespace Confab.Modules.Users.Api.Controllers
 {
     internal class AccountController : UsersBaseController
     {
-        private readonly IIdentityService _identityService;
         private readonly IContext _context;
+        private readonly IIdentityService _identityService;
 
         public AccountController(IIdentityService identityService, IContext context)
         {
