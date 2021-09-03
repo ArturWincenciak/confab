@@ -70,6 +70,8 @@ namespace Confab.Shared.Infrastructure.Modules
             IEnumerable<Assembly> assemblies)
         {
             services.AddModuleRegistry(assemblies);
+            services.AddSingleton<IModuleClient, ModuleClient>();
+            services.AddSingleton<IModuleSerializer, JsonModuleSerializer>();
             return services;
         }
 
