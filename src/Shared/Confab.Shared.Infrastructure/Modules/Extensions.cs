@@ -92,7 +92,7 @@ namespace Confab.Shared.Infrastructure.Modules
                 foreach (var eventType in eventTypes)
                     registry.AddBroadcastAction(
                         eventType,
-                        @event =>
+                        action: @event =>
                         {
                             return (Task) eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync))
                                 ?.MakeGenericMethod(eventType).Invoke(eventDispatcher, new[] {@event});
