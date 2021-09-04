@@ -6,7 +6,7 @@ namespace Confab.Shared.Infrastructure.Modules
 {
     internal class JsonModuleSerializer : IModuleSerializer
     {
-        private static readonly JsonSerializerOptions SerializerOptions = new ()
+        private static readonly JsonSerializerOptions SerializerOptions = new()
         {
             PropertyNameCaseInsensitive = true
         };
