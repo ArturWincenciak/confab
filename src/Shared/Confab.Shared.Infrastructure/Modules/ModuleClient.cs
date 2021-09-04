@@ -34,6 +34,9 @@ namespace Confab.Shared.Infrastructure.Modules
 
         private object TranslateType(object fromValue, Type toType)
         {
+            if (fromValue.GetType() == toType)
+                return fromValue;
+
             var serialized = _moduleSerializer.Serialize(fromValue);
             var deserialized = _moduleSerializer.Deserialize(serialized, toType);
             return deserialized;
