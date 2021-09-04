@@ -12,8 +12,8 @@ namespace Confab.Modules.Tickets.Api.Controllers
     [Authorize]
     internal class TicketsController : TicketsControllerBase
     {
-        private readonly ITicketService _ticketService;
         private readonly IContext _context;
+        private readonly ITicketService _ticketService;
 
         public TicketsController(ITicketService ticketService, IContext context)
         {

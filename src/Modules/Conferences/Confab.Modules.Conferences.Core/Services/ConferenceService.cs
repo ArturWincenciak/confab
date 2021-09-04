@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Conferences.Core.Entities;
+using Confab.Modules.Conferences.Core.Events;
 using Confab.Modules.Conferences.Core.Exceptions;
 using Confab.Modules.Conferences.Core.Policies;
 using Confab.Modules.Conferences.Core.Repositories;
-using Confab.Shared.Abstractions.Events;
 using Confab.Shared.Abstractions.Modules;
-using ConferenceCreated = Confab.Modules.Conferences.Core.Events.ConferenceCreated;
 
 namespace Confab.Modules.Conferences.Core.Services
 {
@@ -17,8 +16,8 @@ namespace Confab.Modules.Conferences.Core.Services
     {
         private readonly IConferenceDeletionPolice _conferenceDeletionPolice;
         private readonly IConferenceRepository _conferenceRepository;
-        private readonly IModuleClient _moduleClient;
         private readonly IHostRepository _hostRepository;
+        private readonly IModuleClient _moduleClient;
 
         public ConferenceService(IConferenceRepository conferenceRepository, IHostRepository hostRepository,
             IConferenceDeletionPolice conferenceDeletionPolice, IModuleClient moduleClient)
