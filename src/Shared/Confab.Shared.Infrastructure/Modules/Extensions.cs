@@ -90,13 +90,17 @@ namespace Confab.Shared.Infrastructure.Modules
                 var eventDispatcherType = eventDispatcher.GetType();
 
                 foreach (var eventType in eventTypes)
+                {
                     registry.AddBroadcastAction(
-                        eventType,
+                        requestType: eventType,
                         action: @event =>
                         {
-                            return (Task) eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync))
-                                ?.MakeGenericMethod(eventType).Invoke(eventDispatcher, new[] {@event});
+                            var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
+                            var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
+                            var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
+                            return (Task) methodResult;
                         });
+                }
 
                 return registry;
             });
