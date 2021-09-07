@@ -86,19 +86,33 @@ namespace Confab.Shared.Infrastructure.Modules
 
             services.AddSingleton<IModuleRegistry>(sp =>
             {
+                Console.WriteLine("\n\nResolving module registry...");
                 var eventDispatcher = sp.GetRequiredService<IEventDispatcher>();
                 var eventDispatcherType = eventDispatcher.GetType();
 
                 foreach (var eventType in eventTypes)
+                {
                     registry.AddBroadcastAction(
                         eventType,
                         @event =>
                         {
-                            var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
-                            var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
-                            var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
-                            return (Task) methodResult;
+                            try
+                            {
+                                Console.WriteLine($"[Trace] Invoking weaved action for event: '{@event}'.");
+                                var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
+                                var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
+                                var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
+                                return (Task) methodResult;
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Exception: '{ex.Message}'; Event: '{@event}'.");
+                                throw;
+                            }
                         });
+
+                    Console.WriteLine($"[Trace] Module registry item added for event type: '{eventType.FullName}'.");
+                }
 
                 return registry;
             });
