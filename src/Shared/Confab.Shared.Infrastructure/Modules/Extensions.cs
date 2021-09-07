@@ -77,6 +77,8 @@ namespace Confab.Shared.Infrastructure.Modules
 
         private static void AddModuleRegistry(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
+            Console.WriteLine("\n\nAdding module registry...\n\n");
+
             var registry = new ModuleRegistry();
 
             var types = assemblies.SelectMany(x => x.GetTypes()).ToArray();
