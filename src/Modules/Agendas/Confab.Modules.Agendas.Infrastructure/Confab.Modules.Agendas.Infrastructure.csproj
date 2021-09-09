@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Confab.Shared.Infrastructure\Confab.Shared.Infrastructure.csproj" />
     <ProjectReference Include="..\Confab.Modules.Agendas.Application\Confab.Modules.Agendas.Application.csproj" />
-  </ItemGroup>
+ </ItemGroup>
 
 </Project>

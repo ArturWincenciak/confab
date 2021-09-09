@@ -10,7 +10,7 @@ namespace Confab.Modules.Agendas.Api
 {
     internal class AgendasModule : IModule
     {
-        public string BasePath = "agendas-module";
+        public const string BasePath = "agendas-module";
 
         public string Name { get; } = "agendas";
         public string Path => BasePath;
