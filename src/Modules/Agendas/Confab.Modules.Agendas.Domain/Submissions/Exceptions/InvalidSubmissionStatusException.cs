@@ -1,0 +1,17 @@
+﻿using System;
+using Confab.Shared.Abstractions.Exceptions;
+
+namespace Confab.Modules.Agendas.Domain.Submissions.Exceptions
+{
+    internal sealed class InvalidSubmissionStatusException : ConfabException
+    {
+        public InvalidSubmissionStatusException(Guid submissionId, string desiredStatus, string currentStatus)
+            : base($"Cannot change status if submission with ID: '{submissionId}' " +
+                   $"from '{currentStatus}' to '{desiredStatus}'.")
+        {
+            SubmissionId = submissionId;
+        }
+
+        public Guid SubmissionId { get; }
+    }
+}
