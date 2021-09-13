@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Speakers.Core.DTO;
+using Confab.Modules.Speakers.Core.Events;
 using Confab.Modules.Speakers.Core.Exceptions;
 using Confab.Modules.Speakers.Core.Mappings;
 using Confab.Modules.Speakers.Core.Repositories;
+using Confab.Shared.Abstractions.Messaging;
 
 namespace Confab.Modules.Speakers.Core.Services
 {
     internal class SpeakerService : ISpeakerService
     {
         private readonly ISpeakerRepository _repository;
+        private readonly IMessageBroker _messageBroker;
 
-        public SpeakerService(ISpeakerRepository repository)
+        public SpeakerService(ISpeakerRepository repository, IMessageBroker messageBroker)
         {
             _repository = repository;
+            _messageBroker = messageBroker;
         }
 
         public async Task AddAsync(SpeakerDto dto)
@@ -26,7 +30,9 @@ namespace Confab.Modules.Speakers.Core.Services
             if (allWithTheEmail.Any())
                 throw new SpeakerAlreadyExistsException(dto.Email);
 
-            await _repository.AddAsync(dto.AsEntity());
+            var entity = dto.AsEntity();
+            await _repository.AddAsync(entity);
+            await _messageBroker.PublishAsync(new SpeakerCreated(entity.Id, entity.FullName));
         }
 
         public async Task<SpeakerDto> GetAsync(Guid id)

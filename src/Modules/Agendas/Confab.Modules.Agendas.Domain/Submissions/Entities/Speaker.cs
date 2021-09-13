@@ -3,7 +3,7 @@ using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Domain.Submissions.Entities
 {
-    internal sealed class Speaker : AggregateRoot
+    public sealed class Speaker : AggregateRoot
     {
         public Speaker(AggregateId id, string fullName)
         {
