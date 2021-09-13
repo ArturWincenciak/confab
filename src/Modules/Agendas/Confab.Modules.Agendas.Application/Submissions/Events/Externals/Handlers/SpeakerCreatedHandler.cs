@@ -3,7 +3,7 @@ using Confab.Modules.Agendas.Domain.Submissions.Entities;
 using Confab.Modules.Agendas.Domain.Submissions.Repositories;
 using Confab.Shared.Abstractions.Events;
 
-namespace Confab.Modules.Agendas.Application.Events.Externals.Handlers
+namespace Confab.Modules.Agendas.Application.Submissions.Events.Externals.Handlers
 {
     internal sealed class SpeakerCreatedHandler : IEventHandler<SpeakerCreated>
     {

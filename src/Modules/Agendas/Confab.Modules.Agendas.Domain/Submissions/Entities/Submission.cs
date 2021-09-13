@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Confab.Modules.Agendas.Domain.Submissions.Constants;
 using Confab.Modules.Agendas.Domain.Submissions.Events;
@@ -7,7 +8,7 @@ using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Domain.Submissions.Entities
 {
-    internal sealed class Submission : AggregateRoot
+    public sealed class Submission : AggregateRoot
     {
         private IEnumerable<Speaker> _speakers;
 
@@ -37,8 +38,15 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
         public IEnumerable<string> Tags { get; private set; }
         public IEnumerable<Speaker> Speakers => _speakers;
 
-        public static Submission Create(AggregateId id, ConferenceId conferenceId, string title, string description,
-            int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
+        public static Submission Create(ConferenceId conferenceId, string title, string description,
+            int level, IEnumerable<string> tags, IEnumerable<Speaker> speakers)
+        {
+            var id = Guid.NewGuid();
+            return Create(id, conferenceId, title, description, level, tags, speakers);
+        }
+
+        private static Submission Create(AggregateId id, ConferenceId conferenceId, string title, string description,
+            int level, IEnumerable<string> tags, IEnumerable<Speaker> speakers)
         {
             var submission = new Submission(id, conferenceId);
             submission.ChangeTitle(title);

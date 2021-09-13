@@ -4,7 +4,7 @@ using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Domain.Submissions.Repositories
 {
-    internal interface ISubmissionRepository
+    public interface ISubmissionRepository
     {
         Task<Submission> GetAsync(AggregateId id);
         Task AddAsync(Submission entity);

@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Events\Externals\Handlers\" />
+    <Folder Include="Submissions\Commands\Handlers\" />
   </ItemGroup>
 
 </Project>
