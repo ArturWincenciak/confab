@@ -17,7 +17,7 @@ namespace Confab.Shared.Infrastructure.Queries
             _logger = logger;
         }
 
-        public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query)
+        public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query) where TResult : class, IQueryResult
         {
             try
             {
