@@ -1,8 +1,6 @@
-﻿using Confab.Shared.Abstractions.Messaging;
-
-namespace Confab.Shared.Abstractions.Queries
+﻿namespace Confab.Shared.Abstractions.Queries
 {
-    public interface IQuery : IMessage
+    public interface IQuery
     {
     }
 
