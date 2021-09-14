@@ -32,7 +32,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int Level { get; private set; }
-        public string Status { get; set; }
+        public string Status { get; private set; }
         public IEnumerable<string> Tags { get; private set; }
         public IEnumerable<Speaker> Speakers { get; private set; }
 
