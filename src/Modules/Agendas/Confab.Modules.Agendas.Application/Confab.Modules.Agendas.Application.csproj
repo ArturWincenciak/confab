@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Submissions\Quieries\DTO\" />
+    <Folder Include="Submissions\Queries\" />
   </ItemGroup>
 
 </Project>
