@@ -4,6 +4,5 @@ namespace Confab.Shared.Abstractions.Commands
 {
     public interface ICommand : IMessage
     {
-
     }
 }

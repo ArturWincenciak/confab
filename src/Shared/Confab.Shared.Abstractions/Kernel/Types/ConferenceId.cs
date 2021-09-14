@@ -11,7 +11,7 @@ namespace Confab.Shared.Abstractions.Kernel.Types
 
         public static implicit operator ConferenceId(Guid id)
         {
-            return new (id);
+            return new ConferenceId(id);
         }
     }
 }

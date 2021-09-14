@@ -9,8 +9,8 @@ namespace Confab.Shared.Infrastructure.Events
 {
     internal sealed class EventDispatcher : IEventDispatcher
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<EventDispatcher> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
         public EventDispatcher(IServiceProvider serviceProvider, ILogger<EventDispatcher> logger)
         {

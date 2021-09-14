@@ -14,6 +14,7 @@ namespace Confab.Modules.Agendas.Api
 
         public string Name => "agendas";
         public string Path => BasePath;
+
         public IEnumerable<string> Policies => new[]
         {
             "agendas", "cfp", "submissions"

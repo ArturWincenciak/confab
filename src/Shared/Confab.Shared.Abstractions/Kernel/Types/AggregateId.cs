@@ -59,7 +59,7 @@ namespace Confab.Shared.Abstractions.Kernel.Types
 
         public static implicit operator AggregateId(Guid id)
         {
-            return new(id);
+            return new AggregateId(id);
         }
     }
 }

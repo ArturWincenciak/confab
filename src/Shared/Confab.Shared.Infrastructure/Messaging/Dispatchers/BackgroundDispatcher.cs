@@ -28,7 +28,6 @@ namespace Confab.Shared.Infrastructure.Messaging.Dispatchers
                 _logger.LogInformation("Running the background dispatcher...");
 
                 await foreach (var message in _messageChannel.Reader.ReadAllAsync(stoppingToken))
-                {
                     try
                     {
                         _logger.LogTrace($"Publishing new oncoming message (using module client): '{message}'.");
@@ -39,7 +38,6 @@ namespace Confab.Shared.Infrastructure.Messaging.Dispatchers
                     {
                         _logger.LogError(ex, $"{ex.Message}; Message: '{message}'.");
                     }
-                }
 
                 _logger.LogInformation("Finished running the background dispatcher.");
             }

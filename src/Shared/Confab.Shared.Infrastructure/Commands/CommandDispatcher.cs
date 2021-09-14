@@ -8,8 +8,8 @@ namespace Confab.Shared.Infrastructure.Commands
 {
     internal sealed class CommandDispatcher : ICommandDispatcher
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<CommandDispatcher> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
         public CommandDispatcher(IServiceProvider serviceProvider, ILogger<CommandDispatcher> logger)
         {

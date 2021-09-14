@@ -10,8 +10,6 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
 {
     public sealed class Submission : AggregateRoot
     {
-        private IEnumerable<Speaker> _speakers;
-
         public Submission(AggregateId id, ConferenceId conferenceId, string title, string description, int level,
             string status, IEnumerable<string> tags, ICollection<Speaker> speakers, int version = 0)
             : this(id, conferenceId)
@@ -21,7 +19,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
             Level = level;
             Status = status;
             Tags = tags;
-            _speakers = speakers;
+            Speakers = speakers;
             Version = version;
         }
 
@@ -36,7 +34,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
         public int Level { get; private set; }
         public string Status { get; set; }
         public IEnumerable<string> Tags { get; private set; }
-        public IEnumerable<Speaker> Speakers => _speakers;
+        public IEnumerable<Speaker> Speakers { get; private set; }
 
         public static Submission Create(ConferenceId conferenceId, string title, string description,
             int level, IEnumerable<string> tags, IEnumerable<Speaker> speakers)
@@ -95,7 +93,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
             if (speakers is null || !speakers.Any())
                 throw new MissingSubmissionSpeakersException(Id);
 
-            _speakers = speakers;
+            Speakers = speakers;
             IncrementVersion();
         }
 

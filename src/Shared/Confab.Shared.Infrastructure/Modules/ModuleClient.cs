@@ -31,7 +31,6 @@ namespace Confab.Shared.Infrastructure.Modules
 
                 var tasks = new List<Task>();
                 foreach (var registration in registrations)
-                {
                     try
                     {
                         _logger.LogTrace($"Invoking: '{registration} - {message}'.");
@@ -44,7 +43,6 @@ namespace Confab.Shared.Infrastructure.Modules
                         _logger.LogError(ex, $"{ex.Message}; Registration: '{registration} - '{message}'.");
                         throw;
                     }
-                }
 
                 await Task.WhenAll(tasks);
                 _logger.LogTrace($"Message has been published: '{message}'.");

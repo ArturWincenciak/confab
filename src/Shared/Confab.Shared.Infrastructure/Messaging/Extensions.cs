@@ -1,5 +1,4 @@
-﻿using System;
-using Confab.Shared.Abstractions.Messaging;
+﻿using Confab.Shared.Abstractions.Messaging;
 using Confab.Shared.Infrastructure.Messaging.Brokers;
 using Confab.Shared.Infrastructure.Messaging.Dispatchers;
 using Microsoft.Extensions.DependencyInjection;

@@ -13,8 +13,8 @@ namespace Confab.Modules.Speakers.Core.Services
 {
     internal class SpeakerService : ISpeakerService
     {
-        private readonly ISpeakerRepository _repository;
         private readonly IMessageBroker _messageBroker;
+        private readonly ISpeakerRepository _repository;
 
         public SpeakerService(ISpeakerRepository repository, IMessageBroker messageBroker)
         {
