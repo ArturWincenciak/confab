@@ -5,14 +5,13 @@ namespace Confab.Modules.Agendas.Infrastructure.EF
 {
     internal sealed class AgendasDbContext : DbContext
     {
-        public DbSet<Submission> Submissions { get; set; }
-        public DbSet<Speaker> Speakers { get; set; }
-
         public AgendasDbContext(DbContextOptions<AgendasDbContext> options)
             : base(options)
         {
-
         }
+
+        public DbSet<Submission> Submissions { get; set; }
+        public DbSet<Speaker> Speakers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
