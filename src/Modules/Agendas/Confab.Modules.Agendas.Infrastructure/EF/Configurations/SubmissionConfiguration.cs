@@ -18,8 +18,8 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Configurations
             builder
                 .Property(x => x.Id)
                 .HasConversion(
-                    convertFromProviderExpression: aggregateId => aggregateId.Value,
-                    convertToProviderExpression: guid => new AggregateId(guid));
+                    aggregateId => aggregateId.Value,
+                    guid => new AggregateId(guid));
 
             builder
                 .Property(x => x.ConferenceId)

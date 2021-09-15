@@ -11,7 +11,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
             (Id, FullName) = (id, fullName);
         }
 
-        public string FullName { get; }
+        public string FullName { get; init; }
         public ICollection<Submission> Submissions { get; }
 
         public static Speaker Create(Guid id, string fullName)
