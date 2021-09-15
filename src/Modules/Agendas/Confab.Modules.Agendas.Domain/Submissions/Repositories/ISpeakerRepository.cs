@@ -9,6 +9,6 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Repositories
     {
         Task<bool> ExistsAsync(AggregateId id);
         Task<IEnumerable<Speaker>> BrowseAsync(IEnumerable<AggregateId> ids);
-        Task CreateAsync(Speaker entity);
+        Task AddAsync(Speaker entity);
     }
 }

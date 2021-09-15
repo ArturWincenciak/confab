@@ -29,7 +29,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories
             return await _speakers.Where(x => ids.Contains(x.Id)).ToListAsync();
         }
 
-        public async Task CreateAsync(Speaker entity)
+        public async Task AddAsync(Speaker entity)
         {
             _speakers.Add(entity);
             await _dbContext.SaveChangesAsync();
