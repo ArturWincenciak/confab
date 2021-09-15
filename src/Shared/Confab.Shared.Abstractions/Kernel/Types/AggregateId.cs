@@ -42,11 +42,6 @@ namespace Confab.Shared.Abstractions.Kernel.Types
 
     public class AggregateId : AggregateId<Guid>
     {
-        public AggregateId()
-            : this(Guid.NewGuid())
-        {
-        }
-
         public AggregateId(Guid value)
             : base(value)
         {
