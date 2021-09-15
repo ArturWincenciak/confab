@@ -12,7 +12,7 @@ namespace Confab.Modules.Agendas.Api
     {
         public const string BasePath = "agendas-module";
 
-        public string Name => "agendas";
+        public string Name => "Agendas";
         public string Path => BasePath;
 
         public IEnumerable<string> Policies => new[]
