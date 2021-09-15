@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Domain.Submissions.Entities
@@ -11,6 +12,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
         }
 
         public string FullName { get; }
+        public ICollection<Submission> Submissions { get; }
 
         public static Speaker Create(Guid id, string fullName)
         {
