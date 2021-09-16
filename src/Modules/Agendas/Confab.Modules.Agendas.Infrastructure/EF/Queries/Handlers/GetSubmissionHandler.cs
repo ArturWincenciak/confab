@@ -20,7 +20,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
         {
             return _submissions
                 .AsNoTracking()
-                .Where(x => x.Id.Equals(query.Id))
+                .Where(x => x.Id.Equals(query.Id)) //TODO: x.Id.Value.Equals(...) ...
                 .Include(x => x.Speakers)
                 .Select(x => Map(x))
                 .SingleOrDefaultAsync();
