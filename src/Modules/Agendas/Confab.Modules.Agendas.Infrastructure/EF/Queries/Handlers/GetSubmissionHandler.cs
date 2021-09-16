@@ -26,7 +26,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .SingleOrDefaultAsync();
         }
 
-        private GetSubmission.SubmissionDto Map(Submission entity)
+        private static GetSubmission.SubmissionDto Map(Submission entity)
         {
             return new GetSubmission.SubmissionDto(entity.Id, entity.ConferenceId, entity.Title, entity.Description,
                 entity.Level, entity.Status, entity.Tags,
