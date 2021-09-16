@@ -21,6 +21,8 @@ namespace Confab.Shared.Infrastructure.Commands
         {
             try
             {
+                _logger.LogTrace($"Dispatching command: '{command}'.");
+
                 if (command is null)
                 {
                     _logger.LogWarning("Command is null. Skipping call handler for the command.");

@@ -21,6 +21,8 @@ namespace Confab.Shared.Infrastructure.Queries
         {
             try
             {
+                _logger.LogTrace($"Dispatching query: '{query}'.");
+
                 if (query is null)
                 {
                     _logger.LogWarning("Query is null. Skipping call handler for the query.");
