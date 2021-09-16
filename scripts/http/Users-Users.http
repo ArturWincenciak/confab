@@ -22,7 +22,8 @@ Content-Type: application/json
     "password": "{{password}}",
     "role": "{{role}}",
     "claims": {
-        "permissions": [ "conferences", "hosts", "speakers", "users" ]
+        "permissions": [ 
+            "conferences", "hosts", "speakers", "users", "agendas", "cfp", "submissions" ] 
     }
 }
 
