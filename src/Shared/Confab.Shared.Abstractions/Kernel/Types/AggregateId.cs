@@ -14,7 +14,7 @@ namespace Confab.Shared.Abstractions.Kernel.Types
 
         public bool Equals(AggregateId<T> other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -24,7 +24,7 @@ namespace Confab.Shared.Abstractions.Kernel.Types
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
                 return false;
             if (ReferenceEquals(this, obj))
                 return true;
