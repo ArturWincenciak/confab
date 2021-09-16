@@ -1,0 +1,56 @@
+@host = http://localhost:5000
+@api = {{host}}/agendas-module
+@url = {{api}}/submissions
+
+@email = teo@vincent.com
+@password = sicret
+@accessToken = {{access_token.response.body.accessToken}}
+
+### Get access token for the user
+# @name access_token
+POST {{host}}/users-module/account/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+### Get hello Conferences Module API message
+GET {{api}}
+
+### Add new
+# @name new_created_location
+POST {{url}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "ConferenceId": "a73d482c-3acd-4b5d-b0d5-fd3712872b31",
+    "Title": "Title of submission ### 01",
+    "Description": "Descripton of submission",
+    "Level": "1",
+    "Tags": [ "tag_one", "tag_two", "tag_three"],
+    "SpeakerIds": [ 
+        "5399913c-a370-420f-97f5-58c97ba856b9", 
+        "5b6dcb39-a99f-432d-b9ab-69aec171e708"
+        ]
+}
+
+### ID variable
+@id = ... 
+
+### Get
+GET {{url}}/{{id}}
+
+### Arleady created location variable
+@hostLocation = {{new_created_location.response.headers.Location}}
+
+### Get arleady created
+GET {{hostLocation}}
+
+### Approve submission
+PUT {{url}}/{{id}}/approvals
+
+### Reject submission
+PUT {{url}}/{{id}}/rejections
