@@ -30,17 +30,17 @@ namespace Confab.Modules.Agendas.Api.Controllers
         {
             await _commandDispatcher.SendAsync(command); //TODO: popraw tak aby otrzymać ID w odpowiedzi
             //TODO: uczywajac ID strzel zapytaniem aby przekazac w odpowiedzi DTO utworzonego obiektu (value)
-            return CreatedAtAction("Get", new {command.Id}, null);//TODO: tutaj ID będzie NULLem
+            return CreatedAtAction("Get", "__TODO__", null);//TODO: tutaj ID będzie NULLem
         }
 
-        [HttpPut("{id:guid}/approve")]
+        [HttpPut("{id:guid}/approvals")]
         public async Task<ActionResult> ApproveAsync(Guid id)
         {
             await _commandDispatcher.SendAsync(new ApproveSubmission(id));
             return NoContent();
         }
 
-        [HttpPut("{id:guid}/reject")]
+        [HttpPut("{id:guid}/rejections")]
         public async Task<ActionResult> RejectAsync(Guid id)
         {
             await _commandDispatcher.SendAsync(new RejectSubmission(id));
