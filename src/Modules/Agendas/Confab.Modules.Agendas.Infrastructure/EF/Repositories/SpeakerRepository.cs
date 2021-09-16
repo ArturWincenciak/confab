@@ -21,7 +21,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories
 
         public Task<bool> ExistsAsync(AggregateId id)
         {
-            return _speakers.AnyAsync(x => x.Id.Equals(x));
+            return _speakers.AnyAsync(x => x.Id.Equals(id));
         }
 
         public async Task<IEnumerable<Speaker>> BrowseAsync(IEnumerable<AggregateId> ids)
