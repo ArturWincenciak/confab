@@ -22,7 +22,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<object>> GetAsync(Guid id)
         {
-            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetSubmission(id)));
+            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetSubmission(id)), new {id});
         }
 
         [HttpPost]
@@ -30,7 +30,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
         {
             await _commandDispatcher.SendAsync(command); //TODO: popraw tak aby otrzymać ID w odpowiedzi
             //TODO: uczywajac ID strzel zapytaniem aby przekazac w odpowiedzi DTO utworzonego obiektu (value)
-            return CreatedAtAction("Get",  new { Id = Guid.NewGuid() }, null);//TODO: tutaj ID będzie NULLem
+            return CreatedAtAction("Get", new {Id = Guid.NewGuid()}, null); //TODO: tutaj ID będzie NULLem
         }
 
         [HttpPut("{id:guid}/approvals")]
