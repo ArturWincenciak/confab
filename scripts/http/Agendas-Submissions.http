@@ -19,6 +19,49 @@ Content-Type: application/json
 ### Get hello Conferences Module API message
 GET {{api}}
 
+### Test
+GET {{url}}/test11
+
+### Test
+GET {{url}}/test111
+
+### Test
+GET {{url}}/test12
+
+### Test
+GET {{url}}/test122
+
+### Test
+GET {{url}}/test13
+
+### Test
+GET {{url}}/test133
+
+### Test
+GET {{url}}/test14
+
+### Test
+GET {{url}}/test14a
+
+### Test
+GET {{url}}/test14b
+
+### Test
+GET {{url}}/test144
+
+### Test
+GET {{url}}/test144a
+
+### Test 2
+GET {{url}}/test2
+
+### Test 3
+GET {{url}}/test3
+
+### Test 4
+GET {{url}}/test4
+
+
 ### Add new
 # @name new_created_location
 POST {{url}}
@@ -27,18 +70,18 @@ Authorization: Bearer {{accessToken}}
 
 {
     "ConferenceId": "a73d482c-3acd-4b5d-b0d5-fd3712872b31",
-    "Title": "Title of submission ### 01",
+    "Title": "Title of submission ### 03",
     "Description": "Descripton of submission",
     "Level": "1",
     "Tags": [ "tag_one", "tag_two", "tag_three"],
     "SpeakerIds": [ 
-        "5399913c-a370-420f-97f5-58c97ba856b9", 
-        "5b6dcb39-a99f-432d-b9ab-69aec171e708"
+        "5fa6e5ab-c3ae-42c1-b480-2e2117d361c3", 
+        "e8e6a7ed-f917-4a1c-89ae-bc21796d3933"
         ]
 }
 
 ### ID variable
-@id = ... 
+@id = a73d482c-3acd-4b5d-b0d5-fd3712872b31
 
 ### Get
 GET {{url}}/{{id}}
