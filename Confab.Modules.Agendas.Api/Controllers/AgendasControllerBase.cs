@@ -10,15 +10,12 @@ namespace Confab.Modules.Agendas.Api.Controllers
     {
         protected ActionResult<object> OkOrNotFound(object model, object selector = null)
         {
-            if (model is null)
-                return WhatNotFound(selector);
-
-            return Ok(model);
+            return model is { } ? Ok(model) : WhatNotFound(selector);
         }
 
         private ActionResult<object> WhatNotFound(object what)
         {
-            return what is {} ? NotFound(what) : NotFound();
+            return what is { } ? NotFound(what) : NotFound();
         }
     }
 }
