@@ -11,8 +11,7 @@ namespace Confab.Shared.Infrastructure.Queries
         {
             services.AddSingleton<IQueryDispatcher, QueryDispatcher>();
             services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
-                .AddClasses(
-                    implementationTypeFilter => implementationTypeFilter.AssignableTo(typeof(IQueryHandler<,>)))
+                .AddClasses(filter => filter.AssignableTo(typeof(IQueryHandler<,>)))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
             return services;

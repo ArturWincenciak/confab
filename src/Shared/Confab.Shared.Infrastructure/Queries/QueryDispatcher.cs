@@ -31,7 +31,7 @@ namespace Confab.Shared.Infrastructure.Queries
 
                 using var scope = _serviceProvider.CreateScope();
                 var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
-                var handler = _serviceProvider.GetRequiredService(handlerType);
+                var handler = scope.ServiceProvider.GetRequiredService(handlerType);
 
                 var handleMethod = handlerType.GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync));
                 if (handleMethod is null)

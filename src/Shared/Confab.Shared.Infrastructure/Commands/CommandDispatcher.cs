@@ -30,7 +30,7 @@ namespace Confab.Shared.Infrastructure.Commands
                 }
 
                 using var scope = _serviceProvider.CreateScope();
-                var handler = _serviceProvider.GetRequiredService<ICommandHandler<TCommand>>();
+                var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>();
                 await handler.HandleAsync(command);
             }
             catch (Exception ex)
