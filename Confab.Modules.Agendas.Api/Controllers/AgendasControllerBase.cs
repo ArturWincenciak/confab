@@ -1,4 +1,5 @@
-﻿using Confab.Shared.Infrastructure.Api;
+﻿using Confab.Shared.Abstractions.Queries;
+using Confab.Shared.Infrastructure.Api;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Confab.Modules.Agendas.Api.Controllers
@@ -8,7 +9,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
     [ProducesDefaultContentType]
     internal class AgendasControllerBase : ControllerBase
     {
-        protected ActionResult<T> OkOrNotFound<T>(T model, object selector = null)
+        protected ActionResult<T> OkOrNotFound<T>(T model, object selector = null) where T : class, IQueryResult
         {
             return model is { } ? Ok(model) : WhatNotFound<T>(selector);
         }
