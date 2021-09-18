@@ -16,52 +16,6 @@ Content-Type: application/json
     "password": "{{password}}"
 }
 
-### Get hello Conferences Module API message
-GET {{api}}
-
-### Test
-GET {{url}}/test11
-
-### Test
-GET {{url}}/test111
-
-### Test
-GET {{url}}/test12
-
-### Test
-GET {{url}}/test122
-
-### Test
-GET {{url}}/test13
-
-### Test
-GET {{url}}/test133
-
-### Test
-GET {{url}}/test14
-
-### Test
-GET {{url}}/test14a
-
-### Test
-GET {{url}}/test14b
-
-### Test
-GET {{url}}/test144
-
-### Test
-GET {{url}}/test144a
-
-### Test 2
-GET {{url}}/test2
-
-### Test 3
-GET {{url}}/test3
-
-### Test 4
-GET {{url}}/test4
-
-
 ### Add new
 # @name new_created_location
 POST {{url}}
