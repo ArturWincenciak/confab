@@ -11,7 +11,7 @@ namespace Confab.Shared.Infrastructure.Commands
         {
             services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
             services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
-                .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<>)))
+                .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<,>)))
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 

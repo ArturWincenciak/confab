@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Submissions.Exceptions;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
@@ -8,7 +9,7 @@ using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
 {
-    internal sealed class CreateSubmissionHandler : ICommandHandler<CreateSubmission>
+    internal sealed class CreateSubmissionHandler : ICommandHandler<CreateSubmission, Guid>
     {
         private readonly ISpeakerRepository _speakerRepository;
         private readonly ISubmissionRepository _submissionRepository;
@@ -19,7 +20,7 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
             _speakerRepository = speakerRepository;
         }
 
-        public async Task HandleAsync(CreateSubmission command)
+        public async Task<Guid> HandleAsync(CreateSubmission command)
         {
             var speakerIds = command.SpeakerIds.Select(x => new AggregateId(x));
             var speakers = await _speakerRepository.BrowseAsync(speakerIds);
@@ -32,6 +33,8 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
                 command.Tags, speakers);
 
             await _submissionRepository.AddAsync(submission);
+
+            return submission.Id;
         }
     }
 }

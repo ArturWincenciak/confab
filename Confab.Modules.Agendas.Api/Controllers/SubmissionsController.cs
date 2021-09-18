@@ -28,9 +28,11 @@ namespace Confab.Modules.Agendas.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateAsync(CreateSubmission command)
         {
-            await _commandDispatcher.SendAsync(command); //TODO: popraw tak aby otrzymać ID w odpowiedzi
+            var id = await _commandDispatcher.SendAsync(command);
+
             //TODO: uczywajac ID strzel zapytaniem aby przekazac w odpowiedzi DTO utworzonego obiektu (value)
-            return CreatedAtAction("Get", new {Id = Guid.NewGuid()}, null); //TODO: tutaj ID będzie NULLem
+
+            return CreatedAtAction("Get", new {Id = id }, null);
         }
 
         [HttpPut("{id:guid}/approvals")]

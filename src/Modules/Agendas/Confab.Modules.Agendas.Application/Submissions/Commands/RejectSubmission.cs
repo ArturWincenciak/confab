@@ -3,5 +3,5 @@ using Confab.Shared.Abstractions.Commands;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Commands
 {
-    public record RejectSubmission(Guid Id) : ICommand;
+    public record RejectSubmission(Guid Id) : ICommand<bool>; //todo: bool is temp
 }

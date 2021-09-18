@@ -17,7 +17,7 @@ namespace Confab.Shared.Infrastructure.Commands
             _logger = logger;
         }
 
-        public async Task SendAsync<TCommand>(TCommand command) where TCommand : class, ICommand
+        public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command)
         {
             try
             {
@@ -26,12 +26,12 @@ namespace Confab.Shared.Infrastructure.Commands
                 if (command is null)
                 {
                     _logger.LogWarning("Command is null. Skipping call handler for the command.");
-                    return;
+                    return default;
                 }
 
                 using var scope = _serviceProvider.CreateScope();
-                var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>();
-                await handler.HandleAsync(command);
+                var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<ICommand<TResult>, TResult>>();
+                return await handler.HandleAsync(command);
             }
             catch (Exception ex)
             {
