@@ -8,12 +8,12 @@ namespace Confab.Modules.Agendas.Api.Controllers
     [ProducesDefaultContentType]
     internal class AgendasControllerBase : ControllerBase
     {
-        protected ActionResult<object> OkOrNotFound(object model, object selector = null)
+        protected ActionResult<T> OkOrNotFound<T>(T model, object selector = null)
         {
-            return model is { } ? Ok(model) : WhatNotFound(selector);
+            return model is { } ? Ok(model) : WhatNotFound<T>(selector);
         }
 
-        private ActionResult<object> WhatNotFound(object what)
+        private ActionResult<T> WhatNotFound<T>(object what)
         {
             return what is { } ? NotFound(what) : NotFound();
         }
