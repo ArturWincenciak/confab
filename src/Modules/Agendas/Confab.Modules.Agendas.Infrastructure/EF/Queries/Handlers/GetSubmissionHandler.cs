@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Submissions.Queries;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
@@ -16,14 +17,33 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             _submissions = dbContext.Submissions;
         }
 
-        public Task<GetSubmission.SubmissionDto> HandleAsync(GetSubmission query)
+        public async Task<GetSubmission.SubmissionDto> HandleAsync(GetSubmission query)
         {
-            return _submissions
-                .AsNoTracking()
-                .Where(x => x.Id.Equals(query.Id)) //TODO: x.Id.Value.Equals(...) ...
-                .Include(x => x.Speakers)
-                .Select(x => Map(x))
-                .SingleOrDefaultAsync();
+            //var submission = await _submissions
+            //    .AsNoTracking()
+            //    .Where(x => x.Id == query.Id) // it work correctly! why?
+            //    //.Where(x => x.Id.Equals(query.Id)) // it not work!
+            //    .Include(x => x.Speakers)
+            //    .Select(x => Map(x))
+            //    .SingleOrDefaultAsync();
+
+            var sub = Submission.Create(Guid.NewGuid(), "x", "y", 1, new[] {"z"}, new Speaker[] {null});
+
+            if (sub.Id == query.Id)
+                Console.WriteLine("Ognia");
+
+            if(query.Id == sub.Id)
+                Console.WriteLine("Ognia");
+
+            if (sub.Id.Equals(query.Id))
+                Console.WriteLine("Ognia");
+
+            if (query.Id.Equals(sub.Id))
+                Console.WriteLine("Odnia");
+
+            return null;
+            //return submission;
+            //.FirstOrDefaultAsync();
         }
 
         private static GetSubmission.SubmissionDto Map(Submission entity)
