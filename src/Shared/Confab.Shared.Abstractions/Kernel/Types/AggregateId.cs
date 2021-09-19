@@ -16,6 +16,7 @@ namespace Confab.Shared.Abstractions.Kernel.Types
         {
             if (other is null)
                 return false;
+
             if (ReferenceEquals(this, other))
                 return true;
 
@@ -26,8 +27,10 @@ namespace Confab.Shared.Abstractions.Kernel.Types
         {
             if (obj is null)
                 return false;
+
             if (ReferenceEquals(this, obj))
                 return true;
+
             if (obj.GetType() != GetType())
                 return false;
 
@@ -39,15 +42,15 @@ namespace Confab.Shared.Abstractions.Kernel.Types
             return EqualityComparer<T>.Default.GetHashCode(Value);
         }
 
-        //public static implicit operator T(AggregateId<T> id)
-        //{
-        //    return id.Value;
-        //}
+        public static implicit operator T(AggregateId<T> id)
+        {
+            return id.Value;
+        }
 
-        //public static implicit operator AggregateId<T>(T id)
-        //{
-        //    return new AggregateId<T>(id);
-        //}
+        public static implicit operator AggregateId<T>(T id)
+        {
+            return new AggregateId<T>(id);
+        }
     }
 
     public class AggregateId : AggregateId<Guid>
