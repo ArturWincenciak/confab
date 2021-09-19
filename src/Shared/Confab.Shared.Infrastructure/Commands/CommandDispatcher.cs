@@ -30,8 +30,18 @@ namespace Confab.Shared.Infrastructure.Commands
                 }
 
                 using var scope = _serviceProvider.CreateScope();
-                var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<ICommand<TResult>, TResult>>();
-                return await handler.HandleAsync(command);
+                var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
+;               var handler = scope.ServiceProvider.GetRequiredService(handlerType);
+
+                var handleMethod = handlerType.GetMethod(nameof(ICommandHandler<ICommand<TResult>, TResult>.HandleAsync));
+                if (handleMethod is null)
+                {
+                    _logger.LogWarning($"Cannot get command handler method from handler type: '{handlerType}'.");
+                    return default;
+                }
+
+                var result = handleMethod.Invoke(handler, new[] {command});
+                return await (result as Task<TResult>);
             }
             catch (Exception ex)
             {
