@@ -58,7 +58,7 @@ namespace Confab.Shared.Abstraction.Tests
             var (id, entity) = ArrangeTheSameIdValue();
 
             // act
-            // there is no implicit casting from Guid to AggregateId <= todo
+            // there is no implicit casting from Guid to AggregateId
             var areEqual = entity.Id.Equals(id);
 
             // assert
