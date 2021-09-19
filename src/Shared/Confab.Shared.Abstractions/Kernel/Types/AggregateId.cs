@@ -51,6 +51,16 @@ namespace Confab.Shared.Abstractions.Kernel.Types
         {
             return new AggregateId<T>(id);
         }
+
+        public static bool operator ==(AggregateId<T> objOne, AggregateId<T> objTwo)
+        {
+            return objOne.Equals(objTwo);
+        }
+
+        public static bool operator !=(AggregateId<T> objOne, AggregateId<T> objTwo)
+        {
+            return !(objOne == objTwo);
+        }
     }
 
     public class AggregateId : AggregateId<Guid>
