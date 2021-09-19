@@ -7,7 +7,8 @@ namespace Confab.Shared.Abstraction.Tests
     public class AggregateIdComparingTest
     {
         [Fact]
-        public void GIVEN_id_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_operator_THEN_they_are_equal()
+        public void
+            GIVEN_guid_id_type_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_operator_THEN_they_are_equal()
         {
             // arrange
             var (id, entity) = ArrangeTheSameIdValue();
@@ -20,7 +21,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_id_and_entity_WHEN_compare_entity_id_with_the_id_using_equal_operator_THEN_they_are_equal()
+        public void
+            GIVEN_guid_id_type_and_entity_WHEN_compare_entity_id_with_the_id_using_equal_operator_THEN_they_are_equal()
         {
             // arrange
             var (id, entity) = ArrangeTheSameIdValue();
@@ -33,7 +35,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_id_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_method_THEN_they_are_equal()
+        public void
+            GIVEN_guid_id_type_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_method_THEN_they_are_equal()
         {
             // arrange
             var (id, entity) = ArrangeTheSameIdValue();
@@ -47,7 +50,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_id_and_entity_WHEN_compare_entity_id_with_the_id_using_equal_method_THEN_they_are_equal()
+        public void
+            GIVEN_guid_id_type_and_entity_WHEN_compare_entity_id_with_the_id_using_equal_method_THEN_they_are_equal()
         {
             // arrange
             var (id, entity) = ArrangeTheSameIdValue();
@@ -61,7 +65,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_id_and_entity_WHEN_compare_entity_id_with_cast_id_using_equal_method_THEN_they_are_equal()
+        public void
+            GIVEN_guid_id_type_and_entity_WHEN_compare_entity_id_with_cast_id_using_equal_method_THEN_they_are_equal()
         {
             // arrange
             var (id, entity) = ArrangeTheSameIdValue();
@@ -75,7 +80,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_different_id_and_entity_WHEN_compare_the_id_with_entity_using_equal_operator_THEN_not_equal()
+        public void
+            GIVEN_guid_id_type_with_wrong_value_and_entity_WHEN_compare_the_id_with_entity_using_equal_operator_THEN_not_equal()
         {
             // arrange
             var (id, entity) = ArrangeDifferentIdValue();
@@ -88,7 +94,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_different_id_and_entity_WHEN_compare_entity_with_the_id_using_equal_operator_THEN_not_equal()
+        public void
+            GIVEN_guid_id_type_with_wrong_value_and_entity_WHEN_compare_entity_with_the_id_using_equal_operator_THEN_not_equal()
         {
             // arrange
             var (id, entity) = ArrangeDifferentIdValue();
@@ -101,7 +108,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_different_id_and_entity_WHEN_compare_the_id_with_entity_using_equal_method_THEN_not_equal()
+        public void
+            GIVEN_guid_id_type_with_wrong_value_and_entity_WHEN_compare_the_id_with_entity_using_equal_method_THEN_not_equal()
         {
             // arrange
             var (id, entity) = ArrangeDifferentIdValue();
@@ -114,7 +122,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_different_id_and_entity_WHEN_compare_entity_with_the_id_using_equal_method_THEN_not_equal()
+        public void
+            GIVEN_guid_id_type_with_wrong_value_and_entity_WHEN_compare_entity_with_the_id_using_equal_method_THEN_not_equal()
         {
             // arrange
             var (id, entity) = ArrangeDifferentIdValue();
@@ -127,7 +136,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_different_id_and_entity_WHEN_compare_entity_with_cast_id_using_equal_method_THEN_not_equal()
+        public void
+            GIVEN_guid_id_type_with_wrong_value_and_entity_WHEN_compare_entity_with_cast_id_using_equal_method_THEN_not_equal()
         {
             // arrange
             var (id, entity) = ArrangeDifferentIdValue();
@@ -140,7 +150,8 @@ namespace Confab.Shared.Abstraction.Tests
         }
 
         [Fact]
-        public void GIVEN_different_id_and_entity_type_WHEN_compare_entity_with_the_id_using_equal_method_THEN_not_equal()
+        public void
+            GIVEN_different_int_id_type_and_entity_type_WHEN_compare_entity_with_the_id_using_equal_method_THEN_not_equal()
         {
             // arrange
             var (id, entity) = ArrangeDifferentIdType();
