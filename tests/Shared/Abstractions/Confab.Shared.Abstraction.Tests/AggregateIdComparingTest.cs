@@ -179,7 +179,7 @@ namespace Confab.Shared.Abstraction.Tests
 
         [Fact]
         public void
-            GIVEN_different_int_id_type_and_entity_type_WHEN_compare_entity_with_the_id_using_equal_method_THEN_not_equal()
+            GIVEN_different_int_id_type_and_entity_WHEN_compare_entity_with_the_id_using_equal_method_THEN_not_equal()
         {
             // arrange
             var (id, entity) = ArrangeDifferentIdType();
