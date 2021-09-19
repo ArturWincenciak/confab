@@ -191,14 +191,14 @@ namespace Confab.Shared.Abstraction.Tests
             Assert.False(areEqual);
         }
 
-        private (Guid id, AggregateRoot enity) ArrangeTheSameIdValue()
+        private static (Guid id, AggregateRoot enity) ArrangeTheSameIdValue()
         {
             var id = Guid.Parse("EE07E9AD-61AE-446D-AA40-D602CFA461F3");
             var entity = new AggregateRootMock(id);
             return (id, entity);
         }
 
-        private (Guid id, AggregateRoot enity) ArrangeDifferentIdValue()
+        private static (Guid id, AggregateRoot enity) ArrangeDifferentIdValue()
         {
             var id = Guid.Parse("779F525A-F0C6-45BF-9E16-AAF559EDAD18");
             var anotherId = Guid.Parse("47A3D698-7733-4EA4-AC8E-A22AA61DC279");
@@ -206,7 +206,7 @@ namespace Confab.Shared.Abstraction.Tests
             return (id, entity);
         }
 
-        private (int id, AggregateRoot enity) ArrangeDifferentIdType()
+        private static (int id, AggregateRoot enity) ArrangeDifferentIdType()
         {
             var id = 0;
             var anotherId = Guid.Parse("47A3D698-7733-4EA4-AC8E-A22AA61DC279");
