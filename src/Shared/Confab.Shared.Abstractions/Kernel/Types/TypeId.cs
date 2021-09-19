@@ -4,11 +4,6 @@ namespace Confab.Shared.Abstractions.Kernel.Types
 {
     public abstract class TypeId : IEquatable<TypeId>
     {
-        protected TypeId()
-            : this(Guid.NewGuid())
-        {
-        }
-
         protected TypeId(Guid id)
         {
             Value = id;
