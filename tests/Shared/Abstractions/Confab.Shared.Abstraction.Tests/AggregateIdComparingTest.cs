@@ -22,13 +22,13 @@ namespace Confab.Shared.Abstraction.Tests
 
         [Fact]
         public void
-            GIVEN_exactly_the_same_aggregate_id_type_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_method_THEN_they_are_equal()
+            GIVEN_guid_id_type_and_entity_WHEN_compare_entity_id_with_the_id_using_equal_operator_THEN_they_are_equal()
         {
             // arrange
-            var (id, entity) = ArrangeExactlyTheSameTypeOfIdAndTheSameIdValueWithDifferentReferences();
+            var (id, entity) = ArrangeTheSameIdValue();
 
             // act
-            var areEqual = id.Equals(entity.Id);
+            var areEqual = entity.Id == id;
 
             // assert
             Assert.True(areEqual);
@@ -50,13 +50,13 @@ namespace Confab.Shared.Abstraction.Tests
 
         [Fact]
         public void
-            GIVEN_guid_id_type_and_entity_WHEN_compare_entity_id_with_the_id_using_equal_operator_THEN_they_are_equal()
+            GIVEN_exactly_the_same_aggregate_id_type_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_method_THEN_they_are_equal()
         {
             // arrange
-            var (id, entity) = ArrangeTheSameIdValue();
+            var (id, entity) = ArrangeExactlyTheSameTypeOfIdAndTheSameIdValueWithDifferentReferences();
 
             // act
-            var areEqual = entity.Id == id;
+            var areEqual = id.Equals(entity.Id);
 
             // assert
             Assert.True(areEqual);
