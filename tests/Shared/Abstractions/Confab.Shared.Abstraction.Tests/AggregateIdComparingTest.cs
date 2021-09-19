@@ -6,11 +6,6 @@ namespace Confab.Shared.Abstraction.Tests
 {
     public class AggregateIdComparingTest
     {
-        public AggregateIdComparingTest()
-        {
-            ArrangeTheSameIdValue();
-        }
-
         [Fact]
         public void GIVEN_id_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_operator_THEN_they_are_equal()
         {
