@@ -22,6 +22,34 @@ namespace Confab.Shared.Abstraction.Tests
 
         [Fact]
         public void
+            GIVEN_exactly_the_same_aggregate_id_type_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_method_THEN_they_are_equal()
+        {
+            // arrange
+            var (id, entity) = ArrangeExactlyTheSameTypeOfIdAndTheSameIdValueWithDifferentReferences();
+
+            // act
+            var areEqual = id.Equals(entity.Id);
+
+            // assert
+            Assert.True(areEqual);
+        }
+
+        [Fact]
+        public void
+            GIVEN_exactly_the_same_aggregate_id_type_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_operator_THEN_they_are_equal()
+        {
+            // arrange
+            var (id, entity) = ArrangeExactlyTheSameTypeOfIdAndTheSameIdValueWithDifferentReferences();
+
+            // act
+            var areEqual = id == entity.Id;
+
+            // assert
+            Assert.True(areEqual);
+        }
+
+        [Fact]
+        public void
             GIVEN_guid_id_type_and_entity_WHEN_compare_entity_id_with_the_id_using_equal_operator_THEN_they_are_equal()
         {
             // arrange
@@ -183,6 +211,14 @@ namespace Confab.Shared.Abstraction.Tests
             var id = 0;
             var anotherId = Guid.Parse("47A3D698-7733-4EA4-AC8E-A22AA61DC279");
             var entity = new AggregateRootMock(anotherId);
+            return (id, entity);
+        }
+
+        private static (AggregateId, AggregateRoot enity) ArrangeExactlyTheSameTypeOfIdAndTheSameIdValueWithDifferentReferences()
+        {
+            var guid = "EE07E9AD-61AE-446D-AA40-D602CFA461F3";
+            var id = new AggregateId(Guid.Parse(guid));
+            var entity = new AggregateRootMock(new AggregateId(Guid.Parse(guid)));
             return (id, entity);
         }
 
