@@ -6,7 +6,7 @@ namespace Confab.Shared.Abstractions.Commands
     {
     }
 
-    public interface ICommand<TResult> : ICommand
+    public interface ICommand<TResult> : ICommand where TResult : class, ICommandResult
     {
     }
 }

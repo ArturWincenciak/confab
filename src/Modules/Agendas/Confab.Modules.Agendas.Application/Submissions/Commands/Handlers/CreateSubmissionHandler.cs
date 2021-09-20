@@ -9,7 +9,7 @@ using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
 {
-    internal sealed class CreateSubmissionHandler : ICommandHandler<CreateSubmission, Guid>
+    internal sealed class CreateSubmissionHandler : ICommandHandler<CreateSubmission, CreateSubmission.SubmissionId>
     {
         private readonly ISpeakerRepository _speakerRepository;
         private readonly ISubmissionRepository _submissionRepository;
@@ -20,7 +20,7 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
             _speakerRepository = speakerRepository;
         }
 
-        public async Task<Guid> HandleAsync(CreateSubmission command)
+        public async Task<CreateSubmission.SubmissionId> HandleAsync(CreateSubmission command)
         {
             var speakerIds = command.SpeakerIds.Select(x => new AggregateId(x));
             var speakers = await _speakerRepository.BrowseAsync(speakerIds);
@@ -34,7 +34,7 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
 
             await _submissionRepository.AddAsync(submission);
 
-            return submission.Id;
+            return new CreateSubmission.SubmissionId(submission.Id);
         }
     }
 }

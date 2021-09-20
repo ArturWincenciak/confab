@@ -4,6 +4,7 @@ namespace Confab.Shared.Abstractions.Commands
 {
     public interface ICommandDispatcher
     {
-        Task<TResult> SendAsync<TResult>(ICommand<TResult> command);
+        Task SendAsync(ICommand command);
+        Task<TResult> SendAsync<TResult>(ICommand<TResult> command) where TResult : class, ICommandResult;
     }
 }

@@ -29,8 +29,8 @@ namespace Confab.Modules.Agendas.Api.Controllers
         public async Task<ActionResult> CreateAsync(CreateSubmission command)
         {
             var createdId = await _commandDispatcher.SendAsync(command);
-            var createdSubmission = await _queryDispatcher.QueryAsync(new GetSubmission(createdId));
-            return CreatedAtAction("Get", new {Id = createdId }, createdSubmission);
+            var createdSubmission = await _queryDispatcher.QueryAsync(new GetSubmission(createdId.Id));
+            return CreatedAtAction("Get", new {createdId.Id}, createdSubmission);
         }
 
         [HttpPut("{id:guid}/approvals")]

@@ -5,7 +5,7 @@ using Confab.Shared.Abstractions.Commands;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
 {
-    internal sealed class ApproveSubmissionHandler : ICommandHandler<ApproveSubmission, bool>
+    internal sealed class ApproveSubmissionHandler : ICommandHandler<ApproveSubmission>
     {
         private readonly ISubmissionRepository _submissionRepository;
 
@@ -14,7 +14,7 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
             _submissionRepository = submissionRepository;
         }
 
-        public async Task<bool> HandleAsync(ApproveSubmission command)
+        public async Task HandleAsync(ApproveSubmission command)
         {
             var submission = await _submissionRepository.GetAsync(command.Id);
             if (submission is null)
@@ -23,8 +23,6 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
             submission.Approve();
 
             await _submissionRepository.UpdateAsync(submission);
-
-            return true; //todo: temp
         }
     }
 }

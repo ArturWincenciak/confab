@@ -18,13 +18,14 @@ Content-Type: application/json
 
 ### Add new
 # @name new_created_location
+# @name new_created_id
 POST {{url}}
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
     "ConferenceId": "a73d482c-3acd-4b5d-b0d5-fd3712872b31",
-    "Title": "Title of submission ### 04001",
+    "Title": "Title of submission ### 7004",
     "Description": "Descripton of submission",
     "Level": "1",
     "Tags": [ "tag_one", "tag_two", "tag_three"],
@@ -35,7 +36,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### ID variable
-@id = a73d482c-3acd-4b5d-b0d5-fd3712872b31
+@id = {{new_created_id.response.body.id}} 
 
 ### Get
 GET {{url}}/{{id}}
