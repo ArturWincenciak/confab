@@ -11,6 +11,7 @@ using Confab.Shared.Infrastructure.Commands;
 using Confab.Shared.Infrastructure.Contexts;
 using Confab.Shared.Infrastructure.Events;
 using Confab.Shared.Infrastructure.Exceptions;
+using Confab.Shared.Infrastructure.Kernel;
 using Confab.Shared.Infrastructure.Messaging;
 using Confab.Shared.Infrastructure.Modules;
 using Confab.Shared.Infrastructure.Postgres;
@@ -87,6 +88,7 @@ namespace Confab.Shared.Infrastructure
             services.AddCommands(assemblies);
             services.AddMessaging();
             services.AddEvents(assemblies);
+            services.AddDomainEvents(assemblies);
             services.AddQueries(assemblies);
             services.AddPostgres();
             services.AddSingleton<IClock, UtcClock>();
