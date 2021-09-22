@@ -25,11 +25,10 @@ namespace Confab.Shared.Infrastructure.Events
                 _logger.LogTrace($"Dispatching event: '{@event}'.");
 
                 using var scope = _serviceProvider.CreateScope();
-
                 var handlers = scope.ServiceProvider.GetServices<IEventHandler<TEvent>>();
                 if (!handlers.Any())
                 {
-                    _logger.LogTrace($"There is no handlers for event: '{@event}'.");
+                    _logger.LogTrace($"There are no handlers for event: '{@event}'.");
                     return;
                 }
 
@@ -48,7 +47,7 @@ namespace Confab.Shared.Infrastructure.Events
                 });
 
                 await Task.WhenAll(tasks);
-                _logger.LogTrace($"Event has been dispatched: '{@event}'.");
+                _logger.LogTrace($"Event has been dispatched to all handlers: '{@event}'.");
             }
             catch (Exception ex)
             {

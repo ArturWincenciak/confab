@@ -22,24 +22,10 @@ namespace Confab.Shared.Infrastructure.Queries
             try
             {
                 _logger.LogTrace($"Dispatching query: '{query}'.");
-
-                if (query is null)
-                {
-                    _logger.LogWarning("Query is null. Skipping call handler for the query.");
-                    return default;
-                }
-
                 using var scope = _serviceProvider.CreateScope();
                 var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
                 var handler = scope.ServiceProvider.GetRequiredService(handlerType);
-
                 var handleMethod = handlerType.GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync));
-                if (handleMethod is null)
-                {
-                    _logger.LogWarning($"Cannot get query handler method from handler type: '{handlerType}'.");
-                    return default;
-                }
-
                 var result = handleMethod.Invoke(handler, new[] {query});
                 return await (result as Task<TResult>);
             }
