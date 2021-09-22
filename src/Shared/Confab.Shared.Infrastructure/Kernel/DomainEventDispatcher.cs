@@ -21,7 +21,8 @@ namespace Confab.Shared.Infrastructure.Kernel
 
         public async Task SendAsync(params IDomainEvent[] events)
         {
-            _logger.LogTrace($"Dispatching domain events: '{string.Join<IDomainEvent>(";", events)}'.");
+            var eventsLog = string.Join<IDomainEvent>(";", events);
+            _logger.LogTrace($"Dispatching domain events: '{eventsLog}'.");
 
             using var scope = _serviceProvider.CreateScope();
 
@@ -48,6 +49,9 @@ namespace Confab.Shared.Infrastructure.Kernel
                 await Task.WhenAll(tasks);
                 _logger.LogTrace($"Event has been dispatched to all handlers: '{@event}'.");
             }
+
+            _logger.LogTrace(
+                $"All events has been dispatched to all handlers: '{eventsLog}'.");
         }
     }
 }
