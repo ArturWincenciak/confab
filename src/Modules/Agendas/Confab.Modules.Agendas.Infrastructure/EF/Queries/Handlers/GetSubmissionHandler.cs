@@ -20,13 +20,11 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
         {
             var submission = await _submissions
                 .AsNoTracking()
-                .Where(x => x.Id == query.Id) // it work correctly! why?
-                //.Where(x => x.Id.Equals(query.Id)) // it not work!
+                .Where(x => x.Id == query.Id)
                 .Include(x => x.Speakers)
                 .Select(x => Map(x))
                 .SingleOrDefaultAsync();
 
-            //return null;
             return submission;
         }
 
