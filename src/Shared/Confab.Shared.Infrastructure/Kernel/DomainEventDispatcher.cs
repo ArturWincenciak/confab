@@ -21,37 +21,45 @@ namespace Confab.Shared.Infrastructure.Kernel
 
         public async Task SendAsync(params IDomainEvent[] events)
         {
-            var eventsLog = string.Join<IDomainEvent>(";", events);
-            _logger.LogTrace($"Dispatching domain events: '{eventsLog}'.");
+            var eventsLog = string.Join(";", events ?? Enumerable.Empty<IDomainEvent>());
 
-            using var scope = _serviceProvider.CreateScope();
-
-            foreach (var @event in events)
+            try
             {
-                var eventType = @event.GetType();
-                var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
-                var handlers = scope.ServiceProvider.GetServices(handlerType);
-                if (!handlers.Any())
+                _logger.LogTrace($"Dispatching domain events: '{eventsLog}'.");
+
+                using var scope = _serviceProvider.CreateScope();
+
+                foreach (var @event in events)
                 {
-                    _logger.LogTrace($"There are no handlers for event: '{@event}'.");
-                    continue;
+                    var eventType = @event.GetType();
+                    var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
+                    var handlers = scope.ServiceProvider.GetServices(handlerType);
+                    if (!handlers.Any())
+                    {
+                        _logger.LogTrace($"There are no handlers for event: '{@event}'.");
+                        continue;
+                    }
+
+                    var tasks = new List<Task>();
+                    foreach (var handler in handlers)
+                    {
+                        var method = handlerType.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync));
+                        _logger.LogTrace($"Executing handler: '{handler}', with event: '{@event}'.");
+                        var task = (Task) method.Invoke(handler, new[] {@event});
+                        tasks.Add(task);
+                    }
+
+                    await Task.WhenAll(tasks);
+                    _logger.LogTrace($"Event has been dispatched to all handlers: '{@event}'.");
                 }
 
-                var tasks = new List<Task>();
-                foreach (var handler in handlers)
-                {
-                    var handlerMethod = handlerType.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync));
-                    _logger.LogTrace($"Executing handler: '{handler}', with event: '{@event}'.");
-                    var task = (Task) handlerMethod.Invoke(handler, new[] {@event});
-                    tasks.Add(task);
-                }
-
-                await Task.WhenAll(tasks);
-                _logger.LogTrace($"Event has been dispatched to all handlers: '{@event}'.");
+                _logger.LogTrace($"All events has been dispatched to all handlers: '{eventsLog}'.");
             }
-
-            _logger.LogTrace(
-                $"All events has been dispatched to all handlers: '{eventsLog}'.");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{ex.Message}; Event: '{eventsLog}'.");
+                throw;
+            }
         }
     }
 }
