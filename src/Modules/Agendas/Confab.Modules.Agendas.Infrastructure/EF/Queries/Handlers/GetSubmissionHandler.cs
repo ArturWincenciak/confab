@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Submissions.Queries;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;

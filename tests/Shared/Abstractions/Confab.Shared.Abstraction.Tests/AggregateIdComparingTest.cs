@@ -48,6 +48,7 @@ namespace Confab.Shared.Abstraction.Tests
             Assert.True(areEqual);
         }
 
+
         [Fact]
         public void
             GIVEN_exactly_the_same_aggregate_id_type_and_entity_WHEN_compare_the_id_with_entity_id_using_equal_method_THEN_they_are_equal()
@@ -214,7 +215,8 @@ namespace Confab.Shared.Abstraction.Tests
             return (id, entity);
         }
 
-        private static (AggregateId, AggregateRoot enity) ArrangeExactlyTheSameTypeOfIdAndTheSameIdValueWithDifferentReferences()
+        private static (AggregateId, AggregateRoot enity)
+            ArrangeExactlyTheSameTypeOfIdAndTheSameIdValueWithDifferentReferences()
         {
             var guid = "EE07E9AD-61AE-446D-AA40-D602CFA461F3";
             var id = new AggregateId(Guid.Parse(guid));

@@ -12,9 +12,9 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
     internal sealed class RejectSubmissionHandler : ICommandHandler<RejectSubmission>
     {
         private readonly IDomainEventDispatcher _domainEventDispatcher;
-        private readonly ISubmissionRepository _submissionRepository;
         private readonly IMessageBroker _messageBroker;
         private readonly IMessageMapper _messageMapper;
+        private readonly ISubmissionRepository _submissionRepository;
 
         public RejectSubmissionHandler(ISubmissionRepository submissionRepository,
             IDomainEventDispatcher domainEventDispatcher, IMessageBroker messageBroker, IMessageMapper messageMapper)

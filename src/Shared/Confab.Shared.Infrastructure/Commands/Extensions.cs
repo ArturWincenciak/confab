@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Confab.Shared.Abstractions.Commands;
 using Microsoft.Extensions.DependencyInjection;
-using Scrutor;
 
 namespace Confab.Shared.Infrastructure.Commands
 {

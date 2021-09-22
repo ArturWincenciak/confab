@@ -8,5 +8,5 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands
         IEnumerable<string> Tags, IEnumerable<Guid> SpeakerIds) : ICommand<CreateSubmission.SubmissionId>
     {
         public record SubmissionId(Guid Id) : ICommandResult;
-    };
+    }
 }

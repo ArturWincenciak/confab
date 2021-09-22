@@ -7,7 +7,8 @@ namespace Confab.Shared.Infrastructure.Kernel
 {
     internal static class Extensions
     {
-        public static IServiceCollection AddDomainEvents(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+        public static IServiceCollection AddDomainEvents(this IServiceCollection services,
+            IEnumerable<Assembly> assemblies)
         {
             services.AddSingleton<IDomainEventDispatcher, DomainEventDispatcher>();
             services.Scan(selector => selector.FromAssemblies(assemblies)

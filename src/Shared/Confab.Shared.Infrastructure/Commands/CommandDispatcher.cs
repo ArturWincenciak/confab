@@ -46,9 +46,9 @@ namespace Confab.Shared.Infrastructure.Commands
                 _logger.LogTrace($"Dispatching command: '{command}'.");
                 using var scope = _serviceProvider.CreateScope();
                 var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
-;               var handler = scope.ServiceProvider.GetRequiredService(handlerType);
-                var handleMethod = handlerType.GetMethod(nameof(ICommandHandler<ICommand<TResult>, TResult>.HandleAsync));
-                var result = handleMethod.Invoke(handler, new[] {command});
+                var handler = scope.ServiceProvider.GetRequiredService(handlerType);
+                var method = handlerType.GetMethod(nameof(ICommandHandler<ICommand<TResult>, TResult>.HandleAsync));
+                var result = method.Invoke(handler, new[] {command});
                 return await (result as Task<TResult>);
             }
             catch (Exception ex)
