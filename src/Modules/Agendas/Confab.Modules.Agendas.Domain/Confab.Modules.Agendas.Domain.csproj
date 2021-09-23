@@ -8,4 +8,8 @@
     <ProjectReference Include="..\..\..\Shared\Confab.Shared.Abstractions\Confab.Shared.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CallForPaper\Repositories\" />
+  </ItemGroup>
+
 </Project>
