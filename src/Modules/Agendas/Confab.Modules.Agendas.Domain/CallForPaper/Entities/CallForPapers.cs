@@ -13,15 +13,19 @@ namespace Confab.Modules.Agendas.Domain.CallForPaper.Entities
 
         private CallForPapers(AggregateId id) => Id = id;
 
-        private CallForPapers(AggregateId id, ConferenceId conferenceId, DateTime from, DateTime to, bool isOpened, int version = 0)
-        {
-            Id = id;
-            ConferenceId = conferenceId;
-            From = from;
-            To = to;
-            IsOpened = isOpened;
-            Version = version;
-        }
+        //------------------------------
+        //TODO: sprawdz czy bedzie EF dzialal z private - jesli tak to dodaj Issue do Confab
+        //------------------------------
+
+        //private CallForPapers(AggregateId id, ConferenceId conferenceId, DateTime from, DateTime to, bool isOpened, int version = 0)
+        //{
+        //    Id = id;
+        //    ConferenceId = conferenceId;
+        //    From = from;
+        //    To = to;
+        //    IsOpened = isOpened;
+        //    Version = version;
+        //}
 
         public static CallForPapers Create(Guid conferenceId, DateTime from, DateTime to)
         {
