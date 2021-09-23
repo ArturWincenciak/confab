@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Confab.Modules.Agendas.Api.Controllers;
 using Confab.Modules.Agendas.Application;
 using Confab.Modules.Agendas.Domain;
 using Confab.Modules.Agendas.Infrastructure;
@@ -17,7 +18,7 @@ namespace Confab.Modules.Agendas.Api
 
         public IEnumerable<string> Policies => new[]
         {
-            "agendas", "cfp", "submissions"
+            "agendas", CallForPapersController.Policy, "submissions"
         };
 
         public void Register(IServiceCollection services)

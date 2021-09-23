@@ -26,10 +26,12 @@ namespace Confab.Modules.Agendas.Domain.CallForPaper.Entities
         public static CallForPapers Create(Guid conferenceId, DateTime from, DateTime to)
         {
             var id = Guid.NewGuid();
-            var callForPaper = new CallForPapers(id);
-            callForPaper.ConferenceId = conferenceId;
+            var callForPaper = new CallForPapers(id)
+            {
+                ConferenceId = conferenceId,
+                IsOpened = false
+            };
             callForPaper.ChangeDateRange(from, to);
-            callForPaper.IsOpened = false;
             callForPaper.ClearEvents();
             return callForPaper;
         }
