@@ -4,23 +4,14 @@ using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 {
-    public sealed partial class RegularAgendaSlot : AgendaSlot
+    public sealed class RegularAgendaSlot : AgendaSlot
     {
-        public AgendaItem AgendaItem { get; private set; }
-    }
-
-    public sealed partial class RegularAgendaSlot : AgendaSlot
-    {
-        public RegularAgendaSlot(EntityId id)
-            : base(id)
-        {
-        }
-
         public int? ParticipantLimit { get; private set; }
+        public AgendaItem AgendaItem { get; }
 
         internal static RegularAgendaSlot Create(EntityId id, DateTime from, DateTime to, int? participantsLimit)
         {
-            var entity = new RegularAgendaSlot(id);
+            var entity = new RegularAgendaSlot {Id = id};
             entity.ChangeDateRange(from, to);
             entity.ChangeParticipantLimit(participantsLimit);
             return entity;

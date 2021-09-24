@@ -4,16 +4,12 @@ using Confab.Shared.Abstractions.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 {
-    public abstract partial class AgendaSlot
+    public abstract class AgendaSlot
     {
-        protected AgendaSlot(EntityId id)
-        {
-            Id = id;
-        }
-
-        public EntityId Id { get; }
+        public EntityId Id { get; protected set; }
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
+        public AgendaTrack Track { get; }
 
         protected void ChangeDateRange(DateTime from, DateTime to)
         {

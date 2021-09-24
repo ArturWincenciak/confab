@@ -6,16 +6,11 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 {
     public sealed class PlaceholderAgendaSlot : AgendaSlot
     {
-        public PlaceholderAgendaSlot(EntityId id)
-            : base(id)
-        {
-        }
-
         public string Placeholder { get; private set; }
 
         internal static PlaceholderAgendaSlot Create(EntityId id, DateTime from, DateTime to)
         {
-            var entity = new PlaceholderAgendaSlot(id);
+            var entity = new PlaceholderAgendaSlot {Id = id};
             entity.ChangeDateRange(from, to);
             return entity;
         }
