@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Confab.Modules.Agendas.Application.Submissions.Repositories;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
-using Confab.Modules.Agendas.Domain.Submissions.Repositories;
 using Confab.Shared.Abstractions.Events;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Events.Externals.Handlers

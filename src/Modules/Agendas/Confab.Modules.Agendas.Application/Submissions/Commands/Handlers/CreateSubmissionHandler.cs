@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Submissions.Exceptions;
+using Confab.Modules.Agendas.Application.Submissions.Repositories;
 using Confab.Modules.Agendas.Application.Submissions.Services;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
-using Confab.Modules.Agendas.Domain.Submissions.Repositories;
 using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Abstractions.Kernel;
 using Confab.Shared.Abstractions.Kernel.Types;
