@@ -10,12 +10,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
 {
     public sealed class Submission : AggregateRoot
     {
-        private Submission(AggregateId id, ConferenceId conferenceId)
-        {
-            (Id, ConferenceId) = (id, conferenceId);
-        }
-
-        public ConferenceId ConferenceId { get; }
+        public ConferenceId ConferenceId { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int Level { get; private set; }
@@ -33,7 +28,11 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
         private static Submission Create(AggregateId id, ConferenceId conferenceId, string title, string description,
             int level, IEnumerable<string> tags, IEnumerable<Speaker> speakers)
         {
-            var submission = new Submission(id, conferenceId);
+            var submission = new Submission
+            {
+                Id = id,
+                ConferenceId = conferenceId
+            };
             submission.ChangeTitle(title);
             submission.ChangeDescription(description);
             submission.ChangeLevel(level);
