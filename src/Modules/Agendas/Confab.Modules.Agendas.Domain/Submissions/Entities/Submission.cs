@@ -10,20 +10,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
 {
     public sealed class Submission : AggregateRoot
     {
-        public Submission(AggregateId id, ConferenceId conferenceId, string title, string description, int level,
-            string status, IEnumerable<string> tags, IEnumerable<Speaker> speakers, int version = 0)
-            : this(id, conferenceId)
-        {
-            Title = title;
-            Description = description;
-            Level = level;
-            Status = status;
-            Tags = tags;
-            Speakers = speakers.ToList();
-            Version = version;
-        }
-
-        public Submission(AggregateId id, ConferenceId conferenceId)
+        private Submission(AggregateId id, ConferenceId conferenceId)
         {
             (Id, ConferenceId) = (id, conferenceId);
         }
