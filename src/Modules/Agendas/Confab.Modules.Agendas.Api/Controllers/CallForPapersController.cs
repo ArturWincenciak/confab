@@ -31,9 +31,9 @@ namespace Confab.Modules.Agendas.Api.Controllers
             return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetCallForPapers(conferenceId)));
         }
 
-        public record ApiCreateCallForPapers(DateTime From, DateTime To);
+        public record CreateCallForPapersApi(DateTime From, DateTime To);
         [HttpPost]
-        public async Task<ActionResult> CreateAsync(Guid conferenceId, ApiCreateCallForPapers command)
+        public async Task<ActionResult> CreateAsync(Guid conferenceId, CreateCallForPapersApi command)
         {
             await _commandDispatcher.SendAsync(
                 new CreateCallForPapers(conferenceId, command.From, command.To));
