@@ -17,8 +17,7 @@ Content-Type: application/json
 }
 
 ### Add new
-# @name new_created_location
-# @name new_created_id
+# @name new_created
 POST {{url}}
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
@@ -36,13 +35,13 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### ID variable
-@id = {{new_created_id.response.body.id}} 
+@id = {{new_created.response.body.id}}
 
 ### Get
 GET {{url}}/{{id}}
 
 ### Arleady created location variable
-@hostLocation = {{new_created_location.response.headers.Location}}
+@hostLocation = {{new_created.response.headers.Location}}
 
 ### Get arleady created
 GET {{hostLocation}}
