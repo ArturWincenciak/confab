@@ -17,12 +17,12 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         public ICollection<Speaker> Speakers { get; private set; }
         public AgendaSlot AgendaSlot { get; }
 
-        public static AgendaItem Create(ConferenceId conferenceId, string title, string description, int level,
-            IEnumerable<string> tags, ICollection<Speaker> speakers)
+        public static AgendaItem Create(SubmissionId submissionId, ConferenceId conferenceId, string title,
+            string description, int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
         {
             var entity = new AgendaItem
             {
-                Id = Guid.NewGuid(),
+                Id = submissionId,
                 ConferenceId = conferenceId
             };
             entity.ChangeTitle(title);
@@ -35,7 +35,6 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 
         private void ChangeSpeakers(ICollection<Speaker> speakers)
         {
-
         }
 
         private void ChangeTags(IEnumerable<string> tags)
