@@ -5,6 +5,7 @@ using Confab.Modules.Agendas.Domain.Submissions.Constants;
 using Confab.Modules.Agendas.Domain.Submissions.Events;
 using Confab.Modules.Agendas.Domain.Submissions.Exceptions;
 using Confab.Shared.Abstractions.Kernel.Types;
+using Confab.Shared.Abstractions.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Domain.Submissions.Entities
 {

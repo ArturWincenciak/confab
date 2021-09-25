@@ -1,5 +1,6 @@
 using System;
 using Confab.Shared.Abstractions.Kernel.Types;
+using Confab.Shared.Abstractions.Kernel.Types.Base;
 using Xunit;
 
 namespace Confab.Shared.Abstraction.Tests

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Confab.Shared.Abstractions.Kernel.Types
+namespace Confab.Shared.Abstractions.Kernel.Types.Base
 {
     public abstract class TypeId : IEquatable<TypeId>
     {

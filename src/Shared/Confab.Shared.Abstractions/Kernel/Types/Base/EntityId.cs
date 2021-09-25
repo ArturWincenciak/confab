@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Confab.Shared.Abstractions.Kernel.Types
+namespace Confab.Shared.Abstractions.Kernel.Types.Base
 {
     public class EntityId : TypeId
     {

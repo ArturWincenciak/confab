@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
 using Confab.Modules.Agendas.Domain.Submissions.Exceptions;
 using Confab.Shared.Abstractions.Kernel.Types;
+using Confab.Shared.Abstractions.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 {

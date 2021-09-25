@@ -1,6 +1,7 @@
 ﻿using System;
 using Confab.Modules.Agendas.Domain.Agendas.Exceptions;
 using Confab.Shared.Abstractions.Kernel.Types;
+using Confab.Shared.Abstractions.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 {

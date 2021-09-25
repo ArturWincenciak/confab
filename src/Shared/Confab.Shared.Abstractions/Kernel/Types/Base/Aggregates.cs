@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Confab.Shared.Abstractions.Kernel.Types
+namespace Confab.Shared.Abstractions.Kernel.Types.Base
 {
     public abstract class AggregatesRoot<T>
     {
