@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Confab.Shared.Abstractions.Kernel.Types.Base
 {
-    public abstract class AggregatesRoot<T>
+    public abstract class AggregatesRoot<T> : IAggregateRoot
     {
         private readonly List<IDomainEvent> _events = new();
         private bool _incrementedVersion;
@@ -39,6 +40,14 @@ namespace Confab.Shared.Abstractions.Kernel.Types.Base
         {
             Version = 0;
             _incrementedVersion = false;
+        }
+
+        protected static TAggregateRoot Create<TAggregateRoot>(Func<TAggregateRoot> create)
+            where TAggregateRoot : IAggregateRoot
+        {
+            var entity = create();
+            entity.ClearEvents();
+            return entity;
         }
     }
 
