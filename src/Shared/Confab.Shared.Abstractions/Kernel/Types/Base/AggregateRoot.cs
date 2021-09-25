@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Confab.Shared.Abstractions.Kernel.Types.Base
 {
-    public abstract class AggregatesRoot<T> : IAggregateRoot
+    public abstract class AggregateRoot<T> : IAggregateRoot
     {
         private readonly List<IDomainEvent> _events = new();
         private bool _incrementedVersion;
@@ -57,7 +57,7 @@ namespace Confab.Shared.Abstractions.Kernel.Types.Base
         }
     }
 
-    public abstract class AggregateRoot : AggregatesRoot<AggregateId>
+    public abstract class AggregateRoot : AggregateRoot<AggregateId>
     {
     }
 }
