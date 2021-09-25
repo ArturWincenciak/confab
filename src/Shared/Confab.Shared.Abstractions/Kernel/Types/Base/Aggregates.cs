@@ -49,6 +49,12 @@ namespace Confab.Shared.Abstractions.Kernel.Types.Base
             entity.ClearEvents();
             return entity;
         }
+
+        protected void Apply(Action apply)
+        {
+            apply();
+            IncrementVersion();
+        }
     }
 
     public abstract class AggregateRoot : AggregatesRoot<AggregateId>

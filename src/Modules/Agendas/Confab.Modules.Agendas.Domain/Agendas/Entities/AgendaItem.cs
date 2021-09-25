@@ -78,11 +78,5 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 
             Apply(() => Title = title);
         }
-
-        private void Apply(Action apply)
-        {
-            apply();
-            IncrementVersion();
-        }
     }
 }
