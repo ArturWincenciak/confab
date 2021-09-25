@@ -42,10 +42,10 @@ namespace Confab.Shared.Abstractions.Kernel.Types.Base
             _incrementedVersion = false;
         }
 
-        protected static TAggregateRoot Create<TAggregateRoot>(Func<TAggregateRoot> create)
+        protected static TAggregateRoot Build<TAggregateRoot>(Func<TAggregateRoot> factory)
             where TAggregateRoot : IAggregateRoot
         {
-            var entity = create();
+            var entity = factory();
             entity.ClearEvents();
             return entity;
         }

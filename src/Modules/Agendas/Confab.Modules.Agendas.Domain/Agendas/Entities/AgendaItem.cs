@@ -15,14 +15,17 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         public string Title { get; private set; }
         public string Description { get; private set; }
         public int Level { get; private set; }
+
         public IEnumerable<string> Tags { get; set; }
+
         public ICollection<Speaker> Speakers { get; private set; }
+
         public AgendaSlot AgendaSlot { get; }
 
         public static AgendaItem Create(SubmissionId submissionId, ConferenceId conferenceId, string title,
             string description, int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
         {
-            return Create(() =>
+            return Build(() =>
             {
                 var entity = new AgendaItem
                 {
