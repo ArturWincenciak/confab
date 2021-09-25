@@ -22,17 +22,20 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         public static AgendaItem Create(SubmissionId submissionId, ConferenceId conferenceId, string title,
             string description, int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
         {
-            var entity = new AgendaItem
+            return Create(() =>
             {
-                Id = submissionId,
-                ConferenceId = conferenceId
-            };
-            entity.ChangeTitle(title);
-            entity.ChangeDescription(description);
-            entity.ChangeLevel(level);
-            entity.ChangeTags(tags);
-            entity.ChangeSpeakers(speakers);
-            return entity;
+                var entity = new AgendaItem
+                {
+                    Id = submissionId,
+                    ConferenceId = conferenceId
+                };
+                entity.ChangeTitle(title);
+                entity.ChangeDescription(description);
+                entity.ChangeLevel(level);
+                entity.ChangeTags(tags);
+                entity.ChangeSpeakers(speakers);
+                return entity;
+            });
         }
 
         private void ChangeSpeakers(ICollection<Speaker> speakers)
@@ -80,6 +83,13 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         {
             apply();
             IncrementVersion();
+        }
+
+        private static AgendaItem Create(Func<AgendaItem> create)
+        {
+            var entity = create();
+            entity.ClearEvents();
+            return entity;
         }
     }
 }
