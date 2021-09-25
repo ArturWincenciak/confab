@@ -84,12 +84,5 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
             apply();
             IncrementVersion();
         }
-
-        private static AgendaItem Create(Func<AgendaItem> create)
-        {
-            var entity = create();
-            entity.ClearEvents();
-            return entity;
-        }
     }
 }
