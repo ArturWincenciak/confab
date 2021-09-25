@@ -10,7 +10,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
         public string FullName { get; private set; }
         public ICollection<Submission> Submissions { get; }
 
-        public static Speaker Create(Guid id, string fullName)
+        public static Speaker Create(AggregateId id, string fullName)
         {
             if (string.IsNullOrWhiteSpace(fullName))
                 throw new EmptyFullnameOfSpeakerException(id);
