@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Agendas\Commands\" />
+    <Folder Include="Agendas\Events\" />
     <Folder Include="Submissions\Queries\" />
   </ItemGroup>
 
