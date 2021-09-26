@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Agendas\Commands\" />
     <Folder Include="Submissions\Queries\" />
   </ItemGroup>
 
