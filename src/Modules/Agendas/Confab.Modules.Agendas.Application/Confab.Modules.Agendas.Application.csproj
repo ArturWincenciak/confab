@@ -12,6 +12,7 @@
     <Folder Include="Agendas\Commands\" />
     <Folder Include="Agendas\Events\" />
     <Folder Include="Agendas\Exceptions\" />
+    <Folder Include="Agendas\Types\" />
     <Folder Include="Agendas\Queries\" />
     <Folder Include="Submissions\Queries\" />
   </ItemGroup>
