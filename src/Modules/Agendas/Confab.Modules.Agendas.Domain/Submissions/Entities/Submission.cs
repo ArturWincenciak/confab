@@ -90,7 +90,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
                 throw new InvalidSubmissionStatusException(Id, SubmissionStatus.Approved, Status);
 
             Status = SubmissionStatus.Approved;
-            AddEvent(new SubmissionApproved(Id));
+            AddEvent(new SubmissionApproved(this));
         }
 
         public void Reject()

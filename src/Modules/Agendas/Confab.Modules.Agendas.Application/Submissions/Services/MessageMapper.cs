@@ -13,7 +13,7 @@ namespace Confab.Modules.Agendas.Application.Submissions.Services
             return @event switch
             {
                 Domain.Submissions.Events.SubmissionAdded e => new SubmissionAdded(e.Submission.Id),
-                Domain.Submissions.Events.SubmissionApproved e => new SubmissionApproved(e.Id),
+                Domain.Submissions.Events.SubmissionApproved e => new SubmissionApproved(e.Submission.Id),
                 Domain.Submissions.Events.SubmissionRejected e => new SubmissionRejected(e.Id),
                 _ => null
             };
