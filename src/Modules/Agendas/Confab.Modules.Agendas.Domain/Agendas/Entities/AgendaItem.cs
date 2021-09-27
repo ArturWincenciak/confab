@@ -22,7 +22,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 
         public AgendaSlot AgendaSlot { get; }
 
-        public static AgendaItem Create(SubmissionId submissionId, ConferenceId conferenceId, string title,
+        public static AgendaItem Create(AggregateId submissionId, ConferenceId conferenceId, string title,
             string description, int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
         {
             return Build(() =>
