@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Agendas\Events\Handlers\" />
-    <Folder Include="Agendas\Servicies\" />
+    <Folder Include="Agendas\Services\" />
   </ItemGroup>
 
 </Project>
