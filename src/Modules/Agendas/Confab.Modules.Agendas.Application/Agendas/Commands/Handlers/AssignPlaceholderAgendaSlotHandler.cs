@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Confab.Shared.Abstractions.Commands;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
@@ -7,7 +8,7 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
     {
         public Task HandleAsync(AssignPlaceholderAgendaSlot command)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,7 +4,7 @@ using Confab.Shared.Abstractions.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Services
 {
-    internal interface IAgendaTracksDomainService
+    public interface IAgendaTracksDomainService
     {
         Task AssignAgendaItemAsync(AgendaTrack agendaTrack, EntityId agendaSlotId, AggregateId agendaItemId);
     }
