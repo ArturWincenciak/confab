@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Agendas\Commands\Handlers\" />
     <Folder Include="Agendas\Events\" />
     <Folder Include="Agendas\Exceptions\" />
     <Folder Include="Agendas\Types\" />
