@@ -26,7 +26,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
             return entity;
         }
 
-        private void ChangeName(string name)
+        public void ChangeName(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new EmptyAgendaTrackNameException(Id);
