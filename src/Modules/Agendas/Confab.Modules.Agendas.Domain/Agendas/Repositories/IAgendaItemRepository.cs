@@ -12,9 +12,4 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Repositories
         Task<AgendaItem> GetAsync(AggregateId id);
         Task AddAsync(AgendaItem entity);
     }
-
-    public interface IAgendaTrackRepository
-    {
-
-    }
 }
