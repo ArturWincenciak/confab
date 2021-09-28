@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Confab.Modules.Agendas.Domain.Agendas.Exceptions;
 using Confab.Shared.Abstractions.Kernel.Types;
 using Confab.Shared.Abstractions.Kernel.Types.Base;
 
@@ -26,7 +28,68 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 
         private void ChangeName(string name)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(name))
+                throw new EmptyAgendaTrackNameException(Id);
+
+            Apply(() => Name = name);
+        }
+
+        public void AddRegularSlot(EntityId id, DateTime from, DateTime to, int? participantsLimit)
+        {
+            ValidateTimeConflict(from, to);
+
+            Apply(() =>
+            {
+                var slot = RegularAgendaSlot.Create(id, from, to, participantsLimit);
+                Slots.Add(slot);
+            });
+        }
+
+        public void AddPlaceholderSlot(EntityId id, DateTime from, DateTime to)
+        {
+            ValidateTimeConflict(from, to);
+
+            Apply(() =>
+            {
+                var slot = PlaceholderAgendaSlot.Create(id, from, to);
+                Slots.Add(slot);
+            });
+        }
+
+        public void ChangeSlotPlaceholder(EntityId id, string placeholder)
+        {
+            var slot = Slots.FirstOrDefault(x => x.Id == id);
+            if (slot is null)
+                throw new AgendaSlotNotFoundException(id);
+
+            if (slot is not PlaceholderAgendaSlot placeholderAgendaSlot)
+                throw new InvalidAgendaSlotTypeException(id);
+
+            Apply(() =>
+            {
+                placeholderAgendaSlot.ChangePlaceholder(placeholder);
+            });
+        }
+
+        internal void ChangeSlotAgendaItem(EntityId agendaSlotId, AgendaItem agendaItem)
+        {
+            var slot = Slots.FirstOrDefault(x => x.Id == agendaSlotId);
+            if (slot is null)
+                throw new AgendaSlotNotFoundException(agendaSlotId);
+
+            if (slot is not RegularAgendaSlot regularAgendaSlot)
+                throw new InvalidAgendaSlotTypeException(agendaSlotId);
+
+            regularAgendaSlot.ChangeAgendaItem(agendaItem);
+        }
+
+        private void ValidateTimeConflict(DateTime from, DateTime to)
+        {
+            var hasConflictingSlots = Slots
+                .Any(x => (x.From <= from && x.To >= from) || (x.From <= to && x.To >= to));
+
+            if (hasConflictingSlots)
+                throw new ConflictingAgendaSlotException(from, to);
         }
     }
 }

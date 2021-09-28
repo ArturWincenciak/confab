@@ -7,7 +7,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
     public sealed class RegularAgendaSlot : AgendaSlot
     {
         public int? ParticipantLimit { get; private set; }
-        public AgendaItem AgendaItem { get; }
+        public AgendaItem AgendaItem { get; private set; }
 
         internal static RegularAgendaSlot Create(EntityId id, DateTime from, DateTime to, int? participantsLimit)
         {
@@ -23,6 +23,11 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
                 throw new NegativeParticipantLimitException(Id);
 
             ParticipantLimit = participantsLimit;
+        }
+
+        internal void ChangeAgendaItem(AgendaItem agendaItem)
+        {
+            AgendaItem = agendaItem;
         }
     }
 }
