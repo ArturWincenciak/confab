@@ -18,7 +18,7 @@ namespace Confab.Modules.Agendas.Api
 
         public IEnumerable<string> Policies => new[]
         {
-            "agendas", CallForPapersController.Policy, "submissions"
+            AgendasController.Policy, CallForPapersController.Policy, "submissions"
         };
 
         public void Register(IServiceCollection services)

@@ -1,4 +1,5 @@
-﻿using Confab.Shared.Abstractions.Queries;
+﻿using System;
+using Confab.Shared.Abstractions.Queries;
 using Confab.Shared.Infrastructure.Api;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,11 @@ namespace Confab.Modules.Agendas.Api.Controllers
         private ActionResult<T> WhatNotFound<T>(object what)
         {
             return what is { } ? NotFound(what) : NotFound();
+        }
+
+        protected void AddResourceIdHeader(Guid id)
+        {
+            Response.Headers.Add("Resource-ID", id.ToString());
         }
     }
 }

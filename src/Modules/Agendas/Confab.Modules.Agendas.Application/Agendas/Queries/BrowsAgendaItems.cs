@@ -5,7 +5,7 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Queries
 {
-    public sealed record BrowsAgendaItems() : IQuery<BrowsAgendaItems.AgendaItemsDto>
+    public sealed record BrowsAgendaItems(Guid ConferenceId) : IQuery<BrowsAgendaItems.AgendaItemsDto>
     {
         //todo: sprawdz czy deserializator ogarnie ze to jest IEnumerable i zwróci kolekcę :)
         public sealed class AgendaItemsDto : IEnumerable<AgendaItemDto>, IQueryResult
