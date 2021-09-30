@@ -9,8 +9,9 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         public int? ParticipantLimit { get; private set; }
         public AgendaItem AgendaItem { get; private set; }
 
-        internal static RegularAgendaSlot Create(EntityId id, DateTime from, DateTime to, int? participantsLimit)
+        public static RegularAgendaSlot Create(DateTime from, DateTime to, int? participantsLimit)
         {
+            var id = Guid.NewGuid();
             var entity = new RegularAgendaSlot {Id = id};
             entity.ChangeDateRange(from, to);
             entity.ChangeParticipantLimit(participantsLimit);

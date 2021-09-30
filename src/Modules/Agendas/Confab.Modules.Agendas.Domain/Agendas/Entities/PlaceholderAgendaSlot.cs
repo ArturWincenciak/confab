@@ -8,8 +8,9 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
     {
         public string Placeholder { get; private set; }
 
-        internal static PlaceholderAgendaSlot Create(EntityId id, DateTime from, DateTime to)
+        internal static PlaceholderAgendaSlot Create(DateTime from, DateTime to)
         {
+            var id = Guid.NewGuid();
             var entity = new PlaceholderAgendaSlot {Id = id};
             entity.ChangeDateRange(from, to);
             return entity;
