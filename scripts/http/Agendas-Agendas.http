@@ -1,0 +1,23 @@
+@host = http://localhost:5000
+@api = {{host}}/agendas-module
+@url = {{api}}/agendas
+
+@email = teo@vincent.com
+@password = sicret
+@accessToken = {{access_token.response.body.accessToken}}
+
+### Get access token for the user
+# @name access_token
+POST {{host}}/users-module/account/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+@conferenceId = ...
+
+### Get Agenda Track
+GET {{url}}/{{conferenceId}}
+Content-Type: application/json
