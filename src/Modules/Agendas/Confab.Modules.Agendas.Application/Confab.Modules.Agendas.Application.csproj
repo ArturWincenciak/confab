@@ -13,7 +13,6 @@
     <Folder Include="Agendas\Exceptions\" />
     <Folder Include="Agendas\Types\" />
     <Folder Include="Agendas\Queries\" />
-    <Folder Include="Submissions\Queries\" />
   </ItemGroup>
 
 </Project>

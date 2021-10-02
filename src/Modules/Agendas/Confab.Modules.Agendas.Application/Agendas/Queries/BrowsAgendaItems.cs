@@ -8,7 +8,7 @@ namespace Confab.Modules.Agendas.Application.Agendas.Queries
     public sealed record BrowsAgendaItems(Guid ConferenceId) : IQuery<BrowsAgendaItems.AgendaItemsDto>
     {
         //todo: sprawdz czy deserializator ogarnie ze to jest IEnumerable i zwróci kolekcę :)
-        public sealed class AgendaItemsDto : IEnumerable<AgendaItemDto>, IQueryResult
+        public sealed class AgendaItemsDto : IEnumerable<AgendaItemsDto.AgendaItemDto>, IQueryResult
         {
             private readonly IEnumerable<AgendaItemDto> _agendaItem;
 
@@ -26,11 +26,12 @@ namespace Confab.Modules.Agendas.Application.Agendas.Queries
             {
                 return GetEnumerator();
             }
+
+            public sealed record AgendaItemDto(Guid Id, Guid ConferenceId, string Title, string Description, int Level,
+                IEnumerable<string> Tags, IEnumerable<AgendaItemDto.SpeakerDto> Speakers)
+            {
+                public sealed record SpeakerDto(Guid Id, string FullName);
+            }
         }
-
-        public sealed record AgendaItemDto(Guid Id, Guid ConferenceId, string Title, string Description, int Level,
-            IEnumerable<string> Tags, IEnumerable<SpeakerDto> Speakers);
-
-        public sealed record SpeakerDto(Guid Id, string FullName);
     }
 }
