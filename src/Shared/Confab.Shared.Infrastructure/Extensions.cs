@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions;
 using Confab.Shared.Abstractions.Modules;
+using Confab.Shared.Abstractions.Storage;
 using Confab.Shared.Infrastructure.Api;
 using Confab.Shared.Infrastructure.Auth;
 using Confab.Shared.Infrastructure.Commands;
@@ -17,6 +18,7 @@ using Confab.Shared.Infrastructure.Modules;
 using Confab.Shared.Infrastructure.Postgres;
 using Confab.Shared.Infrastructure.Queries;
 using Confab.Shared.Infrastructure.Services;
+using Confab.Shared.Infrastructure.Storage;
 using Confab.Shared.Infrastructure.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -76,8 +78,11 @@ namespace Confab.Shared.Infrastructure
                 {
                     Title = "Confab API",
                     Version = "v1"
-                });
+               });
             });
+
+            services.AddMemoryCache();
+            services.AddSingleton<IRequestStorage, RequestStorage>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IContextFactory, ContextFactory>();
             services.AddTransient(sp => sp.GetRequiredService<IContextFactory>().Create());
