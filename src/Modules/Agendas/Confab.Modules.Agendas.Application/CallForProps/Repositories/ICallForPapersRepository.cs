@@ -2,7 +2,7 @@
 using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
 using Confab.Shared.Abstractions.Kernel.Types;
 
-namespace Confab.Modules.Agendas.Application.Submissions.Repositories
+namespace Confab.Modules.Agendas.Application.CallForProps.Repositories
 {
     public interface ICallForPapersRepository
     {
