@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.CallForProps.Events;
 using Confab.Modules.Agendas.Application.CallForProps.Exceptions;
+using Confab.Modules.Agendas.Application.Submissions.Repositories;
 using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
-using Confab.Modules.Agendas.Domain.CallForPaper.Repositories;
 using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Abstractions.Messaging;
 
