@@ -34,7 +34,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .Where(x => x.ConferenceId == query.ConferenceId)
                 .ToListAsync();
 
-            var agendaTracksDto = agendaTracks?.Select(x => AsDto(x));
+            var agendaTracksDto = agendaTracks?.Select(AsDto);
             var resultDto = new GetAgenda.AgendaDto(agendaTracksDto);
 
             _requestStorage.Set(storageKey, resultDto, TimeSpan.FromSeconds(5));
