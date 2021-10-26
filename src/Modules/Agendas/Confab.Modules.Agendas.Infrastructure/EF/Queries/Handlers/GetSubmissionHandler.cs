@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class GetSubmissionHandler : IQueryHandler<GetSubmission, GetSubmission.SubmissionDto>
+    internal sealed class GetSubmissionHandler : IQueryHandler<GetSubmission, GetSubmission.Result>
     {
         private readonly DbSet<Submission> _submissions;
 
@@ -16,7 +16,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             _submissions = dbContext.Submissions;
         }
 
-        public async Task<GetSubmission.SubmissionDto> HandleAsync(GetSubmission query)
+        public async Task<GetSubmission.Result> HandleAsync(GetSubmission query)
         {
             var submission = await _submissions
                 .AsNoTracking()
@@ -28,11 +28,11 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             return submission;
         }
 
-        private static GetSubmission.SubmissionDto Map(Submission entity)
+        private static GetSubmission.Result Map(Submission entity)
         {
-            return new GetSubmission.SubmissionDto(entity.Id, entity.ConferenceId, entity.Title, entity.Description,
+            return new GetSubmission.Result(entity.Id, entity.ConferenceId, entity.Title, entity.Description,
                 entity.Level, entity.Status, entity.Tags,
-                entity.Speakers.Select(x => new GetSubmission.SpeakerDto(x.Id, x.FullName)));
+                entity.Speakers.Select(x => new GetSubmission.Result.SpeakerDto(x.Id, x.FullName)));
         }
     }
 }

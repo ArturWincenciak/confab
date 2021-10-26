@@ -25,21 +25,21 @@ namespace Confab.Modules.Agendas.Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<GetAgendaTrack.AgendaTrackDto>> GetAgendaTrackAsync(Guid conferenceId)
+        public async Task<ActionResult<GetAgendaTrack.Result>> GetAgendaTrackAsync(Guid conferenceId)
         {
             return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgendaTrack(conferenceId)));
         }
 
         [HttpGet("items")]
         [AllowAnonymous]
-        public async Task<ActionResult<GetAgenda.AgendaDto>> GetAgendaAsync(Guid conferenceId)
+        public async Task<ActionResult<GetAgenda.Result>> GetAgendaAsync(Guid conferenceId)
         {
             return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgenda(conferenceId)));
         }
 
         [HttpGet("items/{id:guid}")]
         [AllowAnonymous]
-        public async Task<ActionResult<BrowsAgendaItems.AgendaItemsDto>> BrowseAgendaItemsAsync(Guid conferenceId)
+        public async Task<ActionResult<BrowsAgendaItems.Result>> BrowseAgendaItemsAsync(Guid conferenceId)
         {
             return OkOrNotFound(await _queryDispatcher.QueryAsync(new BrowsAgendaItems(conferenceId)));
         }

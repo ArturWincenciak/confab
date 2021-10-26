@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class GetAgendaItemHandler : IQueryHandler<GetAgendaItem, GetAgendaItem.AgendaItemDto>
+    internal sealed class GetAgendaItemHandler : IQueryHandler<GetAgendaItem, GetAgendaItem.Result>
     {
         private readonly DbSet<AgendaItem> _agendaItems;
 
@@ -16,7 +16,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             _agendaItems = context.AgendaItems;
         }
 
-        public async Task<GetAgendaItem.AgendaItemDto> HandleAsync(GetAgendaItem query)
+        public async Task<GetAgendaItem.Result> HandleAsync(GetAgendaItem query)
         {
             return await _agendaItems
                 .AsNoTracking()
@@ -26,9 +26,9 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .FirstOrDefaultAsync();
         }
 
-        private static GetAgendaItem.AgendaItemDto AsDto(AgendaItem entity)
+        private static GetAgendaItem.Result AsDto(AgendaItem entity)
         {
-            return new GetAgendaItem.AgendaItemDto
+            return new GetAgendaItem.Result
             (
                 entity.Id,
                 entity.ConferenceId,
@@ -36,7 +36,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 entity.Description,
                 entity.Level,
                 entity.Tags,
-                entity.Speakers.Select(entitySpeaker => new GetAgendaItem.SpeakerDto(
+                entity.Speakers.Select(entitySpeaker => new GetAgendaItem.Result.SpeakerDto(
                     entitySpeaker.Id, entitySpeaker.FullName))
             );
         }

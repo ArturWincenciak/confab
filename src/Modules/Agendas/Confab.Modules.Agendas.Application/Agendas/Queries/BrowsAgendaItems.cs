@@ -5,14 +5,13 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Queries
 {
-    public sealed record BrowsAgendaItems(Guid ConferenceId) : IQuery<BrowsAgendaItems.AgendaItemsDto>
+    public sealed record BrowsAgendaItems(Guid ConferenceId) : IQuery<BrowsAgendaItems.Result>
     {
-        //todo: sprawdz czy deserializator ogarnie ze to jest IEnumerable i zwróci kolekcę :)
-        public sealed class AgendaItemsDto : IEnumerable<AgendaItemsDto.AgendaItemDto>, IQueryResult
-        {
+        //todo: test how it will be serialized
+        public sealed class Result : IEnumerable<Result.AgendaItemDto>, IQueryResult         {
             private readonly IEnumerable<AgendaItemDto> _agendaItem;
 
-            public AgendaItemsDto(IEnumerable<AgendaItemDto> agendaItem)
+            public Result(IEnumerable<AgendaItemDto> agendaItem)
             {
                 _agendaItem = agendaItem;
             }

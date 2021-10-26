@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class BrowseAgendaItemsHandler : IQueryHandler<BrowsAgendaItems, BrowsAgendaItems.AgendaItemsDto>
+    internal sealed class BrowseAgendaItemsHandler : IQueryHandler<BrowsAgendaItems, BrowsAgendaItems.Result>
     {
         private readonly DbSet<AgendaItem> _agendaItems;
 
@@ -17,7 +17,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             _agendaItems = context.AgendaItems;
         }
 
-        public async Task<BrowsAgendaItems.AgendaItemsDto> HandleAsync(BrowsAgendaItems query)
+        public async Task<BrowsAgendaItems.Result> HandleAsync(BrowsAgendaItems query)
         {
             var items = await _agendaItems
                 .AsNoTracking()
@@ -26,12 +26,12 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .Select(x => AsDto(x))
                 .ToListAsync();
 
-            return new BrowsAgendaItems.AgendaItemsDto(items);
+            return new BrowsAgendaItems.Result(items);
         }
 
-        private BrowsAgendaItems.AgendaItemsDto.AgendaItemDto AsDto(AgendaItem agendaItem)
+        private BrowsAgendaItems.Result.AgendaItemDto AsDto(AgendaItem agendaItem)
         {
-            return new BrowsAgendaItems.AgendaItemsDto.AgendaItemDto(
+            return new BrowsAgendaItems.Result.AgendaItemDto(
                 agendaItem.Id,
                 agendaItem.ConferenceId,
                 agendaItem.Title,
@@ -41,9 +41,9 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 agendaItem.Speakers.Select(AsDto));
         }
 
-        private static BrowsAgendaItems.AgendaItemsDto.AgendaItemDto.SpeakerDto AsDto(Speaker agendaItemSpeaker)
+        private static BrowsAgendaItems.Result.AgendaItemDto.SpeakerDto AsDto(Speaker agendaItemSpeaker)
         {
-            return new BrowsAgendaItems.AgendaItemsDto.AgendaItemDto.SpeakerDto(
+            return new BrowsAgendaItems.Result.AgendaItemDto.SpeakerDto(
                 agendaItemSpeaker.Id,
                 agendaItemSpeaker.FullName);
         }

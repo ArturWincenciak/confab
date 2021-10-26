@@ -5,13 +5,14 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Queries
 {
-    public sealed record GetAgenda(Guid ConferenceId) : IQuery<GetAgenda.AgendaDto>
+    public sealed record GetAgenda(Guid ConferenceId) : IQuery<GetAgenda.Result>
     {
-        public class AgendaDto : IEnumerable<AgendaTrackDto>, IQueryResult
+        //todo: test how it will be serialized
+        public class Result : IEnumerable<Result.AgendaTrackDto>, IQueryResult
         {
             private readonly IEnumerable<AgendaTrackDto> _agendaTracks;
 
-            public AgendaDto(IEnumerable<AgendaTrackDto> agendaTracks)
+            public Result(IEnumerable<AgendaTrackDto> agendaTracks)
             {
                 _agendaTracks = agendaTracks;
             }
@@ -25,9 +26,8 @@ namespace Confab.Modules.Agendas.Application.Agendas.Queries
             {
                 return GetEnumerator();
             }
-        }
 
-        //todo: dlaczego tutaj jest sloty są objectami?
-        public sealed record AgendaTrackDto(Guid Id, Guid ConferenceId, string Name, IEnumerable<object> Slots);
+            public sealed record AgendaTrackDto(Guid Id, Guid ConferenceId, string Name, IEnumerable<object> Slots);
+        }
     }
 }

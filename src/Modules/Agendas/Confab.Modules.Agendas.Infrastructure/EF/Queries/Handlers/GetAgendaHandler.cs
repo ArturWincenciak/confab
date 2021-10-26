@@ -3,13 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Agendas.Queries;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
+using Confab.Modules.Agendas.Infrastructure.EF.Mappings;
 using Confab.Shared.Abstractions.Queries;
 using Confab.Shared.Abstractions.Storage;
 using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class GetAgendaHandler : IQueryHandler<GetAgenda, GetAgenda.AgendaDto>
+    internal sealed class GetAgendaHandler : IQueryHandler<GetAgenda, GetAgenda.Result>
     {
         private readonly DbSet<AgendaTrack> _agendaTracks;
         private readonly IRequestStorage _requestStorage;
@@ -20,10 +21,10 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             _requestStorage = requestStorage;
         }
 
-        public async Task<GetAgenda.AgendaDto> HandleAsync(GetAgenda query)
+        public async Task<GetAgenda.Result> HandleAsync(GetAgenda query)
         {
             var storageKey = GetStorageKey(query.ConferenceId);
-            var cached = _requestStorage.Get<GetAgenda.AgendaDto>(storageKey);
+            var cached = _requestStorage.Get<GetAgenda.Result>(storageKey);
             if (cached is not null)
                 return cached;
 
@@ -35,21 +36,21 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .ToListAsync();
 
             var agendaTracksDto = agendaTracks?.Select(AsDto);
-            var resultDto = new GetAgenda.AgendaDto(agendaTracksDto);
+            var resultDto = new GetAgenda.Result(agendaTracksDto);
 
             _requestStorage.Set(storageKey, resultDto, TimeSpan.FromSeconds(5));
 
             return resultDto;
         }
 
-        private static GetAgenda.AgendaTrackDto AsDto(AgendaTrack agendaTrack)
+        private static GetAgenda.Result.AgendaTrackDto AsDto(AgendaTrack agendaTrack)
         {
-            return new GetAgenda.AgendaTrackDto
+            return new GetAgenda.Result.AgendaTrackDto
             (
                 agendaTrack.Id,
                 agendaTrack.ConferenceId,
                 agendaTrack.Name,
-                agendaTrack.Slots
+               MappingsExtension.AsDto(agendaTrack.Slots)
             );
         }
 

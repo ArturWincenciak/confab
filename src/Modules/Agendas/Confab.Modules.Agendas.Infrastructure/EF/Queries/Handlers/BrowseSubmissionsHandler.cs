@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class BrowseSubmissionsHandler : IQueryHandler<BrowseSubmissions, BrowseSubmissions.SubmissionsDto>
+    internal sealed class BrowseSubmissionsHandler : IQueryHandler<BrowseSubmissions, BrowseSubmissions.Result>
     {
         private readonly DbSet<Submission> _submissions;
 
@@ -16,7 +16,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             _submissions = dbContext.Submissions;
         }
 
-        public async Task<BrowseSubmissions.SubmissionsDto> HandleAsync(BrowseSubmissions query)
+        public async Task<BrowseSubmissions.Result> HandleAsync(BrowseSubmissions query)
         {
             var submissions = _submissions
                 .AsNoTracking()
@@ -33,12 +33,12 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .Select(x => AsDto(x))
                 .ToListAsync();
 
-            return new BrowseSubmissions.SubmissionsDto(submissionsDto);
+            return new BrowseSubmissions.Result(submissionsDto);
         }
 
-        private static BrowseSubmissions.SubmissionsDto.SubmissionDto AsDto(Submission submission)
+        private static BrowseSubmissions.Result.SubmissionDto AsDto(Submission submission)
         {
-            return new BrowseSubmissions.SubmissionsDto.SubmissionDto
+            return new BrowseSubmissions.Result.SubmissionDto
             (
                 submission.Id,
                 submission.ConferenceId,
@@ -51,9 +51,9 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             );
         }
 
-        private static BrowseSubmissions.SubmissionsDto.SubmissionDto.SpeakerDto AsDto(Speaker submissionSpeaker)
+        private static BrowseSubmissions.Result.SubmissionDto.SpeakerDto AsDto(Speaker submissionSpeaker)
         {
-            return new BrowseSubmissions.SubmissionsDto.SubmissionDto.SpeakerDto(submissionSpeaker.Id,
+            return new BrowseSubmissions.Result.SubmissionDto.SpeakerDto(submissionSpeaker.Id,
                 submissionSpeaker.FullName);
         }
     }

@@ -3,7 +3,7 @@ using Confab.Modules.Agendas.Domain.Agendas.Entities;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Types
 {
-    internal static class AgendaSlotType
+    public static class AgendaSlotType
     {
         public const string Regular = "regular";
         public const string Placeholder = "placeholder";

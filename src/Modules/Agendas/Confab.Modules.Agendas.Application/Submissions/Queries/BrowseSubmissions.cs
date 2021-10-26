@@ -6,14 +6,14 @@ using Confab.Shared.Abstractions.Queries;
 namespace Confab.Modules.Agendas.Application.Submissions.Queries
 {
     public sealed record BrowseSubmissions
-        (Guid? ConferenceId, Guid? SpeakerId) : IQuery<BrowseSubmissions.SubmissionsDto>
+        (Guid? ConferenceId, Guid? SpeakerId) : IQuery<BrowseSubmissions.Result>
     {
-        //todo: sprawdz czy deserializator ogarnie ze to jest IEnumerable i zwróci kolekcę :)
-        public sealed class SubmissionsDto : IEnumerable<SubmissionsDto.SubmissionDto>, IQueryResult
+        //todo: test how it will be serialized
+        public sealed class Result : IEnumerable<Result.SubmissionDto>, IQueryResult
         {
             private readonly IEnumerable<SubmissionDto> _submissions;
 
-            public SubmissionsDto(IEnumerable<SubmissionDto> submissions)
+            public Result(IEnumerable<SubmissionDto> submissions)
             {
                 _submissions = submissions;
             }

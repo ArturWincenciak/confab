@@ -20,7 +20,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<GetSubmission.SubmissionDto>> GetAsync(Guid id)
+        public async Task<ActionResult<GetSubmission.Result>> GetAsync(Guid id)
         {
             return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetSubmission(id)));
         }

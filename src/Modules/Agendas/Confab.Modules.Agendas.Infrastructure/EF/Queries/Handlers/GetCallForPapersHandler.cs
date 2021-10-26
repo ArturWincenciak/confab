@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
 {
-    internal sealed class GetCallForPapersHandler : IQueryHandler<GetCallForPapers, GetCallForPapers.CallForPapersDto>
+    internal sealed class GetCallForPapersHandler : IQueryHandler<GetCallForPapers, GetCallForPapers.Result>
     {
         private readonly DbSet<CallForPapers> _callForPapers;
 
@@ -16,7 +16,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             _callForPapers = context.CallForPapers;
         }
 
-        public async Task<GetCallForPapers.CallForPapersDto> HandleAsync(GetCallForPapers query)
+        public async Task<GetCallForPapers.Result> HandleAsync(GetCallForPapers query)
         {
             return await _callForPapers
                 .AsNoTracking()
@@ -25,9 +25,9 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .SingleOrDefaultAsync();
         }
 
-        private static GetCallForPapers.CallForPapersDto AsDto(CallForPapers callForPapers)
+        private static GetCallForPapers.Result AsDto(CallForPapers callForPapers)
         {
-            return new GetCallForPapers.CallForPapersDto
+            return new GetCallForPapers.Result
             (
                 callForPapers.Id,
                 callForPapers.ConferenceId,

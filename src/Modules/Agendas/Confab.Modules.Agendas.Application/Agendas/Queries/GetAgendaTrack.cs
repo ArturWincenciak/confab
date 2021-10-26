@@ -4,10 +4,9 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Queries
 {
-    public sealed record GetAgendaTrack(Guid Id) : IQuery<GetAgendaTrack.AgendaTrackDto>
+    public sealed record GetAgendaTrack(Guid Id) : IQuery<GetAgendaTrack.Result>
     {
-        //todo: why slots are objects
-        public sealed record AgendaTrackDto(Guid Id, Guid ConferenceId, string Name,
+        public sealed record Result(Guid Id, Guid ConferenceId, string Name,
             IEnumerable<object> Slots) : IQueryResult;
     }
 }

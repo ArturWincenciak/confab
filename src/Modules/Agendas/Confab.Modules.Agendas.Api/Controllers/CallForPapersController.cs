@@ -26,7 +26,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<GetCallForPapers.CallForPapersDto>> GetAsync(Guid conferenceId)
+        public async Task<ActionResult<GetCallForPapers.Result>> GetAsync(Guid conferenceId)
         {
             return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetCallForPapers(conferenceId)));
         }
