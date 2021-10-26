@@ -5,8 +5,7 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Queries
 {
-    public sealed record BrowseSubmissions
-        (Guid? ConferenceId, Guid? SpeakerId) : IQuery<BrowseSubmissions.Result>
+    public sealed record BrowseSubmissions(Guid? ConferenceId, Guid? SpeakerId) : IQuery<BrowseSubmissions.Result>
     {
         //todo: test how it will be serialized
         public sealed class Result : IEnumerable<Result.SubmissionDto>, IQueryResult
