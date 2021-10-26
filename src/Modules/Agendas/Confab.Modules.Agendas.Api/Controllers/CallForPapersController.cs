@@ -40,7 +40,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
             return CreatedAtAction("Get", new {conferenceId}, null);
         }
 
-        [HttpPut("opening")]
+        [HttpPut("openings")]
         public async Task<ActionResult> OpenAsync(Guid conferenceId)
         {
             await _commandDispatcher.SendAsync(new OpenCallForPapers(conferenceId));

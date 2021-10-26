@@ -63,14 +63,14 @@ namespace Confab.Modules.Agendas.Api.Controllers
             return NoContent();
         }
 
-        [HttpPut("slots/placeholder")]
+        [HttpPost("slots/placeholder-assignments")]
         public async Task<ActionResult> AssignPlaceholderAgendaSlotAsync(AssignPlaceholderAgendaSlot command)
         {
             await _commandDispatcher.SendAsync(command);
             return NoContent();
         }
 
-        [HttpPut("slots/regular")]
+        [HttpPost("slots/regular-assignments")]
         public async Task<ActionResult> AssignRegularAgendaSlotAsync(AssignRegularAgendaSlot command)
         {
             await _commandDispatcher.SendAsync(command);
