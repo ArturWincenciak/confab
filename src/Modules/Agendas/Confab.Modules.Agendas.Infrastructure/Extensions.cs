@@ -1,4 +1,5 @@
-﻿using Confab.Modules.Agendas.Application.Submissions.Repositories;
+﻿using Confab.Modules.Agendas.Application.CallForProps.Repositories;
+using Confab.Modules.Agendas.Application.Submissions.Repositories;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
 using Confab.Modules.Agendas.Infrastructure.EF;
 using Confab.Modules.Agendas.Infrastructure.EF.Repositories;
@@ -15,7 +16,8 @@ namespace Confab.Modules.Agendas.Infrastructure
                 .AddPostgres<AgendasDbContext>()
                 .AddScoped<ISubmissionRepository, SubmissionRepository>()
                 .AddScoped<ISpeakerRepository, SpeakerRepository>()
-                .AddScoped<IAgendaItemRepository, AgendaItemRepository>();
+                .AddScoped<IAgendaItemRepository, AgendaItemRepository>()
+                .AddScoped<ICallForPapersRepository, CallForPapersRepository>();
         }
     }
 }
