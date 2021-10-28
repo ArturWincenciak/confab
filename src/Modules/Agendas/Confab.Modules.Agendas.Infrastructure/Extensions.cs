@@ -17,7 +17,8 @@ namespace Confab.Modules.Agendas.Infrastructure
                 .AddScoped<ISubmissionRepository, SubmissionRepository>()
                 .AddScoped<ISpeakerRepository, SpeakerRepository>()
                 .AddScoped<IAgendaItemRepository, AgendaItemRepository>()
-                .AddScoped<ICallForPapersRepository, CallForPapersRepository>();
+                .AddScoped<ICallForPapersRepository, CallForPapersRepository>()
+                .AddScoped<IAgendaTrackRepository, AgendaTrackRepository>();
         }
     }
 }

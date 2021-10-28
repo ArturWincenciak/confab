@@ -14,10 +14,10 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories
         private readonly AgendasDbContext _context;
         private readonly DbSet<AgendaTrack> _agendaTracks;
 
-        public AgendaTrackRepository(AgendasDbContext context, DbSet<AgendaTrack> agendaTracks)
+        public AgendaTrackRepository(AgendasDbContext context)
         {
             _context = context;
-            _agendaTracks = agendaTracks;
+            _agendaTracks = context.AgendaTracks;
         }
 
         public Task<AgendaTrack> GetAsync(AggregateId id)
