@@ -1,7 +1,7 @@
 @host = http://localhost:5000
 @api = {{host}}/users-module
 
-@email = teo@vincent.com
+@email = teo.main@vincent.com
 @password = sicret
 @role = user
 @accessToken = {{access_token.response.body.accessToken}}
@@ -23,7 +23,7 @@ Content-Type: application/json
     "role": "{{role}}",
     "claims": {
         "permissions": [ 
-            "conferences", "hosts", "speakers", "users", "agendas", "cfp", "submissions" ] 
+            "conferences", "hosts", "speakers", "users", "agendas", "cfps", "submissions" ]
     }
 }
 

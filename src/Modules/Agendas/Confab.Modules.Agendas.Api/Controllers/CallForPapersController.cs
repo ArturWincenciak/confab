@@ -13,7 +13,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
     [Authorize(Policy = Policy)]
     internal class CallForPapersController : AgendasControllerBase
     {
-        public const string Policy = "cfp";
+        public const string Policy = "cfps";
 
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;

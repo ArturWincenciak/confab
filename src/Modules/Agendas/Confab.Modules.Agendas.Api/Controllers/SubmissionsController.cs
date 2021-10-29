@@ -11,7 +11,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
 {
     internal class SubmissionsController : AgendasControllerBase
     {
-        public const string Policy = "submission";
+        public const string Policy = "submissions";
 
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly IQueryDispatcher _queryDispatcher;

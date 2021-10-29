@@ -16,11 +16,11 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         public string Description { get; private set; }
         public int Level { get; private set; }
 
-        public IEnumerable<string> Tags { get; set; }
+        public IEnumerable<string> Tags { get; private set; }
 
         public ICollection<Speaker> Speakers { get; private set; }
 
-        public AgendaSlot AgendaSlot { get; }
+        public AgendaSlot AgendaSlot { get; private set; }
 
         public static AgendaItem Create(AggregateId submissionId, ConferenceId conferenceId, string title,
             string description, int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
