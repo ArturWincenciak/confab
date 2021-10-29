@@ -9,7 +9,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         public EntityId Id { get; protected set; }
         public DateTime From { get; private set; }
         public DateTime To { get; private set; }
-        public AgendaTrack Track { get; }
+        public AgendaTrack Track { get; private set; } //TU
 
         protected void ChangeDateRange(DateTime from, DateTime to)
         {
