@@ -41,7 +41,8 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories
 
         public async Task AddAsync(AgendaItem entity)
         {
-            _agendaItems.Update(entity);
+            _context.AttachRange(entity.Speakers);
+            _agendaItems.Add(entity);
             await _context.SaveChangesAsync();
         }
     }
