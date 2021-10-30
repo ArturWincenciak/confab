@@ -1,0 +1,13 @@
+DELETE FROM agendas."SpeakerSubmission";
+DELETE FROM agendas."Speakers";
+DELETE FROM agendas."Submissions";
+DELETE FROM agendas."AgendaSlots";
+DELETE FROM agendas."AgendaItems";
+DELETE FROM agendas."AgendaTracks";
+DELETE FROM agendas."CallForPapers";
+DELETE FROM conferences."Conferences";
+DELETE FROM conferences."Hosts";
+DELETE FROM speakers."Speakers";
+DELETE FROM tickets."TicketSales";
+DELETE FROM tickets."Tickets";
+DELETE FROM users."Users";
