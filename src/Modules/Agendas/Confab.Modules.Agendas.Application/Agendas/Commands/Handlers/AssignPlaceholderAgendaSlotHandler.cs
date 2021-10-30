@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Agendas.Events;
 using Confab.Modules.Agendas.Application.Agendas.Exceptions;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
-using Confab.Modules.Agendas.Domain.Agendas.Services;
 using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Abstractions.Messaging;
 
@@ -11,8 +9,8 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
 {
     internal sealed class AssignPlaceholderAgendaSlotHandler : ICommandHandler<AssignPlaceholderAgendaSlot>
     {
-        private readonly IAgendaTrackRepository _repository;
         private readonly IMessageBroker _messageBroker;
+        private readonly IAgendaTrackRepository _repository;
 
         public AssignPlaceholderAgendaSlotHandler(IAgendaTrackRepository repository, IMessageBroker messageBroker)
         {

@@ -50,7 +50,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 agendaTrack.Id,
                 agendaTrack.ConferenceId,
                 agendaTrack.Name,
-               MappingsExtension.AsDto(agendaTrack.Slots)
+                MappingsExtension.AsDto(agendaTrack.Slots)
             );
         }
 

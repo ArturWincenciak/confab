@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Agendas.Queries;
 using Confab.Modules.Agendas.Application.Agendas.Types;
@@ -49,7 +48,6 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                     slot.AgendaItem.Speakers
                         .Select(x => new GetRegularAgendaSlot.Result.AgendaItemDto.SpeakerDto(
                             x.Id, x.FullName)))
-
             );
         }
     }

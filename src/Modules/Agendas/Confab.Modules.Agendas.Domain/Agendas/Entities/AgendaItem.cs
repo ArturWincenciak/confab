@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Confab.Modules.Agendas.Domain.Agendas.Exceptions;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;

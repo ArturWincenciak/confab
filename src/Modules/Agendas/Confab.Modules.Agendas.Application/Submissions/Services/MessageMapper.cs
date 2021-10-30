@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Confab.Modules.Agendas.Application.Submissions.Events;
+using Confab.Modules.Agendas.Domain.Submissions.Events;
 using Confab.Shared.Abstractions.Kernel;
 using Confab.Shared.Abstractions.Messaging;
 
@@ -12,9 +12,9 @@ namespace Confab.Modules.Agendas.Application.Submissions.Services
         {
             return @event switch
             {
-                Domain.Submissions.Events.SubmissionAdded e => new SubmissionAdded(e.Submission.Id),
-                Domain.Submissions.Events.SubmissionApproved e => new SubmissionApproved(e.Submission.Id),
-                Domain.Submissions.Events.SubmissionRejected e => new SubmissionRejected(e.Id),
+                SubmissionAdded e => new Events.SubmissionAdded(e.Submission.Id),
+                SubmissionApproved e => new Events.SubmissionApproved(e.Submission.Id),
+                SubmissionRejected e => new Events.SubmissionRejected(e.Id),
                 _ => null
             };
         }

@@ -1,8 +1,8 @@
-﻿using Confab.Shared.Abstractions.Kernel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
 using Confab.Modules.Agendas.Domain.Submissions.Events;
+using Confab.Shared.Abstractions.Kernel;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Events.Handlers
 {
@@ -20,7 +20,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Events.Handlers
             var submission = @event.Submission;
             var agendaItem = await _agendaItemRepository.GetAsync(submission.Id);
             var isAgendaItemExists = agendaItem is not null;
-            if(isAgendaItemExists)
+            if (isAgendaItemExists)
                 return;
 
             var newAgendaItem = AgendaItem.Create(submission.Id, submission.ConferenceId, submission.Title,

@@ -44,8 +44,6 @@ namespace Confab.Modules.Agendas.Api.Controllers
             return OkOrNotFound(await _queryDispatcher.QueryAsync(new BrowsAgendaItems(conferenceId)));
         }
 
-        public record CreateAgendaTrackApi(string Name);
-
         [HttpPost("tracks")]
         public async Task<ActionResult> CreateAgendaTrackAsync(Guid conferenceId, CreateAgendaTrackApi command)
         {
@@ -76,5 +74,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
             await _commandDispatcher.SendAsync(command);
             return NoContent();
         }
+
+        public record CreateAgendaTrackApi(string Name);
     }
 }

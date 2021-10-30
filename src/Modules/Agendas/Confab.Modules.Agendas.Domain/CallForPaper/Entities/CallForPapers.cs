@@ -19,14 +19,14 @@ namespace Confab.Modules.Agendas.Domain.CallForPaper.Entities
             {
                 Id = id,
                 ConferenceId = conferenceId,
-                IsOpened = false,
+                IsOpened = false
             };
             callForPaper.ChangeDateRange(from, to);
             callForPaper.ClearEvents();
             return callForPaper;
         }
 
-        public void ChangeDateRange(DateTime @from, DateTime to)
+        public void ChangeDateRange(DateTime from, DateTime to)
         {
             if (from.Date > to.Date)
                 throw new InvalidCallForPapersDateException(from, to);

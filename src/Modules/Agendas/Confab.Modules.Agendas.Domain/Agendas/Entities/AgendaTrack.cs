@@ -65,10 +65,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
             if (slot is not PlaceholderAgendaSlot placeholderAgendaSlot)
                 throw new InvalidAgendaSlotTypeException(id);
 
-            Apply(() =>
-            {
-                placeholderAgendaSlot.ChangePlaceholder(placeholder);
-            });
+            Apply(() => { placeholderAgendaSlot.ChangePlaceholder(placeholder); });
         }
 
         internal void ChangeSlotAgendaItem(EntityId agendaSlotId, AgendaItem agendaItem)
@@ -86,7 +83,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
         private void ValidateTimeConflict(DateTime from, DateTime to)
         {
             var hasConflictingSlots = Slots
-                .Any(x => (x.From <= from && x.To >= from) || (x.From <= to && x.To >= to));
+                .Any(x => x.From <= @from && x.To >= @from || x.From <= to && x.To >= to);
 
             if (hasConflictingSlots)
                 throw new ConflictingAgendaSlotException(from, to);

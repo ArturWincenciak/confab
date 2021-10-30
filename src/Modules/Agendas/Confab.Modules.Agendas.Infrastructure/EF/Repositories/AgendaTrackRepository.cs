@@ -11,8 +11,8 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories
 {
     internal sealed class AgendaTrackRepository : IAgendaTrackRepository
     {
-        private readonly AgendasDbContext _context;
         private readonly DbSet<AgendaTrack> _agendaTracks;
+        private readonly AgendasDbContext _context;
 
         public AgendaTrackRepository(AgendasDbContext context)
         {

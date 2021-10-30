@@ -12,8 +12,8 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories
 {
     internal sealed class AgendaItemRepository : IAgendaItemRepository
     {
-        private readonly AgendasDbContext _context;
         private readonly DbSet<AgendaItem> _agendaItems;
+        private readonly AgendasDbContext _context;
 
         public AgendaItemRepository(AgendasDbContext context)
         {

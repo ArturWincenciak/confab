@@ -28,23 +28,22 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Mappings
         {
             return new
             {
-                Id = slot.Id,
-                From = slot.From,
-                To = slot.To,
+                slot.Id,
+                slot.From,
+                slot.To,
                 Type = AgendaSlotType.Regular,
                 ParticipantsLimit = slot.ParticipantLimit,
                 AgendaItem = new
                 {
-                    Id = slot.AgendaItem.Id,
-                    ConferenceId = slot.AgendaItem.ConferenceId,
-                    Title = slot.AgendaItem.Title,
-                    Description = slot.AgendaItem.Description,
-                    Level = slot.AgendaItem.Level,
-                    Tags = slot.AgendaItem.Tags,
+                    slot.AgendaItem.Id,
+                    slot.AgendaItem.ConferenceId,
+                    slot.AgendaItem.Title,
+                    slot.AgendaItem.Description,
+                    slot.AgendaItem.Level,
+                    slot.AgendaItem.Tags,
                     Speakers = slot.AgendaItem.Speakers.Select(x => new
                     {
-                        Id = x.Id,
-                        FullName = x.FullName
+                        x.Id, x.FullName
                     })
                 }
             };
@@ -54,11 +53,11 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Mappings
         {
             return new
             {
-                Id = slot.Id,
-                From = slot.From,
-                To = slot.To,
+                slot.Id,
+                slot.From,
+                slot.To,
                 Type = AgendaSlotType.Placeholder,
-                Placeholder = slot.Placeholder
+                slot.Placeholder
             };
         }
     }

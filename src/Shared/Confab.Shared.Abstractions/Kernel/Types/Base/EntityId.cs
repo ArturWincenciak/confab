@@ -11,7 +11,7 @@ namespace Confab.Shared.Abstractions.Kernel.Types.Base
 
         public static implicit operator EntityId(Guid id)
         {
-            return new(id);
+            return new EntityId(id);
         }
     }
 }

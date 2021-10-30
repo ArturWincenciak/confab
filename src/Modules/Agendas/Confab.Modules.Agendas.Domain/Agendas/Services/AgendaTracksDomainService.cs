@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
 using Confab.Modules.Agendas.Domain.Agendas.Exceptions;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
 using Confab.Shared.Abstractions.Kernel.Types;
 using Confab.Shared.Abstractions.Kernel.Types.Base;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Services
 {
@@ -23,7 +20,8 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Services
             _agendaItemRepository = agendaItemRepository;
         }
 
-        public async Task AssignAgendaItemAsync(AgendaTrack agendaTrack, EntityId agendaSlotId, AggregateId agendaItemId)
+        public async Task AssignAgendaItemAsync(AgendaTrack agendaTrack, EntityId agendaSlotId,
+            AggregateId agendaItemId)
         {
             var agendaTracks = await _agendaTrackRepository.BrowsAsync(agendaTrack.ConferenceId);
             var slotToAssign = agendaTrack.Slots

@@ -8,8 +8,8 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories
 {
     internal sealed class CallForPapersRepository : ICallForPapersRepository
     {
-        private readonly AgendasDbContext _dbContext;
         private readonly DbSet<CallForPapers> _callForPapers;
+        private readonly AgendasDbContext _dbContext;
 
         public CallForPapersRepository(AgendasDbContext context)
         {

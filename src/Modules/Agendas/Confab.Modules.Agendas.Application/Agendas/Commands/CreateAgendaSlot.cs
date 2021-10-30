@@ -7,6 +7,5 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands
         string Type) : ICommand<CreateAgendaSlot.AgendaSlotId>
     {
         public sealed record AgendaSlotId(Guid Id) : ICommandResult;
-    };
-
+    }
 }

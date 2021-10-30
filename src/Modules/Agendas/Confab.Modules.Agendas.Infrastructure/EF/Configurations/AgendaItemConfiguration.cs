@@ -26,7 +26,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Configurations
 
             builder
                 .Property(x => x.Tags)
-                .HasConversion(tags=> string.Join(',', tags), tags => tags.Split(',', StringSplitOptions.None));
+                .HasConversion(tags => string.Join(',', tags), tags => tags.Split(',', StringSplitOptions.None));
 
             builder
                 .Property(x => x.Version)

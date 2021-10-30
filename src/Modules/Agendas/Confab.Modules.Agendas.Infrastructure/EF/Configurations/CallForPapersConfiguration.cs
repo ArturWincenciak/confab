@@ -1,5 +1,4 @@
-﻿using System;
-using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
+﻿using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
 using Confab.Shared.Abstractions.Kernel.Types;
 using Confab.Shared.Abstractions.Kernel.Types.Base;
 using Microsoft.EntityFrameworkCore;

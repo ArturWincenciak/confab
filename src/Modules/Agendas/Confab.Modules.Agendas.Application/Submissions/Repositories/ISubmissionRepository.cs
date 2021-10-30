@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
-using Confab.Shared.Abstractions.Kernel.Types;
 using Confab.Shared.Abstractions.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Repositories

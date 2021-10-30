@@ -8,7 +8,8 @@ namespace Confab.Modules.Agendas.Application.Agendas.Queries
     public sealed record BrowsAgendaItems(Guid ConferenceId) : IQuery<BrowsAgendaItems.Result>
     {
         //todo: test how it will be serialized
-        public sealed class Result : IEnumerable<Result.AgendaItemDto>, IQueryResult         {
+        public sealed class Result : IEnumerable<Result.AgendaItemDto>, IQueryResult
+        {
             private readonly IEnumerable<AgendaItemDto> _agendaItem;
 
             public Result(IEnumerable<AgendaItemDto> agendaItem)

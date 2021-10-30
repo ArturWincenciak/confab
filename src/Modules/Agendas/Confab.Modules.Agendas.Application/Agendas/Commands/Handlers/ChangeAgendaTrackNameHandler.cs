@@ -9,8 +9,8 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
 {
     internal sealed class ChangeAgendaTrackNameHandler : ICommandHandler<ChangeAgendaTrackName>
     {
-        private readonly IAgendaTrackRepository _repository;
         private readonly IMessageBroker _messageBroker;
+        private readonly IAgendaTrackRepository _repository;
 
         public ChangeAgendaTrackNameHandler(IAgendaTrackRepository repository, IMessageBroker messageBroker)
         {

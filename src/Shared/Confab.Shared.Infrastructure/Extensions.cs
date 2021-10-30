@@ -78,7 +78,7 @@ namespace Confab.Shared.Infrastructure
                 {
                     Title = "Confab API",
                     Version = "v1"
-               });
+                });
             });
 
             services.AddMemoryCache();

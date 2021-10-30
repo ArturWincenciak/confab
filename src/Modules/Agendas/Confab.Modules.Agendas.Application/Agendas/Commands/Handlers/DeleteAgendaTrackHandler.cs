@@ -9,8 +9,8 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
 {
     internal class DeleteAgendaTrackHandler : ICommandHandler<DeleteAgendaTrack>
     {
-        private readonly IAgendaTrackRepository _repository;
         private readonly IMessageBroker _messageBroker;
+        private readonly IAgendaTrackRepository _repository;
 
         public DeleteAgendaTrackHandler(IAgendaTrackRepository repository, IMessageBroker messageBroker)
         {
