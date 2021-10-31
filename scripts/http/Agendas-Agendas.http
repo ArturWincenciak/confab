@@ -25,6 +25,8 @@ Content-Type: application/json
 GET {{url}}/items/{{conferenceId}}
 Content-Type: application/json
 
+@trackId = ca7c14e5-ba10-4dd6-b652-20bf7b700c3a
+
 ### Create track
 POST {{url}}/tracks
 Content-Type: application/json
@@ -33,8 +35,6 @@ Authorization: Bearer {{accessToken}}
 {
     "Name": "Agenda track 2"
 }
-
-@trackId = ca7c14e5-ba10-4dd6-b652-20bf7b700c3a
 
 ### Get Agenda Track
 GET {{url}}/tracks/{{trackId}}
@@ -51,4 +51,26 @@ Authorization: Bearer {{accessToken}}
     "To": "2021-05-01T12:30:00",
     "ParticipantsLimit": 85,
     "Type": "regular"
+}
+
+### Assign placeholder to slot in track
+POST {{url}}/slots/placeholder-assignments
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "AgendaSlotId": "6b1cbdeb-616e-43bc-adad-e6101adaf0ac",
+    "AgendaTrackId": "{{trackId}}",
+    "Placeholder": "Przerwa kawowa nr. 1"
+}
+
+### Assign regular to slot in track
+POST {{url}}/slots/regular-assignments
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "AgendaSlotId": "e3b9d51a-d51e-4dbd-a303-9316d4b91ce5",
+    "AgendaTrackId": "{{trackId}}",
+    "AgendaItemId": "c9c570aa-ac14-441e-a48d-e280714184c1"
 }
