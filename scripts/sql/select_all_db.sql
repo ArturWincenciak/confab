@@ -2,19 +2,18 @@ SELECT * FROM agendas."Speakers";
 SELECT * FROM conferences."Conferences";
 SELECT * FROM conferences."Hosts";
 SELECT * FROM users."Users";
-
 SELECT * FROM agendas."CallForPapers";
-
 SELECT * FROM agendas."Submissions";
 SELECT * FROM agendas."AgendaItems";
 SELECT * FROM agendas."AgendaSlots";
 SELECT * FROM agendas."AgendaTracks";
-
 SELECT * FROM agendas."SpeakerSubmission";
 SELECT * FROM agendas."AgendaItemSpeaker";
-
+SELECT * FROM tickets."Conferences";
 SELECT * FROM tickets."TicketSales";
 SELECT * FROM tickets."Tickets";
+SELECT * FROM speakers."Speakers";
+SELECT * FROM users."Users";
 
 -- Below query result have to be alway empty
 -- select * from agendas."AgendaItems" a 
