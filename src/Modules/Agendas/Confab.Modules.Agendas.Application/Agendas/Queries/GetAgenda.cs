@@ -7,7 +7,6 @@ namespace Confab.Modules.Agendas.Application.Agendas.Queries
 {
     public sealed record GetAgenda(Guid ConferenceId) : IQuery<GetAgenda.Result>
     {
-        //todo: test how it will be serialized
         public class Result : IEnumerable<Result.AgendaTrackDto>, IQueryResult
         {
             private readonly IEnumerable<AgendaTrackDto> _agendaTracks;

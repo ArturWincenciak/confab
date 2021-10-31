@@ -7,7 +7,6 @@ namespace Confab.Modules.Agendas.Application.Submissions.Queries
 {
     public sealed record BrowseSubmissions(Guid? ConferenceId, Guid? SpeakerId) : IQuery<BrowseSubmissions.Result>
     {
-        //todo: test how it will be serialized
         public sealed class Result : IEnumerable<Result.SubmissionDto>, IQueryResult
         {
             private readonly IEnumerable<SubmissionDto> _submissions;
