@@ -23,7 +23,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
             _queryDispatcher = queryDispatcher;
         }
 
-        [HttpGet]
+        [HttpGet("tracks/{id:guid}")]
         [AllowAnonymous]
         public async Task<ActionResult<GetAgendaTrack.Result>> GetAgendaTrackAsync(Guid id)
         {

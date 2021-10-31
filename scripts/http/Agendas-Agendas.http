@@ -25,15 +25,17 @@ Content-Type: application/json
 GET {{url}}/items/{{conferenceId}}
 Content-Type: application/json
 
-### Get Agenda Track
-GET {{url}}
-Content-Type: application/json
-
 ### Create track
 POST {{url}}/tracks
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "Name": "Agenda track 1"
+    "Name": "Agenda track 2"
 }
+
+@trackId = ca7c14e5-ba10-4dd6-b652-20bf7b700c3a
+
+### Get Agenda Track
+GET {{url}}/tracks/{{trackId}}
+Content-Type: application/json
