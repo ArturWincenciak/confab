@@ -1,6 +1,7 @@
 @host = http://localhost:5000
 @api = {{host}}/agendas-module
-@url = {{api}}/agendas
+@conferenceId = 26914b94-ce02-474d-bb8c-24d5b0470fca
+@url = {{api}}/agendas/{{conferenceId}}
 
 @email = teo@vincent.com
 @password = sicret
@@ -16,8 +17,23 @@ Content-Type: application/json
     "password": "{{password}}"
 }
 
-@conferenceId = ...
+### Get Agenda Items
+GET {{url}}/items
+Content-Type: application/json
+
+### Get Agenda Item
+GET {{url}}/items/{{conferenceId}}
+Content-Type: application/json
 
 ### Get Agenda Track
-GET {{url}}/{{conferenceId}}
+GET {{url}}
 Content-Type: application/json
+
+### Create track
+POST {{url}}/tracks
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "Name": "Agenda track 1"
+}

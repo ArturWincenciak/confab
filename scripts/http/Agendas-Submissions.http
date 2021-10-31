@@ -23,14 +23,13 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "ConferenceId": "a73d482c-3acd-4b5d-b0d5-fd3712872b31",
-    "Title": "Title of submission ### 7004",
-    "Description": "Descripton of submission",
+    "ConferenceId": "26914b94-ce02-474d-bb8c-24d5b0470fca",
+    "Title": "Submission 1 of Conf 1 with Speaker 1",
+    "Description": "Desc of Submission 1 of Conf 1 with Speaker 1",
     "Level": "1",
     "Tags": [ "tag_one", "tag_two", "tag_three"],
     "SpeakerIds": [ 
-        "5fa6e5ab-c3ae-42c1-b480-2e2117d361c3", 
-        "e8e6a7ed-f917-4a1c-89ae-bc21796d3933"
+        "70197e07-4568-4b18-8866-c8eba36ce08e"
         ]
 }
 
@@ -39,15 +38,23 @@ Authorization: Bearer {{accessToken}}
 
 ### Get
 GET {{url}}/{{id}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 ### Arleady created location variable
 @hostLocation = {{new_created.response.headers.Location}}
 
 ### Get arleady created
 GET {{hostLocation}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 ### Approve submission
 PUT {{url}}/{{id}}/approvals
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 ### Reject submission
 PUT {{url}}/{{id}}/rejections
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

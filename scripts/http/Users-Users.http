@@ -1,7 +1,7 @@
 @host = http://localhost:5000
 @api = {{host}}/users-module
 
-@email = teo.main@vincent.com
+@email = teo@vincent.com
 @password = sicret
 @role = user
 @accessToken = {{access_token.response.body.accessToken}}

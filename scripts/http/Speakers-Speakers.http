@@ -30,14 +30,14 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "FullName": "Teo Vincent",
-    "Email": "art@gmail.com",
-    "Bio": "A bio desctipiton.",
-    "AvatarUrl": ""
+    "FullName": "Speaker 1",
+    "Email": "speaker1@gmail.com",
+    "Bio": "Speaker bio desctipiton 1.",
+    "AvatarUrl": "http://avatar.com/speakr1"
 }
 
 ### ID variable
-@speakerId = 5b6dcb39-a99f-432d-b9ab-69aec171e708
+@speakerId = 70197e07-4568-4b18-8866-c8eba36ce08e
 
 ### Get
 GET {{url}}/{{speakerId}}
@@ -48,10 +48,10 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "FullName": "Edit Full Name",
-    "Email": "art2@gmail.com",
-    "Bio": "Edited the bio.",
-    "AvatarUrl": ""
+    "FullName": "Speaker edited 1",
+    "Email": "speaker1@gmail.com",
+    "Bio": "Edited speaker bio description 1.",
+    "AvatarUrl": "http://avatar.com/speaker1"
 }
 
 ### Delete

@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 @api = {{host}}/agendas-module
-@conferenceId = a73d482c-3acd-4b5d-b0d5-fd3712872b31
+@conferenceId = 26914b94-ce02-474d-bb8c-24d5b0470fca
 @url = {{api}}/conferences/{{conferenceId}}/cfps
 
 @email = teo@vincent.com
@@ -24,8 +24,19 @@ Content-Type: application/json
 ### Create CFP
 POST {{url}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
-    "From": "",
-    "To": ""
+    "From": "2021-03-01",
+    "To": "2021-04-01"
 }
+
+### Open CFP
+PUT {{url}}/openings
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### Close CFP
+PUT {{url}}/closings
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

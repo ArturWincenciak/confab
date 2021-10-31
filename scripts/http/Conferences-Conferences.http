@@ -29,18 +29,18 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "HostId": "7826b6a9-a9c3-4658-8470-1feb5988b8df",
-    "Name": "Publish Event Conf",
-    "Description": "Conf for testing event publishing",
+    "HostId": "142f3425-76ab-44fe-b55e-c74e133cc312",
+    "Name": "Conf 1",
+    "Description": "Description of Conf 1",
     "From": "2021-05-01",
     "To": "2021-05-03",
     "Localization": "Melbourne",
     "ParticipantsLimit": 100,
-    "LogoUrl": null
+    "LogoUrl": "http://logo.com/conf1.jpg"
 }
 
 ### ID variable
-@conferenceId = 2de70676-8852-4103-8bf3-4e674d3aea57
+@conferenceId = 26914b94-ce02-474d-bb8c-24d5b0470fca
 
 ### Get
 GET {{url}}/{{conferenceId}}
@@ -51,13 +51,13 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "Name": "Name of conference #1",
-    "Description": "Description of conference #1",
+    "Name": "Edited Conf 1",
+    "Description": "Edited description of Conf 1",
     "From": "2021-05-01",
     "To": "2021-05-03",
     "Localization": "Melbourne",
     "ParticipantsLimit": 100,
-    "LogoUrl": null
+    "LogoUrl": "http://logo.com/conf1.jpg"
 }
 
 ### Delete

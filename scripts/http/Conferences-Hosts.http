@@ -30,12 +30,12 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "Name": "Name of host #111",
-    "Description": "Description of host #111"
+    "Name": "Host 1",
+    "Description": "Description of Host 1"
 }
 
 ### ID variable
-@hostId = 55c631f3-d286-42aa-951e-b21f81ca4242
+@hostId = 142f3425-76ab-44fe-b55e-c74e133cc312
 
 ### Get
 GET {{url}}/{{hostId}}
@@ -46,8 +46,8 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "Name": "Edited name",
-    "Description": "Edited description",
+    "Name": "Edited Host 1",
+    "Description": "Edited description of Host 1.",
     "Conferences": [ ]
 }
 
