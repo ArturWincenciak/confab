@@ -1,14 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Agendas.Events;
 using Confab.Modules.Agendas.Application.Agendas.Exceptions;
 using Confab.Modules.Agendas.Application.Agendas.Types;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
 using Confab.Shared.Abstractions.Commands;
+using Confab.Shared.Abstractions.Kernel.Types.Base;
 using Confab.Shared.Abstractions.Messaging;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
 {
-    internal sealed class CreateAgendaSlotHandler : ICommandHandler<CreateAgendaSlot>
+    internal sealed class CreateAgendaSlotHandler : ICommandHandler<CreateAgendaSlot, CreateAgendaSlot.AgendaSlotId>
     {
         private readonly IAgendaTrackRepository _agendaTrackRepository;
         private readonly IMessageBroker _messageBroker;
@@ -19,20 +21,24 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
             _messageBroker = messageBroker;
         }
 
-        public async Task HandleAsync(CreateAgendaSlot command)
+        public async Task<CreateAgendaSlot.AgendaSlotId> HandleAsync(CreateAgendaSlot command)
         {
             var agendaTrack = await _agendaTrackRepository.GetAsync(command.AgendaTrackId);
             if (agendaTrack is null)
                 throw new AgendaTrackNotFoundException(command.AgendaTrackId);
 
+            EntityId createdSlotId = Guid.Empty;
+
             if (command.Type is AgendaSlotType.Regular)
-                agendaTrack.AddRegularSlot(command.From, command.To, command.ParticipantsLimit);
+                createdSlotId = agendaTrack.AddRegularSlot(command.From, command.To, command.ParticipantsLimit);
             else if (command.Type is AgendaSlotType.Placeholder)
-                agendaTrack.AddPlaceholderSlot(command.From, command.To);
+                createdSlotId = agendaTrack.AddPlaceholderSlot(command.From, command.To);
 
             await _agendaTrackRepository.UpdateAsync(agendaTrack);
 
             await _messageBroker.PublishAsync(new AgendaTrackUpdated(agendaTrack.Id));
+
+            return new CreateAgendaSlot.AgendaSlotId(createdSlotId);
         }
     }
 }

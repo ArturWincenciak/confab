@@ -2,6 +2,8 @@
 using System.Linq;
 using Confab.Modules.Agendas.Application.Agendas.Types;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
+using Confab.Modules.Agendas.Domain.Submissions.Entities;
+using Confab.Shared.Abstractions.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Mappings
 {
@@ -24,31 +26,6 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Mappings
             return result;
         }
 
-        private static object AsDto(RegularAgendaSlot slot)
-        {
-            return new
-            {
-                slot.Id,
-                slot.From,
-                slot.To,
-                Type = AgendaSlotType.Regular,
-                ParticipantsLimit = slot.ParticipantLimit,
-                AgendaItem = new
-                {
-                    slot.AgendaItem.Id,
-                    slot.AgendaItem.ConferenceId,
-                    slot.AgendaItem.Title,
-                    slot.AgendaItem.Description,
-                    slot.AgendaItem.Level,
-                    slot.AgendaItem.Tags,
-                    Speakers = slot.AgendaItem.Speakers.Select(x => new
-                    {
-                        x.Id, x.FullName
-                    })
-                }
-            };
-        }
-
         private static object AsDto(PlaceholderAgendaSlot slot)
         {
             return new
@@ -59,6 +36,36 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Mappings
                 Type = AgendaSlotType.Placeholder,
                 slot.Placeholder
             };
+        }
+
+        private static object AsDto(RegularAgendaSlot slot)
+        {
+            return new
+            {
+                Id = slot.Id.Value,
+                slot.From,
+                slot.To,
+                Type = AgendaSlotType.Regular,
+                ParticipantsLimit = slot.ParticipantLimit,
+                AgendaItem = slot.AgendaItem is null ? null : new
+                {
+                    Id = slot.AgendaItem.Id.Value,
+                    slot.AgendaItem.ConferenceId,
+                    slot.AgendaItem.Title,
+                    slot.AgendaItem.Description,
+                    slot.AgendaItem.Level,
+                    slot.AgendaItem.Tags,
+                    Speakers = AsDto(slot.AgendaItem?.Speakers)
+                }
+            };
+        }
+
+        private static IEnumerable<object> AsDto(IEnumerable<Speaker> speakers)
+        {
+            return speakers?.Select(x => new
+            {
+                Id = x.Id.Value, x.FullName
+            }) ?? Enumerable.Empty<object>();
         }
     }
 }

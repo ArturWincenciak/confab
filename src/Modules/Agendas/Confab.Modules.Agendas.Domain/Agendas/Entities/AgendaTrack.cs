@@ -34,26 +34,36 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
             Apply(() => Name = name);
         }
 
-        public void AddRegularSlot(DateTime from, DateTime to, int? participantsLimit)
+        public EntityId AddRegularSlot(DateTime from, DateTime to, int? participantsLimit)
         {
             ValidateTimeConflict(from, to);
+
+            EntityId createdSlotId = Guid.Empty;
 
             Apply(() =>
             {
                 var slot = RegularAgendaSlot.Create(from, to, participantsLimit);
                 Slots.Add(slot);
+                createdSlotId = slot.Id;
             });
+
+            return createdSlotId;
         }
 
-        public void AddPlaceholderSlot(DateTime from, DateTime to)
+        public EntityId AddPlaceholderSlot(DateTime from, DateTime to)
         {
             ValidateTimeConflict(from, to);
+
+            EntityId createdSlotId = Guid.Empty;
 
             Apply(() =>
             {
                 var slot = PlaceholderAgendaSlot.Create(from, to);
                 Slots.Add(slot);
+                createdSlotId = slot.Id;
             });
+
+            return createdSlotId;
         }
 
         public void ChangeSlotPlaceholder(EntityId id, string placeholder)
