@@ -33,8 +33,10 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
                 createdSlotId = agendaTrack.AddRegularSlot(command.From, command.To, command.ParticipantsLimit);
             else if (command.Type is AgendaSlotType.Placeholder)
                 createdSlotId = agendaTrack.AddPlaceholderSlot(command.From, command.To);
+            else
+                throw new AgendaSlotTypeOutOfRangeException(command.Type);
 
-            await _agendaTrackRepository.UpdateAsync(agendaTrack);
+                await _agendaTrackRepository.UpdateAsync(agendaTrack);
 
             await _messageBroker.PublishAsync(new AgendaTrackUpdated(agendaTrack.Id));
 

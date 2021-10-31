@@ -47,10 +47,8 @@ Authorization: Bearer {{accessToken}}
 
 {
     "AgendaTrackId": "{{trackId}}",
-    "From": "2021-05-01T10:00:00",
-    "To": "2021-05-03T11:00:00",
+    "From": "2021-05-01T11:30:00",
+    "To": "2021-05-01T12:30:00",
     "ParticipantsLimit": 85,
     "Type": "regular"
 }
-
-@slotId = 1da65843-9d05-4041-a19d-8ebf6bbcc6a2

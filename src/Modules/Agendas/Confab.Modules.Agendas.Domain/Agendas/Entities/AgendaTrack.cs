@@ -92,11 +92,21 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 
         private void ValidateTimeConflict(DateTime from, DateTime to)
         {
+            ValidateTimeTimePeriod(from, to);
+
             var hasConflictingSlots = Slots
-                .Any(x => x.From <= @from && x.To >= @from || x.From <= to && x.To >= to);
+                .Any(x =>
+                    (from <= x.From && to > x.From) ||
+                    (to >= x.To && from < x.To));
 
             if (hasConflictingSlots)
                 throw new ConflictingAgendaSlotException(from, to);
+        }
+
+        private void ValidateTimeTimePeriod(DateTime from, DateTime to)
+        {
+            if (from == to || from > to)
+                throw new TimePeriodException(from, to);
         }
     }
 }
