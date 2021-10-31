@@ -11,7 +11,7 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
     {
         public ConferenceId ConferenceId { get; private set; }
         public string Name { get; private set; }
-        public ICollection<AgendaSlot> Slots { get; private set; } //TU
+        public ICollection<AgendaSlot> Slots { get; private set; }
 
         public static AgendaTrack Create(ConferenceId conferenceId, string name)
         {

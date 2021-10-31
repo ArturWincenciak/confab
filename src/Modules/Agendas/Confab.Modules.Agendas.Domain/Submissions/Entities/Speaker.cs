@@ -8,8 +8,8 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
     public class Speaker : AggregateRoot
     {
         public string FullName { get; private set; }
-        public ICollection<Submission> Submissions { get; private set; } //TU
-        public ICollection<AgendaItem> AgendaItems { get; private set; } //TU
+        public ICollection<Submission> Submissions { get; private set; }
+        public ICollection<AgendaItem> AgendaItems { get; private set; }
 
         public static Speaker Create(AggregateId id, string fullName)
         {
