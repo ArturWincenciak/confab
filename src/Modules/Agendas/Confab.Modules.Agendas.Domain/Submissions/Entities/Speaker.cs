@@ -9,7 +9,7 @@ namespace Confab.Modules.Agendas.Domain.Submissions.Entities
     {
         public string FullName { get; private set; }
         public ICollection<Submission> Submissions { get; private set; } //TU
-        public AgendaItem AgendaItem { get; private set; } //TU
+        public ICollection<AgendaItem> AgendaItems { get; private set; } //TU
 
         public static Speaker Create(AggregateId id, string fullName)
         {
