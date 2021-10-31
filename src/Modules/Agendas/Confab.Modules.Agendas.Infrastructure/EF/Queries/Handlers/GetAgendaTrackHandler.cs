@@ -23,7 +23,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
                 .Include(x => x.Slots)
                 .ThenInclude(x => (x as RegularAgendaSlot).AgendaItem)
                 .ThenInclude(x => x.Speakers)
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(x => x.Id == query.Id);
 
             return agendaTrack is not null ? AsDto(agendaTrack) : null;
         }

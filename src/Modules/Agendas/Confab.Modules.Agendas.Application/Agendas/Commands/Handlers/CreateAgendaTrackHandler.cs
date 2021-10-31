@@ -7,7 +7,7 @@ using Confab.Shared.Abstractions.Messaging;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
 {
-    internal sealed class CreateAgendaTrackHandler : ICommandHandler<CreateAgendaTrack>
+    internal sealed class CreateAgendaTrackHandler : ICommandHandler<CreateAgendaTrack, CreateAgendaTrack.AgendaTrackId>
     {
         private readonly IMessageBroker _messageBroker;
         private readonly IAgendaTrackRepository _repository;
@@ -18,11 +18,12 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
             _messageBroker = messageBroker;
         }
 
-        public async Task HandleAsync(CreateAgendaTrack command)
+        public async Task<CreateAgendaTrack.AgendaTrackId> HandleAsync(CreateAgendaTrack command)
         {
             var newAgendaTrack = AgendaTrack.Create(command.ConferenceId, command.Name);
             await _repository.AddAsync(newAgendaTrack);
             await _messageBroker.PublishAsync(new AgendaTrackCreated(newAgendaTrack.Id));
+            return new CreateAgendaTrack.AgendaTrackId(newAgendaTrack.Id);
         }
     }
 }

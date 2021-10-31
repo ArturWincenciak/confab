@@ -25,9 +25,9 @@ namespace Confab.Modules.Agendas.Api.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<GetAgendaTrack.Result>> GetAgendaTrackAsync(Guid conferenceId)
+        public async Task<ActionResult<GetAgendaTrack.Result>> GetAgendaTrackAsync(Guid id)
         {
-            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgendaTrack(conferenceId)));
+            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgendaTrack(id)));
         }
 
         [HttpGet("items")]
@@ -48,9 +48,8 @@ namespace Confab.Modules.Agendas.Api.Controllers
         public async Task<ActionResult> CreateAgendaTrackAsync(Guid conferenceId, CreateAgendaTrackApi command)
         {
             var created = await _commandDispatcher.SendAsync(new CreateAgendaTrack(conferenceId, command.Name));
-            var agendaTrack = await _queryDispatcher.QueryAsync(new GetAgendaTrack(conferenceId));
             AddResourceIdHeader(created.Id);
-            return CreatedAtAction("GetAgendaTrack", new {created.Id}, agendaTrack);
+            return NoContent();
         }
 
         [HttpPost("slots")]
