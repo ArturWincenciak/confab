@@ -29,7 +29,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             return new BrowsAgendaItems.Result(items);
         }
 
-        private BrowsAgendaItems.Result.AgendaItemDto AsDto(AgendaItem agendaItem)
+        private static BrowsAgendaItems.Result.AgendaItemDto AsDto(AgendaItem agendaItem)
         {
             return new BrowsAgendaItems.Result.AgendaItemDto(
                 agendaItem.Id,
