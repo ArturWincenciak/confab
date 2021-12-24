@@ -1,4 +1,9 @@
 # Confab
+* CQRS
+* Clean Architecture
+* Domain-Driven Design
+* including simple CRUD approach
+* .NET 5, EF Core, PostgreSQL, Docker
 
 ## DevMentors
 
