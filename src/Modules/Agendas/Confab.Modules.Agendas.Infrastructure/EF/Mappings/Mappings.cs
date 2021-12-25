@@ -3,7 +3,6 @@ using System.Linq;
 using Confab.Modules.Agendas.Application.Agendas.Types;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Mappings
 {
@@ -47,16 +46,18 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Mappings
                 slot.To,
                 Type = AgendaSlotType.Regular,
                 ParticipantsLimit = slot.ParticipantLimit,
-                AgendaItem = slot.AgendaItem is null ? null : new
-                {
-                    Id = slot.AgendaItem.Id.Value,
-                    slot.AgendaItem.ConferenceId,
-                    slot.AgendaItem.Title,
-                    slot.AgendaItem.Description,
-                    slot.AgendaItem.Level,
-                    slot.AgendaItem.Tags,
-                    Speakers = AsDto(slot.AgendaItem?.Speakers)
-                }
+                AgendaItem = slot.AgendaItem is null
+                    ? null
+                    : new
+                    {
+                        Id = slot.AgendaItem.Id.Value,
+                        slot.AgendaItem.ConferenceId,
+                        slot.AgendaItem.Title,
+                        slot.AgendaItem.Description,
+                        slot.AgendaItem.Level,
+                        slot.AgendaItem.Tags,
+                        Speakers = AsDto(slot.AgendaItem?.Speakers)
+                    }
             };
         }
 

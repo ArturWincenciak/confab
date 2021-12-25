@@ -96,8 +96,8 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
 
             var hasConflictingSlots = Slots
                 .Any(x =>
-                    (from <= x.From && to > x.From) ||
-                    (to >= x.To && from < x.To));
+                    @from <= x.From && to > x.From ||
+                    to >= x.To && @from < x.To);
 
             if (hasConflictingSlots)
                 throw new ConflictingAgendaSlotException(from, to);
