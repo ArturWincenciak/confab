@@ -1,5 +1,4 @@
-﻿using System;
-using Confab.Shared.Abstractions.Exceptions;
+﻿using Confab.Shared.Abstractions.Exceptions;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Exceptions
 {
