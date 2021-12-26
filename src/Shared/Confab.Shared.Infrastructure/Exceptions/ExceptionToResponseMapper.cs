@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Net;
 using Confab.Shared.Abstractions.Exceptions;
+using Confab.Shared.Kernel.Exceptions;
 using Humanizer;
 
 namespace Confab.Shared.Infrastructure.Exceptions

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Confab.Shared.Abstractions.Exceptions
+namespace Confab.Shared.Kernel.Exceptions
 {
     public abstract class ConfabException : Exception
     {
