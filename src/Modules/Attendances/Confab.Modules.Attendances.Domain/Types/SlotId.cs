@@ -11,6 +11,8 @@ namespace Confab.Modules.Attendances.Domain.Types
         }
 
         public static implicit operator SlotId(Guid id)
-            => new(id);
+        {
+            return new(id);
+        }
     }
 }
