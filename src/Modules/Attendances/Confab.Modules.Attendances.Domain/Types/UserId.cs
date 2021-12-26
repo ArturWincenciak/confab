@@ -1,5 +1,5 @@
 ﻿using System;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types.Base;
 
 namespace Confab.Modules.Attendances.Domain.Types
 {
@@ -11,6 +11,8 @@ namespace Confab.Modules.Attendances.Domain.Types
         }
 
         public static implicit operator UserId(Guid id)
-            => new(id);
+        {
+            return new(id);
+        }
     }
 }
