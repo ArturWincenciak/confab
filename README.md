@@ -1,7 +1,9 @@
 # Confab
 * Clean Architecture
 * Modular monolith 
-  * Domain-Driven Design
+  * loose coupling between many modules
+  * cohesion in each small module
+  * rich Domain-Driven Design
   * including simple CRUD approach
 * CQRS
 * .NET 5, EF Core, PostgreSQL, Docker
