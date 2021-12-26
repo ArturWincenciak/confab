@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\src\Shared\Confab.Shared.Abstractions\Confab.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Shared\Confab.Shared.Kernel\Confab.Shared.Kernel.csproj" />
   </ItemGroup>
 
 </Project>

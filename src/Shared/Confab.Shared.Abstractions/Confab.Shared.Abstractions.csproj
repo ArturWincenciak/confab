@@ -13,4 +13,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Confab.Shared.Kernel\Confab.Shared.Kernel.csproj" />
+  </ItemGroup>
+
 </Project>

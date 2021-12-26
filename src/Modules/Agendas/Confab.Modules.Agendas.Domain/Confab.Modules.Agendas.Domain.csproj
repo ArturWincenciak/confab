@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Confab.Shared.Abstractions\Confab.Shared.Abstractions.csproj" />
+    <Folder Include="Agendas\Events\Handlers\" />
+    <Folder Include="Agendas\Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Agendas\Events\Handlers\" />
-    <Folder Include="Agendas\Services\" />
+    <ProjectReference Include="..\..\..\Shared\Confab.Shared.Kernel\Confab.Shared.Kernel.csproj" />
   </ItemGroup>
 
 </Project>
