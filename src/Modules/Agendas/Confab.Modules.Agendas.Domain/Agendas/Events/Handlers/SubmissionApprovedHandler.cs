@@ -2,7 +2,7 @@
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
 using Confab.Modules.Agendas.Domain.Submissions.Events;
-using Confab.Shared.Abstractions.Kernel;
+using Confab.Shared.Kernel;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Events.Handlers
 {

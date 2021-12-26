@@ -5,9 +5,9 @@ using Confab.Modules.Agendas.Application.Submissions.Repositories;
 using Confab.Modules.Agendas.Application.Submissions.Services;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
 using Confab.Shared.Abstractions.Commands;
-using Confab.Shared.Abstractions.Kernel;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
 using Confab.Shared.Abstractions.Messaging;
+using Confab.Shared.Kernel;
+using Confab.Shared.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
 {

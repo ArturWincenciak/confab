@@ -1,5 +1,5 @@
-﻿using Confab.Shared.Abstractions.Kernel.Types.Base;
-using Confab.Shared.Kernel.Exceptions;
+﻿using Confab.Shared.Kernel.Exceptions;
+using Confab.Shared.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Domain.Submissions.Exceptions
 {

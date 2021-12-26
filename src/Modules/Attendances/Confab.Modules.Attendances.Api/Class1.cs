@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Confab.Modules.Attendances.Api
+﻿namespace Confab.Modules.Attendances.Api
 {
     public class Class1
     {

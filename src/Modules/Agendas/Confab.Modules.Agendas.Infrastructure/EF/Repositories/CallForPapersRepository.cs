@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.CallForProps.Repositories;
 using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
-using Confab.Shared.Abstractions.Kernel.Types;
+using Confab.Shared.Kernel.Types;
 using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Confab.Shared.Abstractions.Kernel.Types.Base
+namespace Confab.Shared.Kernel.Types.Base
 {
     public class AggregateId<T> : IEquatable<AggregateId<T>>
     {

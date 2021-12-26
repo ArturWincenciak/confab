@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
-using Confab.Shared.Abstractions.Kernel.Types;
+using Confab.Shared.Kernel.Types;
 
 namespace Confab.Modules.Agendas.Application.CallForProps.Repositories
 {

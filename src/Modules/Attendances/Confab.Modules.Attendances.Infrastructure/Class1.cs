@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Confab.Modules.Attendances.Infrastructure
+﻿namespace Confab.Modules.Attendances.Infrastructure
 {
     public class Class1
     {

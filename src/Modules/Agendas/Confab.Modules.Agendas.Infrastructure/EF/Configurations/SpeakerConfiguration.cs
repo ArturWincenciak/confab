@@ -1,5 +1,5 @@
 ﻿using Confab.Modules.Agendas.Domain.Submissions.Entities;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

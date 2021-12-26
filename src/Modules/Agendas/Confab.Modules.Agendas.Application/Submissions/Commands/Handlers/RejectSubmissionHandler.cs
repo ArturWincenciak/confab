@@ -4,8 +4,8 @@ using Confab.Modules.Agendas.Application.Submissions.Exceptions;
 using Confab.Modules.Agendas.Application.Submissions.Repositories;
 using Confab.Modules.Agendas.Application.Submissions.Services;
 using Confab.Shared.Abstractions.Commands;
-using Confab.Shared.Abstractions.Kernel;
 using Confab.Shared.Abstractions.Messaging;
+using Confab.Shared.Kernel;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
 {

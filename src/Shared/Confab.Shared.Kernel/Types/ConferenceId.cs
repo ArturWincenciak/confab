@@ -1,7 +1,7 @@
 ﻿using System;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types.Base;
 
-namespace Confab.Shared.Abstractions.Kernel.Types
+namespace Confab.Shared.Kernel.Types
 {
     public class ConferenceId : TypeId
     {

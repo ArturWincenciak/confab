@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
 using Confab.Modules.Agendas.Domain.Agendas.Exceptions;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
-using Confab.Shared.Abstractions.Kernel.Types;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types;
+using Confab.Shared.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Domain.Agendas.Services
 {

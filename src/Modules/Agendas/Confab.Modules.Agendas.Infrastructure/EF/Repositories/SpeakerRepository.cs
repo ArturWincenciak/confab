@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Application.Submissions.Repositories;
 using Confab.Modules.Agendas.Domain.Submissions.Entities;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Confab.Shared.Abstractions.Kernel
+namespace Confab.Shared.Kernel
 {
     public interface IDomainEventDispatcher
     {

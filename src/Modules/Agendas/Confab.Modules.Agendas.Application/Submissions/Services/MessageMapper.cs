@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Confab.Modules.Agendas.Domain.Submissions.Events;
-using Confab.Shared.Abstractions.Kernel;
 using Confab.Shared.Abstractions.Messaging;
+using Confab.Shared.Kernel;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Services
 {

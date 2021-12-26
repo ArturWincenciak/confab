@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
-using Confab.Shared.Abstractions.Kernel.Types;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types;
+using Confab.Shared.Kernel.Types.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Confab.Modules.Agendas.Infrastructure.EF.Repositories

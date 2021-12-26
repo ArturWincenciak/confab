@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Confab.Modules.Agendas.Domain.Agendas.Entities;
-using Confab.Shared.Abstractions.Kernel.Types;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types;
+using Confab.Shared.Kernel.Types.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

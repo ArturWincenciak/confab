@@ -5,8 +5,8 @@ using Confab.Modules.Agendas.Application.Agendas.Exceptions;
 using Confab.Modules.Agendas.Application.Agendas.Types;
 using Confab.Modules.Agendas.Domain.Agendas.Repositories;
 using Confab.Shared.Abstractions.Commands;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
 using Confab.Shared.Abstractions.Messaging;
+using Confab.Shared.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
 {

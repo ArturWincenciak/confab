@@ -1,7 +1,7 @@
 ﻿using System;
 using Confab.Modules.Agendas.Domain.CallForPaper.Exceptions;
-using Confab.Shared.Abstractions.Kernel.Types;
-using Confab.Shared.Abstractions.Kernel.Types.Base;
+using Confab.Shared.Kernel.Types;
+using Confab.Shared.Kernel.Types.Base;
 
 namespace Confab.Modules.Agendas.Domain.CallForPaper.Entities
 {
