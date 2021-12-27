@@ -2,7 +2,7 @@ version: '3'
 
 services: 
     postgres:
-        image: postgres
+        image: confab.postgres
         shm_size: '4gb'
         container_name: postgres
         restart: unless-stopped
