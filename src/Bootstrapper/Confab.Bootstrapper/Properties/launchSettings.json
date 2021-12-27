@@ -27,7 +27,10 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "publishAllPorts": true,
       "useSSL": true,
-      "httpPort": 5000
+      "httpPort": 5000,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "docker"
+      }
     }
   }
 }

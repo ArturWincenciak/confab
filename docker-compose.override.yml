@@ -4,7 +4,7 @@ services:
   confab.bootstrapper:
     container_name: "confab.service"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=docker-compose
       - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
       - "5000:80"
