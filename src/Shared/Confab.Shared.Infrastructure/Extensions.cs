@@ -43,6 +43,9 @@ namespace Confab.Shared.Infrastructure
             {
                 var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
+                Console.WriteLine("Recursive config printing...");
+                PrintConfiguration(configuration.GetChildren());
+
                 Console.WriteLine("\n\nConfiguration:");
                 foreach (var (key, value) in configuration.AsEnumerable())
                 {
@@ -166,6 +169,27 @@ namespace Confab.Shared.Infrastructure
             var options = new T();
             configuration.GetSection(sectionName).Bind(options);
             return options;
+        }
+
+        private static void PrintConfiguration(IEnumerable<IConfigurationSection> configurationSections)
+        {
+            var children = configurationSections.ToArray();
+            foreach (var child in children)
+            {
+                if(child is not null)
+                {
+                    var key = child.Key;
+                    var value = child.Value;
+                    var path = child.Path;
+                    Console.WriteLine($"Path: [{path}], Key: [{key}], Value: [{value}]");
+
+                    var childChildren = child.GetChildren().ToArray();
+                    if (childChildren.Any())
+                    {
+                        PrintConfiguration(childChildren);
+                    }
+                }
+            }
         }
     }
 }
