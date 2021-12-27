@@ -43,25 +43,49 @@ namespace Confab.Shared.Infrastructure.Modules
 
             return builder.ConfigureAppConfiguration((ctx, cfg) =>
             {
-                var allSettings = GetSettings("*");
-                foreach (var settings in allSettings)
-                    cfg.AddJsonFile(settings);
+                var environment = ctx.HostingEnvironment.EnvironmentName;
 
-                Console.WriteLine($"\n\nAll configurations settings added:\n* {string.Join("\n* ", allSettings)}");
-
-                var environmentName = ctx.HostingEnvironment.EnvironmentName;
-                var fallbackEnvironmentSettings = GetSettings($"*.{environmentName}");
-                foreach (var settings in fallbackEnvironmentSettings)
-                    cfg.AddJsonFile(settings);
-
-                Console.WriteLine(
-                    $"\n\nConfigurations settings for environment '{environmentName}' added:\n* " +
-                    $"{string.Join("\n* ", fallbackEnvironmentSettings)}");
-
-                IEnumerable<string> GetSettings(string pattern)
+                var moduleMainAppSettingsJsonFiles = GetModulesMainAppSettingsJson();
+                foreach (var appSettingsJson in moduleMainAppSettingsJsonFiles)
                 {
-                    return Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath,
-                        $"module.{pattern}.json", SearchOption.AllDirectories);
+                    cfg.AddJsonFile(appSettingsJson);
+                    Console.WriteLine($"Added module main app setting Json: {appSettingsJson}.");
+                }
+
+                var fallbackEnvironmentSettings = GetModulesFallbackEnvAppSettingsJson(environment);
+                foreach (var appSettingsJson in fallbackEnvironmentSettings)
+                {
+                    cfg.AddJsonFile(appSettingsJson);
+                    Console.WriteLine($"Added module fallback env app setting Json: {appSettingsJson}.");
+                }
+
+                string[] GetModulesMainAppSettingsJson()
+                {
+                    return Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath, "module.*.json",
+                            SearchOption.AllDirectories)
+                        .Where(file =>
+                        {
+                            var fileName = Path.GetFileName(file);
+                            var fileNameParts = fileName.Split(".");
+                            var fileContainsOnlyTwoMainPart = fileNameParts.Length == 3;
+                            return fileContainsOnlyTwoMainPart;
+                        })
+                        .ToArray();
+                }
+
+                string[] GetModulesFallbackEnvAppSettingsJson(string env)
+                {
+                    return Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath, "module.*.json",
+                            SearchOption.AllDirectories)
+                        .Where(file =>
+                        {
+                            var fileName = Path.GetFileName(file);
+                            var fileNameParts = fileName.Split(".");
+                            var containsEnvironment = fileNameParts.Contains(env.ToLower());
+                            var fileContainsTreeMainParts = fileNameParts.Length == 4;
+                            return containsEnvironment && fileContainsTreeMainParts;
+                        })
+                        .ToArray();
                 }
             });
         }
@@ -94,26 +118,26 @@ namespace Confab.Shared.Infrastructure.Modules
 
                 foreach (var eventType in eventTypes)
                 {
-                    registry.AddBroadcastAction(
-                        eventType,
-                        @event =>
+                    registry.AddBroadcastAction(eventType,
+                    @event =>
+                    {
+                        try
                         {
-                            try
-                            {
-                                Console.WriteLine($"[Trace] Invoking weaved action for event: '{@event}'.");
-                                var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
-                                var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
-                                var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
-                                return (Task) methodResult;
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Exception: '{ex.Message}'; Event: '{@event}'.");
-                                throw;
-                            }
-                        });
+                            Console.WriteLine($"[Trace] Invoking weaved action for event: '{@event}'.");
+                            var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
+                            var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
+                            var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
+                            return (Task) methodResult;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Exception: '{ex.Message}'; Event: '{@event}'.");
+                            throw;
+                        }
+                    });
 
-                    Console.WriteLine($"[Trace] Module registry item added for event type: '{eventType.FullName}'.");
+                    Console.WriteLine(
+                        $"[Trace] Module registry item added for event type: '{eventType.FullName}'.");
                 }
 
                 return registry;
