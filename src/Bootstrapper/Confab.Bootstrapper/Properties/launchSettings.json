@@ -17,7 +17,8 @@
     "Confab.Bootstrapper": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DEVELOPMENT_RUNTIME": "Console"
       },
       "applicationUrl": "http://localhost:5000",
       "dotnetRunMessages": "true"
@@ -29,7 +30,8 @@
       "useSSL": true,
       "httpPort": 5000,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "docker"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DEVELOPMENT_RUNTIME": "Docker"
       }
     }
   }

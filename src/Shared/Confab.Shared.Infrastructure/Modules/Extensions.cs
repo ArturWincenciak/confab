@@ -43,7 +43,9 @@ namespace Confab.Shared.Infrastructure.Modules
 
             return builder.ConfigureAppConfiguration((ctx, cfg) =>
             {
-                var environment = ctx.HostingEnvironment.EnvironmentName;
+                var appSettingsPath = GetEnvironmentRuntimeAppSettingsJson();
+                cfg.AddJsonFile(appSettingsPath);
+                Console.WriteLine($"Added dev and runtime fallback settings Json: {appSettingsPath}.");
 
                 var moduleMainAppSettingsJsonFiles = GetModulesMainAppSettingsJson();
                 foreach (var appSettingsJson in moduleMainAppSettingsJsonFiles)
@@ -52,17 +54,25 @@ namespace Confab.Shared.Infrastructure.Modules
                     Console.WriteLine($"Added module main app setting Json: {appSettingsJson}.");
                 }
 
-                var fallbackEnvironmentSettings = GetModulesFallbackEnvAppSettingsJson(environment);
+                var fallbackEnvironmentSettings = GetModulesFallbackEnvAppSettingsJson();
                 foreach (var appSettingsJson in fallbackEnvironmentSettings)
                 {
                     cfg.AddJsonFile(appSettingsJson);
                     Console.WriteLine($"Added module fallback env app setting Json: {appSettingsJson}.");
                 }
 
+                string GetEnvironmentRuntimeAppSettingsJson()
+                {
+                    var environment = ctx.HostingEnvironment.EnvironmentName.ToLower();
+                    var runtime = Environment.GetEnvironmentVariable("DEVELOPMENT_RUNTIME")?.ToLower();
+                    var appSettingFile = $"appsettings.{environment}.{runtime}.json";
+                    return appSettingFile;
+                }
+
                 string[] GetModulesMainAppSettingsJson()
                 {
-                    return Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath, "module.*.json",
-                            SearchOption.AllDirectories)
+                    var rootPath = ctx.HostingEnvironment.ContentRootPath;
+                    return Directory.EnumerateFiles(rootPath, "module.*.json", SearchOption.AllDirectories)
                         .Where(file =>
                         {
                             var fileName = Path.GetFileName(file);
@@ -73,15 +83,16 @@ namespace Confab.Shared.Infrastructure.Modules
                         .ToArray();
                 }
 
-                string[] GetModulesFallbackEnvAppSettingsJson(string env)
+                string[] GetModulesFallbackEnvAppSettingsJson()
                 {
-                    return Directory.EnumerateFiles(ctx.HostingEnvironment.ContentRootPath, "module.*.json",
-                            SearchOption.AllDirectories)
+                    var environment = ctx.HostingEnvironment.EnvironmentName.ToLower();
+                    var rootPath = ctx.HostingEnvironment.ContentRootPath;
+                    return Directory.EnumerateFiles(rootPath, "module.*.json", SearchOption.AllDirectories)
                         .Where(file =>
                         {
                             var fileName = Path.GetFileName(file);
                             var fileNameParts = fileName.Split(".");
-                            var containsEnvironment = fileNameParts.Contains(env.ToLower());
+                            var containsEnvironment = fileNameParts.Contains(environment);
                             var fileContainsTreeMainParts = fileNameParts.Length == 4;
                             return containsEnvironment && fileContainsTreeMainParts;
                         })
