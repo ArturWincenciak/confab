@@ -107,7 +107,13 @@ namespace Confab.Shared.Infrastructure.Modules
             services.AddModuleRegistry(assemblies);
             services.AddSingleton<IModuleClient, ModuleClient>();
             services.AddSingleton<IModuleSerializer, JsonModuleSerializer>();
+            services.AddSingleton<IModuleSubscriber, ModuleSubscriber>();
             return services;
+        }
+
+        public static IModuleSubscriber UseModuleRequests(this IApplicationBuilder app)
+        {
+            return app.ApplicationServices.GetRequiredService<IModuleSubscriber>();
         }
 
         private static void AddModuleRegistry(this IServiceCollection services, IEnumerable<Assembly> assemblies)
@@ -130,22 +136,22 @@ namespace Confab.Shared.Infrastructure.Modules
                 foreach (var eventType in eventTypes)
                 {
                     registry.AddBroadcastAction(eventType,
-                    @event =>
-                    {
-                        try
+                        @event =>
                         {
-                            Console.WriteLine($"[Trace] Invoking weaved action for event: '{@event}'.");
-                            var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
-                            var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
-                            var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
-                            return (Task) methodResult;
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Exception: '{ex.Message}'; Event: '{@event}'.");
-                            throw;
-                        }
-                    });
+                            try
+                            {
+                                Console.WriteLine($"[Trace] Invoking weaved action for event: '{@event}'.");
+                                var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
+                                var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
+                                var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
+                                return (Task) methodResult;
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Exception: '{ex.Message}'; Event: '{@event}'.");
+                                throw;
+                            }
+                        });
 
                     Console.WriteLine(
                         $"[Trace] Module registry item added for event type: '{eventType.FullName}'.");

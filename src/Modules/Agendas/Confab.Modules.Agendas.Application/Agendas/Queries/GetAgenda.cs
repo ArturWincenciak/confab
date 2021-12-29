@@ -5,9 +5,9 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Queries
 {
-    public sealed record GetAgenda(Guid ConferenceId) : IQuery<GetAgenda.Result>
+    public sealed record GetAgenda(Guid ConferenceId) : IQuery<GetAgenda.Result>, IModuleRequest
     {
-        public class Result : IEnumerable<Result.AgendaTrackDto>, IQueryResult
+        public class Result : IEnumerable<Result.AgendaTrackDto>, IQueryResult, IModuleResponse
         {
             private readonly IEnumerable<AgendaTrackDto> _agendaTracks;
 

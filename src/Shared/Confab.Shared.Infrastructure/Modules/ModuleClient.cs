@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Confab.Shared.Abstractions.Modules;
+using Confab.Shared.Abstractions.Queries;
 using Microsoft.Extensions.Logging;
 
 namespace Confab.Shared.Infrastructure.Modules
@@ -20,7 +21,7 @@ namespace Confab.Shared.Infrastructure.Modules
             _logger = logger;
         }
 
-        public async Task<TResult> SendAsync<TResult>(string path, object request) where TResult : class
+        public async Task<TResult> SendAsync<TResult>(string path, IModuleRequest request) where TResult : class, IModuleResponse
         {
             try
             {

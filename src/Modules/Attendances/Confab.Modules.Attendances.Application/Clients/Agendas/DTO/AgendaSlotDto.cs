@@ -2,6 +2,7 @@
 
 namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO
 {
+    //todo: change to record
     public abstract class AgendaSlotDto
     {
         public Guid Id { get; set; }

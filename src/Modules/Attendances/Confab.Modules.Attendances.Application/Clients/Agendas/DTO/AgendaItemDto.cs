@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO
 {
+    //todo: change to record
     public class AgendaItemDto
     {
         public Guid Id { get; set; }

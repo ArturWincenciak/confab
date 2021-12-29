@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using Confab.Modules.Agendas.Api.Controllers;
 using Confab.Modules.Agendas.Application;
+using Confab.Modules.Agendas.Application.Agendas.Queries;
 using Confab.Modules.Agendas.Domain;
 using Confab.Modules.Agendas.Infrastructure;
 using Confab.Shared.Abstractions.Modules;
+using Confab.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -33,6 +35,14 @@ namespace Confab.Modules.Agendas.Api
 
         public void Use(IApplicationBuilder app)
         {
+            //todo: consider rename 'Subscribe' to 'MapRequest'
+            app.UseModuleRequests() //todo: path can be generate by nameof(T)
+                .Subscribe<GetRegularAgendaSlot, GetRegularAgendaSlot.Result>($"{Name}/{nameof(GetRegularAgendaSlot)}")
+                .Subscribe<GetAgenda, GetAgenda.Result>($"{Name}/{nameof(GetAgenda)}");
+
+            //app.UseModuleRequests()
+            //    .Subscribe<GetRegularAgendaSlot, GetRegularAgendaSlot.Result>("GET:agendas/slots?type=regular",
+            //        (request, sp) => sp.GetRequiredService<IQueryDispatcher>().QueryAsync(request));
         }
     }
 }
