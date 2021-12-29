@@ -20,6 +20,31 @@ namespace Confab.Shared.Infrastructure.Modules
             _logger = logger;
         }
 
+        public async Task<TResult> SendAsync<TResult>(string path, object request) where TResult : class
+        {
+            try
+            {
+                _logger.LogTrace($"Sending request to '{path}' with value '{request}'.");
+
+                var registration = _moduleRegistry.GetRequestRegistration(path);
+                if (registration is null)
+                    throw new InvalidOperationException($"No action has been defined for path: '{path}'.");
+
+                var receiverRequest = TranslateType(request, registration.RequestType);
+                var result = await registration.Action(receiverRequest);
+                var translatedResult = TranslateType<TResult>(result);
+
+                _logger.LogTrace($"Request response result for '{path}' got '{translatedResult}' value.");
+
+                return translatedResult;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"{ex.Message}");
+                throw;
+            }
+        }
+
         public async Task PublishAsync(object message)
         {
             try
@@ -54,13 +79,26 @@ namespace Confab.Shared.Infrastructure.Modules
             }
         }
 
-        private object TranslateType(object fromValue, Type toType)
+        private TExpectedType TranslateType<TExpectedType>(object value) where TExpectedType : class
         {
-            if (fromValue.GetType() == toType)
-                return fromValue;
+            if (value is null)
+                return null;
 
-            var serialized = _moduleSerializer.Serialize(fromValue);
-            var deserialized = _moduleSerializer.Deserialize(serialized, toType);
+            if (value.GetType() == typeof(TExpectedType))
+                return (TExpectedType) value;
+
+            var serialized = _moduleSerializer.Serialize(value);
+            var deserialized = _moduleSerializer.Deserialize<TExpectedType>(serialized);
+            return deserialized;
+        }
+
+        private object TranslateType(object value, Type expectedType)
+        {
+            if (value.GetType() == expectedType)
+                return value;
+
+            var serialized = _moduleSerializer.Serialize(value);
+            var deserialized = _moduleSerializer.Deserialize(serialized, expectedType);
             return deserialized;
         }
     }
