@@ -36,7 +36,7 @@ namespace Confab.Modules.Attendances.Infrastructure.EF.Repositories
 
         public async Task AddAsync(Participant participant)
         {
-            await _participants.AddAsync(participant);
+            _participants.Add(participant);
             await _context.SaveChangesAsync();
         }
 

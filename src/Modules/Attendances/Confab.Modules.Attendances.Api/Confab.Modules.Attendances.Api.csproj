@@ -5,6 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="module.attendances.development.json" />
+    <None Remove="module.attendances.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="module.attendances.development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="module.attendances.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Confab.Modules.Attendances.Infrastructure\Confab.Modules.Attendances.Infrastructure.csproj" />
   </ItemGroup>
 

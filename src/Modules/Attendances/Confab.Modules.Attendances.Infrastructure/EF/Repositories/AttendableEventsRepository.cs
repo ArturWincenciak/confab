@@ -26,7 +26,7 @@ namespace Confab.Modules.Attendances.Infrastructure.EF.Repositories
 
         public async Task AddAsync(AttendableEvent attendableEvent)
         {
-            await _attendableEvents.AddAsync(attendableEvent);
+            _attendableEvents.Add(attendableEvent);
             await _context.SaveChangesAsync();
         }
 

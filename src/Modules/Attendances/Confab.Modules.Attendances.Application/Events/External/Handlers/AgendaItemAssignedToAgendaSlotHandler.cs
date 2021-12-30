@@ -36,7 +36,7 @@ namespace Confab.Modules.Attendances.Application.Events.External.Handlers
             if (!slot.ParticipantsLimit.HasValue)
                 return;
 
-            attendableEvent = new AttendableEvent(@event.AgendaItemId, slot.AgendaItem.ConferenceId, slot.From,
+            attendableEvent = AttendableEvent.Create(@event.AgendaItemId, slot.AgendaItem.ConferenceId, slot.From,
                 slot.To);
             var slotPolicy = _slotPolicyFactory.Get(slot.AgendaItem.Tags.ToArray());
             var slots = slotPolicy.Generate(slot.ParticipantsLimit.Value);

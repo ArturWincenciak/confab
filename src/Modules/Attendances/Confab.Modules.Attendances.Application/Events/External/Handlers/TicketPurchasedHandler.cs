@@ -25,7 +25,7 @@ namespace Confab.Modules.Attendances.Application.Events.External.Handlers
             if (participant is not null)
                 return;
 
-            participant = new Participant(Guid.NewGuid(), @event.ConferenceId, @event.UserId);
+            participant = Participant.Create(@event.ConferenceId, @event.UserId);
             await _participantsRepository.AddAsync(participant);
             _logger.LogInformation($"Added a participant with ID: '{participant.Id}' " +
                                    $"for conference: '{participant.ConferenceId}', user: '{participant.UserId}'.");
