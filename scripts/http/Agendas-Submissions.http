@@ -23,13 +23,13 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "ConferenceId": "26914b94-ce02-474d-bb8c-24d5b0470fca",
+    "ConferenceId": "5627af4c-08da-4c8c-a170-36285a49b10a",
     "Title": "Submission 1 of Conf 1 with Speaker 1",
     "Description": "Desc of Submission 1 of Conf 1 with Speaker 1",
     "Level": "1",
     "Tags": [ "tag_one", "tag_two", "tag_three"],
     "SpeakerIds": [ 
-        "70197e07-4568-4b18-8866-c8eba36ce08e"
+        "112441a6-b16a-46cc-95f8-0070f80166a0"
         ]
 }
 

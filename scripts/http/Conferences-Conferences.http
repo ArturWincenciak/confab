@@ -29,7 +29,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "HostId": "142f3425-76ab-44fe-b55e-c74e133cc312",
+    "HostId": "d7cdf424-7cd7-4c7c-80ab-ef7181bb6923",
     "Name": "Conf 1",
     "Description": "Description of Conf 1",
     "From": "2021-05-01",
@@ -40,7 +40,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### ID variable
-@conferenceId = 26914b94-ce02-474d-bb8c-24d5b0470fca
+@conferenceId = 5ec95eb9-e9c4-4447-977b-ab9b4285b6bf
 
 ### Get
 GET {{url}}/{{conferenceId}}

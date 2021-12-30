@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 @api = {{host}}/agendas-module
-@conferenceId = 26914b94-ce02-474d-bb8c-24d5b0470fca
+@conferenceId = 5ec95eb9-e9c4-4447-977b-ab9b4285b6bf
 @url = {{api}}/agendas/{{conferenceId}}
 
 @email = teo@vincent.com
@@ -25,7 +25,7 @@ Content-Type: application/json
 GET {{url}}/items/{{conferenceId}}
 Content-Type: application/json
 
-@trackId = ca7c14e5-ba10-4dd6-b652-20bf7b700c3a
+@trackId = 5627af4c-08da-4c8c-a170-36285a49b10a
 
 ### Create track
 POST {{url}}/tracks
@@ -33,7 +33,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "Name": "Agenda track 2"
+    "Name": "Agenda track 1"
 }
 
 ### Get Agenda Track
@@ -59,7 +59,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "AgendaSlotId": "6b1cbdeb-616e-43bc-adad-e6101adaf0ac",
+    "AgendaSlotId": "9b238a3b-6c2c-4111-8a7e-720c43a28379",
     "AgendaTrackId": "{{trackId}}",
     "Placeholder": "Przerwa kawowa nr. 1"
 }
@@ -70,7 +70,7 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "AgendaSlotId": "e3b9d51a-d51e-4dbd-a303-9316d4b91ce5",
+    "AgendaSlotId": "9b238a3b-6c2c-4111-8a7e-720c43a28379",
     "AgendaTrackId": "{{trackId}}",
-    "AgendaItemId": "c9c570aa-ac14-441e-a48d-e280714184c1"
+    "AgendaItemId": "d6009ebc-6b0a-48da-8215-c55636433afe"
 }

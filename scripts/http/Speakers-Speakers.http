@@ -37,7 +37,7 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### ID variable
-@speakerId = 70197e07-4568-4b18-8866-c8eba36ce08e
+@speakerId = 112441a6-b16a-46cc-95f8-0070f80166a0
 
 ### Get
 GET {{url}}/{{speakerId}}
