@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Confab.Modules.Attendances.Application.Clients.Agendas;
 using Confab.Modules.Attendances.Application.Clients.Agendas.DTO;
@@ -23,9 +22,10 @@ namespace Confab.Modules.Attendances.Infrastructure.Clients
                 new GetRegularAgendaSlot(id));
         }
 
-        public Task<IEnumerable<AgendaTrackDto>> GetAgendaAsync(Guid conferenceId)
+        public Task<AgendaTracksDto> GetAgendaAsync(Guid conferenceId)
         {
-            throw new NotImplementedException();
+            return _client.SendAsync<AgendaTracksDto>("Agendas/GetAgenda",
+                new GetAgenda(conferenceId));
         }
     }
 }
