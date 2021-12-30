@@ -175,8 +175,7 @@ namespace Confab.Shared.Infrastructure
         {
             var children = configurationSections.ToArray();
             foreach (var child in children)
-            {
-                if(child is not null)
+                if (child is not null)
                 {
                     var key = child.Key;
                     var value = child.Value;
@@ -185,11 +184,8 @@ namespace Confab.Shared.Infrastructure
 
                     var childChildren = child.GetChildren().ToArray();
                     if (childChildren.Any())
-                    {
                         PrintConfiguration(childChildren);
-                    }
                 }
-            }
         }
     }
 }

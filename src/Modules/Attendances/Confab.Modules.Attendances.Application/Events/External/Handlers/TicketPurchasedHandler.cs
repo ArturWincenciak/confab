@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Confab.Modules.Attendances.Domain.Entities;
 using Confab.Modules.Attendances.Domain.Repositories;
 using Confab.Shared.Abstractions.Events;

@@ -29,7 +29,8 @@ namespace Confab.Shared.Infrastructure.Modules
             _broadcastRegistrations.Add(registration);
         }
 
-        public void AddRequestAction(string path, Type requestType, Type responseType, Func<object, Task<object>> action)
+        public void AddRequestAction(string path, Type requestType, Type responseType,
+            Func<object, Task<object>> action)
         {
             if (path is null)
                 throw new InvalidOperationException("Request path cannot be null.");

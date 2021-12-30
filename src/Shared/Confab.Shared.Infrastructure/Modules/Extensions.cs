@@ -44,20 +44,20 @@ namespace Confab.Shared.Infrastructure.Modules
             return builder.ConfigureAppConfiguration((ctx, cfg) =>
             {
                 var appSettingsPath = GetEnvironmentRuntimeAppSettingsJson();
-                cfg.AddJsonFile(appSettingsPath, optional: true, reloadOnChange: true);
+                cfg.AddJsonFile(appSettingsPath, true, true);
                 Console.WriteLine($"Added dev and runtime fallback settings Json: {appSettingsPath}.");
 
                 var moduleMainAppSettingsJsonFiles = GetModulesMainAppSettingsJson();
                 foreach (var appSettingsJson in moduleMainAppSettingsJsonFiles)
                 {
-                    cfg.AddJsonFile(appSettingsJson, optional: false, reloadOnChange: true);
+                    cfg.AddJsonFile(appSettingsJson, false, true);
                     Console.WriteLine($"Added module main app setting Json: {appSettingsJson}.");
                 }
 
                 var fallbackEnvironmentSettings = GetModulesFallbackEnvAppSettingsJson();
                 foreach (var appSettingsJson in fallbackEnvironmentSettings)
                 {
-                    cfg.AddJsonFile(appSettingsJson, optional: true, reloadOnChange: true);
+                    cfg.AddJsonFile(appSettingsJson, true, true);
                     Console.WriteLine($"Added module fallback env app setting Json: {appSettingsJson}.");
                 }
 

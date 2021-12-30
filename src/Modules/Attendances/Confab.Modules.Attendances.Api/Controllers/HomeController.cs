@@ -6,6 +6,9 @@ namespace Confab.Modules.Attendances.Api.Controllers
     internal class HomeController : BaseController
     {
         [HttpGet]
-        public ActionResult<string> Get() => "Attendances API";
+        public ActionResult<string> Get()
+        {
+            return "Attendances API";
+        }
     }
 }

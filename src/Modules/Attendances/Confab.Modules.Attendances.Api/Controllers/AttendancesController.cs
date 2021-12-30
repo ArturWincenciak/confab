@@ -16,8 +16,8 @@ namespace Confab.Modules.Attendances.Api.Controllers
     internal class AttendancesController : BaseController
     {
         private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IQueryDispatcher _queryDispatcher;
         private readonly IContext _context;
+        private readonly IQueryDispatcher _queryDispatcher;
 
         public AttendancesController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher,
             IContext context)
@@ -40,9 +40,7 @@ namespace Confab.Modules.Attendances.Api.Controllers
             });
 
             if (attendances is null)
-            {
                 return NotFound();
-            }
 
             return Ok(attendances);
         }

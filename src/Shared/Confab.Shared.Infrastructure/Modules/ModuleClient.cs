@@ -21,7 +21,8 @@ namespace Confab.Shared.Infrastructure.Modules
             _logger = logger;
         }
 
-        public async Task<TResult> SendAsync<TResult>(string path, IModuleRequest request) where TResult : class, IModuleResponse
+        public async Task<TResult> SendAsync<TResult>(string path, IModuleRequest request)
+            where TResult : class, IModuleResponse
         {
             try
             {
