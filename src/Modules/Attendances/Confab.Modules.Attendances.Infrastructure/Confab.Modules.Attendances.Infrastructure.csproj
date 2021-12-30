@@ -9,4 +9,8 @@
     <ProjectReference Include="..\Confab.Modules.Attendances.Application\Confab.Modules.Attendances.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EF\Migrations\" />
+  </ItemGroup>
+
 </Project>
