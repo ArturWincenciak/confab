@@ -33,7 +33,7 @@ namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
 
             await _agendaTrackRepository.UpdateAsync(agendaTrack);
 
-            var @event = new AgendasItemAssignedToAgendaSlot(command.AgendaSlotId, command.AgendaItemId);
+            var @event = new AgendaItemAssignedToAgendaSlot(command.AgendaSlotId, command.AgendaItemId);
             await _messageBroker.PublishAsync(@event);
         }
     }
