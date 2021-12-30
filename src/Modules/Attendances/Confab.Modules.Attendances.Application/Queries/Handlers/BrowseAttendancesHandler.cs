@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,16 +34,18 @@ namespace Confab.Modules.Attendances.Application.Queries.Handlers
             foreach (var attendance in participant.Attendances)
             {
                 var slot = slots.Single(x => x.AgendaItem.Id == attendance.AttendableEventId);
-                attendances.Add(new AttendanceDto
-                {
-                    ConferenceId = query.ConferenceId,
-                    EventId = slot.Id,
-                    From = attendance.From,
-                    To = attendance.To,
-                    Title = slot.AgendaItem.Title,
-                    Description = slot.AgendaItem.Description,
-                    Level = slot.AgendaItem.Level
-                });
+                var attendanceDto = new AttendanceDto
+                (
+                    Id: attendance.Id,
+                    ConferenceId: query.ConferenceId,
+                    EventId: slot.Id,
+                    From: attendance.From,
+                    To: attendance.To,
+                    Title: slot.AgendaItem.Title,
+                    Description: slot.AgendaItem.Description,
+                    Level: slot.AgendaItem.Level
+                );
+                attendances.Add(attendanceDto);
             }
 
             return new BrowseAttendances.Result(attendances);
