@@ -17,7 +17,7 @@ namespace Confab.Shared.Infrastructure.Modules
             _serviceProvider = serviceProvider;
         }
 
-        public IModuleSubscriber Subscribe<TRequest, TResponse>(string path)
+        public IModuleSubscriber MapRequest<TRequest, TResponse>(string path)
             where TRequest : class, IQuery<TResponse>, IModuleRequest
             where TResponse : class, IQueryResult, IModuleResponse
         {

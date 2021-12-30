@@ -35,14 +35,9 @@ namespace Confab.Modules.Agendas.Api
 
         public void Use(IApplicationBuilder app)
         {
-            //todo: consider rename 'Subscribe' to 'MapRequest'
-            app.UseModuleRequests() //todo: path can be generate by nameof(T)
-                .Subscribe<GetRegularAgendaSlot, GetRegularAgendaSlot.Result>($"{Name}/{nameof(GetRegularAgendaSlot)}")
-                .Subscribe<GetAgenda, GetAgenda.Result>($"{Name}/{nameof(GetAgenda)}");
-
-            //app.UseModuleRequests()
-            //    .Subscribe<GetRegularAgendaSlot, GetRegularAgendaSlot.Result>("GET:agendas/slots?type=regular",
-            //        (request, sp) => sp.GetRequiredService<IQueryDispatcher>().QueryAsync(request));
+            app.UseModuleRequests()
+                .MapRequest<GetRegularAgendaSlot, GetRegularAgendaSlot.Result>($"{Name}/{nameof(GetRegularAgendaSlot)}")
+                .MapRequest<GetAgenda, GetAgenda.Result>($"{Name}/{nameof(GetAgenda)}");
         }
     }
 }
