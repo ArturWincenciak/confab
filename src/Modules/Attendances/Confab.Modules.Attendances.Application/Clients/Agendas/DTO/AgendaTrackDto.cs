@@ -24,6 +24,10 @@ namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO
             return _agendaTracks.GetEnumerator();
         }
 
-        public sealed record AgendaTrackDto(Guid Id, Guid ConferenceId, string Name, IEnumerable<AgendaSlotDto> Slots);
+        public sealed record AgendaTrackDto(
+            Guid Id,
+            Guid ConferenceId,
+            string Name,
+            IEnumerable<RegularAgendaSlotDto> Slots);
     }
 }

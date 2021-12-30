@@ -3,16 +3,13 @@ using System.Collections.Generic;
 
 namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO
 {
-    //todo: change to record
-    public class AgendaItemDto
-    {
-        public Guid Id { get; set; }
-        public Guid ConferenceId { get; set; }
-        public DateTime From { get; set; }
-        public DateTime To { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int Level { get; set; }
-        public IEnumerable<string> Tags { get; set; }
-    }
+    public record AgendaItemDto(
+        Guid Id,
+        Guid ConferenceId,
+        DateTime From,
+        DateTime To,
+        string Title,
+        string Description,
+        int Level,
+        IEnumerable<string> Tags);
 }

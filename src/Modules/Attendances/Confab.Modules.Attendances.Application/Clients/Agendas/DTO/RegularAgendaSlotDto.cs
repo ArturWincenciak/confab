@@ -1,11 +1,13 @@
-﻿using Confab.Shared.Abstractions.Queries;
+﻿using System;
+using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO
 {
-    //todo: change to record
-    public class RegularAgendaSlotDto : AgendaSlotDto, IModuleResponse
-    {
-        public int? ParticipantsLimit { get; set; }
-        public AgendaItemDto AgendaItem { get; set; }
-    }
+    public record RegularAgendaSlotDto(
+        Guid Id,
+        DateTime From,
+        DateTime To,
+        string Type,
+        int? ParticipantsLimit,
+        AgendaItemDto AgendaItem) : IModuleResponse;
 }
