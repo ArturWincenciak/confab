@@ -25,8 +25,7 @@ namespace Confab.Shared.Infrastructure.Modules
                 (request, sp) => sp.GetRequiredService<IQueryDispatcher>().QueryAsync(request));
         }
 
-        //todo: make it private
-        public IModuleSubscriber Subscribe<TRequest, TResponse>(string path,
+        private IModuleSubscriber Subscribe<TRequest, TResponse>(string path,
             Func<TRequest, IServiceProvider, Task<TResponse>> action)
             where TRequest : class, IQuery<TResponse>, IModuleRequest
             where TResponse : class, IQueryResult, IModuleResponse
