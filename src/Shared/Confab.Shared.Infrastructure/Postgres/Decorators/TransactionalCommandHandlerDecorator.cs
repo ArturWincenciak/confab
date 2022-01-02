@@ -3,7 +3,7 @@ using Confab.Shared.Abstractions.Commands;
 
 namespace Confab.Shared.Infrastructure.Postgres.Decorators
 {
-    //[Decorator]
+    [Decorator]
     public class TransactionalCommandHandlerDecorator<TCommand, TTransactional> : ICommandHandler<TCommand>
         where TCommand : class, ICommand
         where TTransactional : IUnitOfWork

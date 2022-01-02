@@ -13,7 +13,7 @@ namespace Confab.Shared.Infrastructure.Queries
             services.AddSingleton<IQueryDispatcher, QueryDispatcher>();
             services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
                 .AddClasses(filter => filter.AssignableTo(typeof(IQueryHandler<,>))
-                    /*.WithAttribute<DecoratorAttribute>()*/)
+                    .WithoutAttribute<DecoratorAttribute>())
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
             return services;
