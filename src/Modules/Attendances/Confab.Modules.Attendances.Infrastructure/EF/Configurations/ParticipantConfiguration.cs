@@ -19,8 +19,11 @@ namespace Confab.Modules.Attendances.Infrastructure.EF.Configurations
             builder.Property(x => x.UserId)
                 .HasConversion(x => x.Value, x => new UserId(x));
 
-            builder.HasIndex(x => new {x.UserId, x.ConferenceId}).IsUnique();
-            builder.Property(x => x.Version).IsConcurrencyToken();
+            builder.HasIndex(x => new {x.UserId, x.ConferenceId})
+                .IsUnique();
+
+            builder.Property(x => x.Version)
+                .IsConcurrencyToken();
         }
     }
 }
