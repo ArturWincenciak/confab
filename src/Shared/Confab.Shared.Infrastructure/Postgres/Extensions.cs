@@ -21,5 +21,15 @@ namespace Confab.Shared.Infrastructure.Postgres
 
             return services;
         }
+
+        public static IServiceCollection AddPostgresUnitOfWork<TUnitOfWork, TImplementation>(
+            this IServiceCollection services)
+            where TUnitOfWork : class, IUnitOfWork
+            where TImplementation: class, TUnitOfWork
+        {
+            services.AddScoped<TUnitOfWork, TImplementation>();
+            services.AddScoped<IUnitOfWork, TImplementation>();
+            return services;
+        }
     }
 }
