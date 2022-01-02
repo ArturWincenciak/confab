@@ -22,33 +22,9 @@ namespace Confab.Modules.Attendances.Infrastructure
                 .AddPostgres<AttendancesDbContext>();
 
                 services.AddScoped<IAttendancesUnitOfWork, AttendancesUnitOfWork>();
-
-                //services.AddScoped<PostgresUnitOfWork<AttendancesDbContext>>();
-
-                //services.Decorate<ICommandHandler<AttendEvent>, TransactionalCommandHandlerDecorator<AttendEvent, IAttendancesUnitOfWork>>();
+                services.Decorate<ICommandHandler<AttendEvent>, TransactionalCommandHandlerDecorator<AttendEvent, IAttendancesUnitOfWork>>();
 
             return services;
         }
-
-        //public static IServiceCollection AddPostgresUnitOfWork<TUnitOfWork, TImplementation>(
-        //    this IServiceCollection services)
-        //    where TUnitOfWork : class, IUnitOfWork
-        //    where TImplementation: class, TUnitOfWork
-        //{
-        //    services.AddScoped<TUnitOfWork, TImplementation>();
-        //    services.AddScoped<IUnitOfWork, TImplementation>();
-
-        //    using var serviceProvider = services.BuildServiceProvider();
-        //    var registry = serviceProvider.GetRequiredService<PostgresUnitOfWorkTypeRegistry>();
-        //    registry.Register<TUnitOfWork>();
-
-        //    return services;
-        //}
-
-        //private static IServiceCollection AddPostgresTransactionalDecorators(this IServiceCollection services)
-        //{
-        //    services.TryDecorate(typeof(ICommandHandler<>), typeof(TransactionalCommandHandlerDecorator<>));
-        //    return services;
-        //}
     }
 }

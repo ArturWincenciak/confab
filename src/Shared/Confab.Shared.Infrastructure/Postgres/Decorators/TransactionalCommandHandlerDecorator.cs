@@ -1,8 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Confab.Shared.Abstractions.Commands;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Confab.Shared.Infrastructure.Postgres.Decorators
 {
@@ -13,28 +10,15 @@ namespace Confab.Shared.Infrastructure.Postgres.Decorators
     {
         private readonly ICommandHandler<TCommand> _handler;
         private readonly TTransactional _unitOfWorkService;
-        //private readonly IServiceProvider _serviceProvider;
-        //private readonly PostgresUnitOfWorkTypeRegistry _unitOfWorkTypeRegistry;
 
-        public TransactionalCommandHandlerDecorator(ICommandHandler<TCommand> handler, TTransactional unitOfWorkService
-            //, IServiceProvider serviceProvider
-            //, PostgresUnitOfWorkTypeRegistry unitOfWorkTypeRegistry
-            )
+        public TransactionalCommandHandlerDecorator(ICommandHandler<TCommand> handler, TTransactional unitOfWorkService)
         {
             _handler = handler;
             _unitOfWorkService = unitOfWorkService;
-            //_serviceProvider = serviceProvider;
-            //_unitOfWorkTypeRegistry = unitOfWorkTypeRegistry;
         }
 
         public Task HandleAsync(TCommand command)
         {
-            //var unitOfWorkType = _unitOfWorkTypeRegistry.Resolve<T>();
-            //if(unitOfWorkType is null)
-            //    return _handler.HandleAsync(command);
-
-            //var unitOfWorkService = (IUnitOfWork) _serviceProvider.GetRequiredService(unitOfWorkType);
-            //var unitOfWorkService = _serviceProvider.GetRequiredService<TTransactional>();
             return _unitOfWorkService.ExecuteAsync(() => _handler.HandleAsync(command));
         }
     }
