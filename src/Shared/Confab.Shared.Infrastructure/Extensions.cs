@@ -109,6 +109,18 @@ namespace Confab.Shared.Infrastructure
             return app;
         }
 
+        public static string GetModuleName(this Type type)
+        {
+            if (string.IsNullOrEmpty(type.Namespace))
+            {
+                return string.Empty;
+            }
+
+            return type.Namespace.StartsWith("Confab.Modules.")
+                ? type.Namespace.Split(".")[2].ToLowerInvariant()
+                : string.Empty;
+        }
+
         public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
         {
             Console.WriteLine($"Building service provider for get option '{sectionName}' of '{typeof(T)}'.");

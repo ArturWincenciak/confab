@@ -17,7 +17,7 @@ namespace Confab.Modules.Attendances.Infrastructure
                 .AddScoped<IAttendableEventsRepository, AttendableEventsRepository>()
                 .AddScoped<IParticipantsRepository, ParticipantsRepository>()
                 .AddPostgres<AttendancesDbContext>()
-                /*.AddUnitOfWork<IAttendancesUnitOfWork, AttendancesUnitOfWork>()*/;
+                .AddPostgresUnitOfWork<IAttendancesUnitOfWork, AttendancesUnitOfWork>();
 
             return services;
         }

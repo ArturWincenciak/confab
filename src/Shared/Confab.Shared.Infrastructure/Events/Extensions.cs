@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Confab.Shared.Abstractions.Events;
+using Confab.Shared.Infrastructure.Postgres.Decorators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Confab.Shared.Infrastructure.Events
@@ -11,7 +12,8 @@ namespace Confab.Shared.Infrastructure.Events
         {
             services.AddSingleton<IEventDispatcher, EventDispatcher>();
             services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
-                .AddClasses(implementationTypeFilter => implementationTypeFilter.AssignableTo(typeof(IEventHandler<>)))
+                .AddClasses(implementationTypeFilter => implementationTypeFilter.AssignableTo(typeof(IEventHandler<>))
+                    .WithAttribute<DecoratorAttribute>())
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
             return services;
