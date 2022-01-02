@@ -38,32 +38,6 @@ namespace Confab.Shared.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<IModule> modules,
             IEnumerable<Assembly> assemblies)
         {
-            var disabledModules = new List<string>();
-            using (var serviceProvider = services.BuildServiceProvider())
-            {
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-
-                Console.WriteLine("Recursive config printing...");
-                PrintConfiguration(configuration.GetChildren());
-
-                Console.WriteLine("\n\nConfiguration:");
-                foreach (var (key, value) in configuration.AsEnumerable())
-                {
-                    Console.WriteLine($"Key: '{key}', Value: '{value}'");
-                    if (!key.Contains(":module:enabled"))
-                        continue;
-
-                    if (!bool.Parse(value))
-                    {
-                        var splitKey = key.Split(":");
-                        var moduleName = splitKey[0];
-                        disabledModules.Add(moduleName);
-                        Console.WriteLine($"---\nDisabled module '{moduleName}'" +
-                                          $"by key '{key}' with value '{value}'\n---");
-                    }
-                }
-            }
-
             services.AddCors(corsOption =>
             {
                 corsOption.AddPolicy(CorsPolicy, builder =>
@@ -74,6 +48,7 @@ namespace Confab.Shared.Infrastructure
                         .WithHeaders("Content-Type", "Authorization");
                 });
             });
+
             services.AddSwaggerGen(options =>
             {
                 options.CustomSchemaIds(type => type.FullName);
@@ -105,28 +80,8 @@ namespace Confab.Shared.Infrastructure
             services.AddControllers()
                 .ConfigureApplicationPartManager(manager =>
                 {
-                    Console.WriteLine("\nConfigure application part manager starting with parts: " +
-                                      $"[{string.Join(" | ", manager.ApplicationParts.Select(x => x.Name))}].");
-
-                    var removedParts = new List<ApplicationPart>();
-                    foreach (var disabledModule in disabledModules)
-                    {
-                        var parts = manager.ApplicationParts
-                            .Where(applicationPart => applicationPart.Name.Contains(disabledModule,
-                                StringComparison.InvariantCultureIgnoreCase));
-
-                        removedParts.AddRange(parts);
-                    }
-
-                    foreach (var part in removedParts)
-                        manager.ApplicationParts.Remove(part);
-
-                    Console.WriteLine("Removed application parts: " +
-                                      $"[{string.Join(" | ", removedParts.Select(x => x.Name))}].");
-
-                    manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
-
-                    Console.WriteLine("Configure application part manager done.");
+                    var disabledModules = DetectDisabledModules(services);
+                    manager.AddOnlyNotDisabledModuleParts(disabledModules);
                 });
 
             return services;
@@ -156,8 +111,7 @@ namespace Confab.Shared.Infrastructure
 
         public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
         {
-            Console.WriteLine(
-                $"Build Service Provider by call GetOption of '{typeof(T)}' type to get option '{sectionName}' name.");
+            Console.WriteLine($"Building service provider for get option '{sectionName}' of '{typeof(T)}'.");
 
             using var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetService<IConfiguration>();
@@ -169,6 +123,65 @@ namespace Confab.Shared.Infrastructure
             var options = new T();
             configuration.GetSection(sectionName).Bind(options);
             return options;
+        }
+
+        private static IEnumerable<string> DetectDisabledModules(IServiceCollection services)
+        {
+            using var serviceProvider = services.BuildServiceProvider();
+
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+
+            Console.WriteLine("\n\nRecursive all configs printing...");
+            PrintConfiguration(configuration.GetChildren());
+
+            Console.WriteLine("\n\nDisabled modules:");
+            var disabledModules = new List<string>();
+            foreach (var (key, value) in configuration.AsEnumerable())
+            {
+                if (!key.Contains(":module:enabled"))
+                    continue;
+
+                if (!bool.Parse(value))
+                {
+                    var splitKey = key.Split(":");
+                    var moduleName = splitKey[0];
+                    disabledModules.Add(moduleName);
+                    Console.WriteLine($"\t* Disabled module '{moduleName}' by key '{key}' with value '{value}'");
+                }
+            }
+
+            return disabledModules;
+        }
+
+        private static ApplicationPartManager AddOnlyNotDisabledModuleParts(this ApplicationPartManager manager,
+            IEnumerable<string> disabledModules)
+        {
+            Console.WriteLine(
+                "\nConfigure application part manager starting with parts: " +
+                $"{string.Join("\n\t* ", manager.ApplicationParts.Select(x => x.Name))}\n");
+
+            var removedParts = new List<ApplicationPart>();
+            foreach (var disabledModule in disabledModules)
+            {
+                var parts = manager.ApplicationParts
+                    .Where(applicationPart => applicationPart.Name.Contains(disabledModule,
+                        StringComparison.InvariantCultureIgnoreCase));
+
+                removedParts.AddRange(parts);
+            }
+
+            foreach (var part in removedParts)
+                manager.ApplicationParts.Remove(part);
+
+            Console.WriteLine(
+                "Removed application parts: " +
+                $"{string.Join("\n\t* ", removedParts.Select(x => x.Name))}\n");
+
+            manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
+
+            Console.WriteLine("Configure application part manager done.");
+
+            return manager;
         }
 
         private static void PrintConfiguration(IEnumerable<IConfigurationSection> configurationSections)
