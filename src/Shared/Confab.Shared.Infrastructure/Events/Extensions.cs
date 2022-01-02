@@ -13,7 +13,7 @@ namespace Confab.Shared.Infrastructure.Events
             services.AddSingleton<IEventDispatcher, EventDispatcher>();
             services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
                 .AddClasses(implementationTypeFilter => implementationTypeFilter.AssignableTo(typeof(IEventHandler<>))
-                    .WithAttribute<DecoratorAttribute>())
+                    /*.WithAttribute<DecoratorAttribute>()*/)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
             return services;

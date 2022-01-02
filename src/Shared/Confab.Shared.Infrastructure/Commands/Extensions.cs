@@ -14,13 +14,13 @@ namespace Confab.Shared.Infrastructure.Commands
 
             services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
                 .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<,>))
-                    .WithAttribute<DecoratorAttribute>())
+                    /*.WithAttribute<DecoratorAttribute>()*/)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
             services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
                 .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<>))
-                    .WithAttribute<DecoratorAttribute>())
+                    /*.WithAttribute<DecoratorAttribute>()*/)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
 
