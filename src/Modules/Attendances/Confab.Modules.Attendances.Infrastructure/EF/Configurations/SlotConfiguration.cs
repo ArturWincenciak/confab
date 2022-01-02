@@ -12,6 +12,7 @@ namespace Confab.Modules.Attendances.Infrastructure.EF.Configurations
             builder.Property(x => x.Id)
                 .HasConversion(x => x.Value, x => new SlotId(x));
 
+            // defend against false update on concurrent write in 'Attend' method of 'AttendableEvent' aggregator
             builder.Property(x => x.ParticipantId)
                 .HasConversion(x => x.Value, x => new ParticipantId(x))
                 .IsConcurrencyToken();

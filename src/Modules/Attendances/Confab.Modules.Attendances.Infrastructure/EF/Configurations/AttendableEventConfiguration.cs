@@ -15,6 +15,8 @@ namespace Confab.Modules.Attendances.Infrastructure.EF.Configurations
 
             builder.Property(x => x.ConferenceId)
                 .HasConversion(x => x.Value, x => new ConferenceId(x));
+
+            // intentionally there is no 'IsConcurrencyToken'
         }
     }
 }

@@ -40,17 +40,17 @@ namespace Confab.Modules.Attendances.Domain.Entities
             if (Slots.Any(x => x.ParticipantId == participant.Id))
                 throw new AlreadyParticipatingInEventException();
 
+            // here should be randomize to avoid to reduce the likelihood of taking the same resource in parallel
             var slot = Slots.FirstOrDefault(x => x.IsFree);
             if (slot is null)
                 throw new NoFreeSlotsException();
 
             var attendance = new Attendance(Guid.NewGuid(), Id, slot.Id, participant.Id, From, To);
 
-            Apply(() =>
-            {
+            //Apply(() => { // as in course mentioned here we do not call Apply and then IncrementVersion
                 slot.Take(participant.Id);
                 participant.Attend(attendance);
-            });
+            //});
 
             return attendance;
         }
