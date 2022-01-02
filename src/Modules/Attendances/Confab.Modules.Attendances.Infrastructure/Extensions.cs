@@ -25,7 +25,7 @@ namespace Confab.Modules.Attendances.Infrastructure
 
                 //services.AddScoped<PostgresUnitOfWork<AttendancesDbContext>>();
 
-                services.Decorate<ICommandHandler<AttendEvent>, TransactionalCommandHandlerDecorator<AttendEvent, IAttendancesUnitOfWork>>();
+                //services.Decorate<ICommandHandler<AttendEvent>, TransactionalCommandHandlerDecorator<AttendEvent, IAttendancesUnitOfWork>>();
 
             return services;
         }
