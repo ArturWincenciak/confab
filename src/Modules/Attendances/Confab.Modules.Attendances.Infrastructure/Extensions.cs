@@ -15,16 +15,33 @@ namespace Confab.Modules.Attendances.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            services
+            return services
                 .AddSingleton<IAgendasApiClient, AgendasApiClient>()
                 .AddScoped<IAttendableEventsRepository, AttendableEventsRepository>()
                 .AddScoped<IParticipantsRepository, ParticipantsRepository>()
-                .AddPostgres<AttendancesDbContext>();
+                .AddPostgres<AttendancesDbContext>()
+                .WithTransactionalCommandHandles();
+        }
 
-                services.AddScoped<IAttendancesUnitOfWork, AttendancesUnitOfWork>();
-                services.Decorate<ICommandHandler<AttendEvent>, TransactionalCommandHandlerDecorator<AttendEvent, IAttendancesUnitOfWork>>();
+        private static IServiceCollection WithTransactionalCommandHandles(this IServiceCollection services)
+        {
+            return services
+                .AddUnityOfWork()
+                .WithTransactionalCommandHandlerOf<AttendEvent>()
+                /* here declare next transactions for chosen command */;
+        }
 
-            return services;
+        private static IServiceCollection WithTransactionalCommandHandlerOf<T>(this IServiceCollection services)
+            where T : class, ICommand
+        {
+            return services
+                .Decorate<ICommandHandler<T>, TransactionalCommandHandlerDecorator<T, IAttendancesUnitOfWork>>();
+        }
+
+        private static IServiceCollection AddUnityOfWork(this IServiceCollection services)
+        {
+            return services
+                .AddScoped<IAttendancesUnitOfWork, AttendancesUnitOfWork>();
         }
     }
 }
