@@ -42,13 +42,6 @@ namespace Confab.Modules.Attendances.Infrastructure.EF.Repositories
 
         public async Task UpdateAsync(Participant participant)
         {
-            var newAttendances = participant.Events
-                .OfType<ParticipantAttendedToEvent>()
-                .Select(x => x.Attendance);
-
-            foreach (var attendance in newAttendances)
-                _context.Entry(attendance).State = EntityState.Added;
-
             _participants.Update(participant);
             await _context.SaveChangesAsync();
         }
