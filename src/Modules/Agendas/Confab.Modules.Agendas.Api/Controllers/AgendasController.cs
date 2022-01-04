@@ -23,12 +23,6 @@ namespace Confab.Modules.Agendas.Api.Controllers
             _queryDispatcher = queryDispatcher;
         }
 
-        //todo
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<ActionResult<IEnumerable<AgendaTrackDto>>> GetAgendaAsync(Guid conferenceId)
-        //    => OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgenda {ConferenceId = conferenceId}));
-
         [HttpGet("items")]
         [AllowAnonymous]
         public async Task<ActionResult<BrowsAgendaItems.Result>> GetAgendaAsync(Guid conferenceId)
