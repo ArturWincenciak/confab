@@ -33,13 +33,13 @@ namespace Confab.Modules.Attendances.Application.Events.External.Handlers
             if (slot is null)
                 throw new AttendableEventNotFoundException(@event.AgendaItemId);
 
-            if (!slot.ParticipantsLimit.HasValue)
+            if (!slot.ParticipantLimit.HasValue)
                 return;
 
             attendableEvent = AttendableEvent.Create(@event.AgendaItemId, slot.AgendaItem.ConferenceId, slot.From,
                 slot.To);
             var slotPolicy = _slotPolicyFactory.Get(slot.AgendaItem.Tags.ToArray());
-            var slots = slotPolicy.Generate(slot.ParticipantsLimit.Value);
+            var slots = slotPolicy.Generate(slot.ParticipantLimit.Value);
             attendableEvent.AddSlots(slots);
             await _attendableEventsRepository.AddAsync(attendableEvent);
         }

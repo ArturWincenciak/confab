@@ -38,7 +38,7 @@ namespace Confab.Modules.Agendas.Application.Submissions.Commands.Handlers
             if (!allSpeakerExists)
                 throw new NotAllSpeakersExistsException(cmd.SpeakerIds, speakers.Select(x => x.Id.Value));
 
-            var submission = Submission.Create(cmd.ConferenceId, cmd.Title, cmd.Title, cmd.Level, cmd.Tags, speakers);
+            var submission = Submission.Create(cmd.ConferenceId, cmd.Title, cmd.Description, cmd.Level, cmd.Tags, speakers);
             await _submissionRepository.AddAsync(submission);
 
             await _domainEventDispatcher.SendAsync(submission.Events.ToArray());

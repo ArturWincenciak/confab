@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Confab.Modules.Tickets.Core.DTO;
 using Confab.Modules.Tickets.Core.Entities;
+using Confab.Modules.Tickets.Core.Events;
 using Confab.Modules.Tickets.Core.Exceptions;
 using Confab.Modules.Tickets.Core.Repositories;
 using Confab.Shared.Abstractions;
+using Confab.Shared.Abstractions.Messaging;
 using Microsoft.Extensions.Logging;
 
 namespace Confab.Modules.Tickets.Core.Services
@@ -18,33 +20,34 @@ namespace Confab.Modules.Tickets.Core.Services
         private readonly ITicketGenerator _generator;
         private readonly ILogger<TicketService> _logger;
         private readonly ITicketRepository _ticketRepository;
-        private readonly ITicketSaleRepository _ticketSaleRepository;
+        private readonly ITicketSaleRepository _saleRepository;
+        private readonly IMessageBroker _messageBroker;
 
         public TicketService(IClock clock, IConferenceRepository conferenceRepository,
             ITicketRepository ticketRepository, ITicketSaleRepository ticketSaleRepository, ITicketGenerator generator,
-            ILogger<TicketService> logger)
+            ILogger<TicketService> logger, IMessageBroker messageBroker)
         {
             _clock = clock;
             _conferenceRepository = conferenceRepository;
             _ticketRepository = ticketRepository;
-            _ticketSaleRepository = ticketSaleRepository;
+            _saleRepository = ticketSaleRepository;
             _generator = generator;
             _logger = logger;
+            _messageBroker = messageBroker;
         }
 
         public async Task PurchaseAsync(Guid conferenceId, Guid userId)
         {
-            var conference = _conferenceRepository.GetAsync(conferenceId);
+            var conference = await _conferenceRepository.GetAsync(conferenceId);
             if (conference is null)
                 throw new ConferenceNotFoundException(conferenceId);
 
             var ticket = await _ticketRepository.GetAsync(conferenceId, userId);
-            if (ticket is null)
+            if (ticket is not null)
                 throw new TicketAlreadyPurchasedException(conferenceId, userId);
 
             var now = _clock.CurrentDate();
-            var ticketSale =
-                await _ticketSaleRepository.GetCurrentForConferencesIncludingTicketsAsync(conferenceId, now);
+            var ticketSale = await _saleRepository.GetCurrentForConferencesIncludingTicketsAsync(conferenceId, now);
             if (ticketSale is null)
                 throw new TicketSaleUnavailableException(conferenceId);
 
@@ -56,6 +59,8 @@ namespace Confab.Modules.Tickets.Core.Services
 
             ticket = _generator.Generate(conferenceId, ticketSale.Id, ticketSale.Price);
             ticket.Purchase(userId, now, ticketSale.Price);
+            await _ticketRepository.AddAsync(ticket);
+            await _messageBroker.PublishAsync(new TicketPurchased(ticket.Id, conferenceId, userId));
         }
 
         public async Task<IEnumerable<TicketDto>> GetForUserAsync(Guid userId)
@@ -81,8 +86,7 @@ namespace Confab.Modules.Tickets.Core.Services
 
             ticket.Purchase(userId, timestamp, price);
             await _ticketRepository.UpdateAsync(ticket);
-            _logger.LogInformation($"Ticket with ID: '{ticket.Id}' was purchased for the conference: " +
-                                   $"'{conferenceId}' by user: '{userId}'.");
+            await _messageBroker.PublishAsync(new TicketPurchased(ticket.Id, conferenceId, userId));
         }
     }
 }

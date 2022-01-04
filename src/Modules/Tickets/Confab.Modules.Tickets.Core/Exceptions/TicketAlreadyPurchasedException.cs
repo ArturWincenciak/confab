@@ -10,7 +10,6 @@ namespace Confab.Modules.Tickets.Core.Exceptions
         {
             ConferenceId = conferenceId;
             UserId = userId;
-            throw new NotImplementedException();
         }
 
         public Guid ConferenceId { get; }

@@ -23,25 +23,24 @@ namespace Confab.Modules.Agendas.Api.Controllers
             _queryDispatcher = queryDispatcher;
         }
 
-        [HttpGet("tracks/{id:guid}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<GetAgendaTrack.Result>> GetAgendaTrackAsync(Guid id)
-        {
-            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgendaTrack(id)));
-        }
+        //todo
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<IEnumerable<AgendaTrackDto>>> GetAgendaAsync(Guid conferenceId)
+        //    => OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgenda {ConferenceId = conferenceId}));
 
         [HttpGet("items")]
         [AllowAnonymous]
-        public async Task<ActionResult<GetAgenda.Result>> GetAgendaAsync(Guid conferenceId)
+        public async Task<ActionResult<BrowsAgendaItems.Result>> GetAgendaAsync(Guid conferenceId)
         {
-            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgenda(conferenceId)));
+            return OkOrNotFound(await _queryDispatcher.QueryAsync(new BrowsAgendaItems(conferenceId)));
         }
 
         [HttpGet("items/{id:guid}")]
         [AllowAnonymous]
-        public async Task<ActionResult<BrowsAgendaItems.Result>> BrowseAgendaItemsAsync(Guid conferenceId)
+        public async Task<ActionResult<GetAgendaItem.Result>> BrowseAgendaItemsAsync(Guid conferenceId, Guid id)
         {
-            return OkOrNotFound(await _queryDispatcher.QueryAsync(new BrowsAgendaItems(conferenceId)));
+            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgendaItem(conferenceId, id)));
         }
 
         [HttpPost("tracks")]
@@ -50,6 +49,13 @@ namespace Confab.Modules.Agendas.Api.Controllers
             var created = await _commandDispatcher.SendAsync(new CreateAgendaTrack(conferenceId, command.Name));
             AddResourceIdHeader(created.Id);
             return NoContent();
+        }
+
+        [HttpGet("tracks/{id:guid}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<GetAgendaTrack.Result>> GetAgendaTrackAsync(Guid id)
+        {
+            return OkOrNotFound(await _queryDispatcher.QueryAsync(new GetAgendaTrack(id)));
         }
 
         [HttpPost("slots")]

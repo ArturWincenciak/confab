@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Confab.Modules.Attendances.Domain.Exceptions;
@@ -26,7 +27,7 @@ namespace Confab.Modules.Attendances.Domain.Entities
                     ConferenceId = conferenceId,
                     From = from,
                     To = to,
-                    Slots = slots ?? Array.Empty<Slot>()
+                    Slots = slots ?? new HashSet<Slot>()
                 };
                 return entity;
             });
@@ -37,7 +38,7 @@ namespace Confab.Modules.Attendances.Domain.Entities
             if (!Slots.Any())
                 throw new NoFreeSlotsException();
 
-            if (Slots.Any(x => x.ParticipantId == participant.Id))
+            if (Slots.Any(x => !x.IsFree && x.ParticipantId == participant.Id))
                 throw new AlreadyParticipatingInEventException();
 
             // here should be randomize to avoid to reduce the likelihood of taking the same resource in parallel

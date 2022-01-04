@@ -8,6 +8,6 @@ namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO
         DateTime From,
         DateTime To,
         string Type,
-        int? ParticipantsLimit,
+        int? ParticipantLimit,
         AgendaItemDto AgendaItem) : IModuleResponse;
 }

@@ -21,7 +21,7 @@ namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
             return await _agendaItems
                 .AsNoTracking()
                 .Include(x => x.Speakers)
-                .Where(x => x.Id == query.Id)
+                .Where(x => x.Id == query.Id && x.ConferenceId == query.ConferenceId)
                 .Select(x => AsDto(x))
                 .FirstOrDefaultAsync();
         }

@@ -9,12 +9,14 @@ namespace Confab.Modules.Attendances.Application.Commands.Handlers
     {
         private readonly IAttendableEventsRepository _attendableEventsRepository;
         private readonly IParticipantsRepository _participantsRepository;
+        private readonly IAttendanceRepository _attendanceRepository;
 
         public AttendEventHandler(IAttendableEventsRepository attendableEventsRepository,
-            IParticipantsRepository participantsRepository)
+            IParticipantsRepository participantsRepository, IAttendanceRepository attendanceRepository)
         {
             _attendableEventsRepository = attendableEventsRepository;
             _participantsRepository = participantsRepository;
+            _attendanceRepository = attendanceRepository;
         }
 
         public async Task HandleAsync(AttendEvent command)
@@ -28,7 +30,8 @@ namespace Confab.Modules.Attendances.Application.Commands.Handlers
             if (participant is null)
                 throw new ParticipantNotFoundException(attendableEvent.ConferenceId, command.ParticipantId);
 
-            attendableEvent.Attend(participant);
+            var attendance = attendableEvent.Attend(participant);
+            await _attendanceRepository.AddAsync(attendance);
             await _participantsRepository.UpdateAsync(participant);
             await _attendableEventsRepository.UpdateAsync(attendableEvent);
         }
