@@ -1,0 +1,246 @@
+@host = http://localhost:5000
+@user-api = {{host}}/users-module
+@agendas-api = {{host}}/agendas-module
+@conferences-api = {{host}}/conferences-module
+@speakers-api = {{host}}/speakers-module
+@tickets-api = {{host}}/tickets-module
+@attendances-api = {{host}}/attendances-module
+
+@tag-name = [v:{{$randomInt 1 100}}] {{$datetime 'YYYY-MM-DD HH:mm:ss'}}
+
+@email = teo@vincent.com
+@password = sicret
+@role = user
+@accessToken = {{access_token.response.body.accessToken}}
+
+### Get all users
+GET {{user-api}}/account
+Authorization: Bearer {{accessToken}}
+
+### Create new user
+POST {{user-api}}/account/sign-up
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "role": "{{role}}",
+    "claims": {
+        "permissions": [ 
+            "conferences", "hosts", "speakers", "users", "agendas", "cfps", "submissions", "ticket-sales" ]
+    }
+}
+
+### Get access token for the user
+# @name access_token
+POST {{user-api}}/account/sign-in
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+### Get all hosts
+GET {{conferences-api}}/hosts
+
+### Create new host for the conference
+# @name creat_new_host
+POST {{conferences-api}}/hosts
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "Name": "Host {{tag-name}}",
+    "Description": "We have been in the market for {{$randomInt 1 100}} years."
+}
+
+### Get already created host
+# @name get_created_host
+GET {{creat_new_host.response.headers.Location}}
+
+###
+@hostId = {{get_created_host.response.body.id}}
+
+### Get created host by id
+GET {{conferences-api}}/hosts/{{hostId}}
+
+### Get all conferences
+GET {{conferences-api}}/conferences
+
+### Create new conference
+# @name create_new_confernece
+POST {{conferences-api}}/conferences
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "HostId": "{{hostId}}",
+    "Name": "Conf {{tag-name}}",
+    "Description": "{{$randomInt 1 100}}th edition.",
+    "From": "{{$datetime 'YYYY-MM-DD' 3 d}}",
+    "To": "{{$datetime 'YYYY-MM-DD' 7 d}}",
+    "Localization": "Melbourne",
+    "ParticipantsLimit": 100,
+    "LogoUrl": "http://logo.com/conf1.jpg"
+}
+
+### Get already created conference
+# @name get_created_conference
+GET {{create_new_confernece.response.headers.Location}}
+
+###
+@conferenceId = {{get_created_conference.response.body.id}}
+
+### Get created conference by id
+GET {{conferences-api}}/conferences/{{conferenceId}}
+
+### Create track
+# @name create_track
+POST {{agendas-api}}/agendas/{{conferenceId}}/tracks
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "Name": "Agenda track {{tag-name}}"
+}
+
+###
+@trackId = {{create_track.response.headers.Resource-ID}}
+
+### Get already created track by id
+GET {{agendas-api}}/agendas/{{conferenceId}}/tracks/{{trackId}}
+
+### Create slot
+# @name create_slot
+POST {{agendas-api}}/agendas/{{conferenceId}}/slots
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "AgendaTrackId": "{{trackId}}",
+    "From": "{{$datetime 'YYYY-MM-DD' 3 d}}T09:00:00",
+    "To": "{{$datetime 'YYYY-MM-DD' 3 d}}T10:30:00",
+    "ParticipantsLimit": 85,
+    "Type": "regular"
+}
+
+###
+@slotId = {{create_slot.response.headers.Resource-ID}}
+
+### Get all speakers
+GET {{speakers-api}}/speakers
+
+### Create new speaker
+# @name create_new_speaker
+POST {{speakers-api}}/speakers
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "FullName": "Speaker {{tag-name}}",
+    "Email": "speaker_{{$randomInt 1 1000}}@gmail.com",
+    "Bio": "Speaker with {{$randomInt 1 100}} years of experience.",
+    "AvatarUrl": "http://avatar.com/speakr1"
+}
+
+### Get already created speaker
+# @name get_created_speaker
+GET {{create_new_speaker.response.headers.Location}}
+
+###
+@speakerId = {{get_created_speaker.response.body.id}}
+
+### Get created speaker by id
+GET {{speakers-api}}/speakers/{{speakerId}}
+
+### Send submission
+# @name create_submission
+POST {{agendas-api}}/submissions
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "ConferenceId": "{{conferenceId}}",
+    "Title": "Submission {{tag-name}}",
+    "Description": ".NET {{$randomInt 2 10}} Core is awesome!",
+    "Level": "{{$randomInt 1 3}}",
+    "Tags": [ "tag_one", "tag_two", "tag_three"],
+    "SpeakerIds": [ 
+        "{{speakerId}}"
+        ]
+}
+
+###
+@submissionId = {{create_submission.response.body.id}}
+
+### Get arleady created submission
+GET {{agendas-api}}/submissions/{{submissionId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### Approve submission
+PUT {{agendas-api}}/submissions/{{submissionId}}/approvals
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### Get agenda items (means all submissions approved)
+GET {{agendas-api}}/agendas/{{conferenceId}}/items
+Content-Type: application/json
+
+### Get agenda one item (means submission approved)
+GET {{agendas-api}}/agendas/{{conferenceId}}/items/{{agendaItemId}}
+Content-Type: application/json
+
+###
+@agendaItemId = {{submissionId}}
+
+### Assign regular agenda item to slot in track
+POST {{agendas-api}}/agendas/{{conferenceId}}/slots/regular-assignments
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "AgendaSlotId": "{{slotId}}",
+    "AgendaTrackId": "{{trackId}}",
+    "AgendaItemId": "{{agendaItemId}}"
+}
+
+### Get already created track by id
+GET {{agendas-api}}/agendas/{{conferenceId}}/tracks/{{trackId}}
+
+### Create avalible tickets
+POST {{tickets-api}}/sales/conferences/{{conferenceId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "conferenceId": "{{conferenceId}}",
+  "name": "Ticket {{tag-name}}",
+  "price": "{{$randomInt 100 500}}",
+  "amount": 100,
+  "from": "{{$datetime 'YYYY-MM-DD' -3 d}}",
+  "to": "{{$datetime 'YYYY-MM-DD' 7 d}}"
+}
+
+### Get all sale offers
+GET {{tickets-api}}/sales/conferences/{{conferenceId}}
+
+### Get currently available sale offers 
+GET {{tickets-api}}/sales/conferences/{{conferenceId}}/current
+
+### By ticket
+POST {{tickets-api}}/tickets/conferences/{{conferenceId}}/purchases
+Authorization: Bearer {{accessToken}}
+
+### Get my tickets
+GET {{tickets-api}}/tickets
+Authorization: Bearer {{accessToken}}
+
+### Attend an event
+POST {{url}}/events/{{eventId}}/attend
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+}

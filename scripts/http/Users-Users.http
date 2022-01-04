@@ -23,7 +23,7 @@ Content-Type: application/json
     "role": "{{role}}",
     "claims": {
         "permissions": [ 
-            "conferences", "hosts", "speakers", "users", "agendas", "cfps", "submissions" ]
+            "conferences", "hosts", "speakers", "users", "agendas", "cfps", "submissions", "ticket-sales" ]
     }
 }
 

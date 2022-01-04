@@ -21,8 +21,11 @@ Content-Type: application/json
 GET {{url}}/items
 Content-Type: application/json
 
+###
+@agendaItemId = ...
+
 ### Get Agenda Item
-GET {{url}}/items/{{conferenceId}}
+GET {{url}}/items/{{agendaItemId}}
 Content-Type: application/json
 
 @trackId = 5627af4c-08da-4c8c-a170-36285a49b10a

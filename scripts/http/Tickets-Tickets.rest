@@ -1,6 +1,6 @@
 @host = http://localhost:5000
-@api = {{host}}/attendances-module
-@url = {{api}}/attendances
+@api = {{host}}/tickets-module
+@url = {{api}}/tickets
 
 @email = teo@vincent.com
 @password = sicret
@@ -17,14 +17,16 @@ Content-Type: application/json
 }
 
 ###
+
+@conferenceId = 5ec95eb9-e9c4-4447-977b-ab9b4285b6bf
+
+###
 GET {{api}}
 
-@eventId = d6009ebc-6b0a-48da-8215-c55636433afe
-
-### Attend an event
-POST {{url}}/events/{{eventId}}/attend
+###
+POST {{url}}/conferences/{{conferenceId}}/purchases
 Authorization: Bearer {{accessToken}}
-Content-Type: application/json
 
-{
-}
+###
+GET {{url}}
+Authorization: Bearer {{accessToken}}
