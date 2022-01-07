@@ -22,6 +22,4 @@ namespace Confab.Shared.Infrastructure.Postgres.Decorators
             return _unitOfWorkService.ExecuteAsync(() => _handler.HandleAsync(command));
         }
     }
-
-    //todo: add also implementation command handlers returns result, consider also impl for integration events
 }
