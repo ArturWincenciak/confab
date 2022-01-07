@@ -168,7 +168,7 @@ Authorization: Bearer {{accessToken}}
     "Tags": [ "tag_one", "tag_two", "tag_three"],
     "SpeakerIds": [ 
         "{{speakerId}}"
-        ]
+    ]
 }
 
 ###
