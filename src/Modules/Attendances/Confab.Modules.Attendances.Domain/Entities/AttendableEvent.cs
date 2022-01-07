@@ -41,7 +41,6 @@ namespace Confab.Modules.Attendances.Domain.Entities
             if (Slots.Any(x => !x.IsFree && x.ParticipantId == participant.Id))
                 throw new AlreadyParticipatingInEventException();
 
-            // here should be randomize to avoid to reduce the likelihood of taking the same resource in parallel
             var slot = Slots.FirstOrDefault(x => x.IsFree);
             if (slot is null)
                 throw new NoFreeSlotsException();
