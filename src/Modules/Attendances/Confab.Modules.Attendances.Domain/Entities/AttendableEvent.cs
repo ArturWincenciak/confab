@@ -47,10 +47,8 @@ namespace Confab.Modules.Attendances.Domain.Entities
 
             var attendance = new Attendance(Guid.NewGuid(), Id, slot.Id, participant.Id, From, To);
 
-            //Apply(() => { // as in course mentioned here we do not call Apply and then IncrementVersion
-                slot.Take(participant.Id);
-                participant.Attend(attendance);
-            //});
+            slot.Take(participant.Id);
+            participant.Attend(attendance);
 
             return attendance;
         }
