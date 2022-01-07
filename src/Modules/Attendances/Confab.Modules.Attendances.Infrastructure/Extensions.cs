@@ -28,8 +28,7 @@ namespace Confab.Modules.Attendances.Infrastructure
         {
             return services
                 .AddUnityOfWork()
-                .WithTransactionalCommandHandlerOf<AttendEvent>()
-                /* here declare next transactions for chosen command */;
+                .WithTransactionalCommandHandlerOf<AttendEvent>();
         }
 
         private static IServiceCollection WithTransactionalCommandHandlerOf<T>(this IServiceCollection services)
