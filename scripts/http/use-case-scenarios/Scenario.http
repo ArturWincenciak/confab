@@ -237,8 +237,10 @@ Authorization: Bearer {{accessToken}}
 GET {{tickets-api}}/tickets
 Authorization: Bearer {{accessToken}}
 
+@eventId = {{agendaItemId}}
+
 ### Attend an event
-POST {{url}}/events/{{eventId}}/attend
+POST {{attendances-api}}/attendances/events/{{eventId}}/attend
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
