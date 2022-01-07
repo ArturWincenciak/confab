@@ -9,7 +9,6 @@ namespace Confab.Shared.Infrastructure.Postgres
         {
             var options = services.GetOptions<PostgresOptions>("postgres");
             services.AddSingleton(options);
-            services.AddSingleton(new PostgresUnitOfWorkTypeRegistry());
             return services;
         }
 
