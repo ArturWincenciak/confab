@@ -2,7 +2,7 @@ using System;
 using Confab.Shared.Kernel.Types.Base;
 using Xunit;
 
-namespace Confab.Shared.Abstraction.Tests
+namespace Confab.Shared.Kernel.Tests
 {
     public class AggregateIdComparingTest
     {
