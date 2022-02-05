@@ -1,7 +1,6 @@
-using System;
 using Xunit;
 
-namespace Confab.Modules.Attendances.Tests
+namespace Confab.Modules.Attendances.Tests.Unit
 {
     public class UnitTest1
     {
