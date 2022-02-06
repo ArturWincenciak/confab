@@ -8,7 +8,7 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
 {
     public class AttendableEventAttendTests
     {
-        private readonly AttendableEvent _attendableEvent;
+        private readonly AttendableEvent _target;
         private readonly Participant _participant;
 
         public AttendableEventAttendTests()
@@ -17,24 +17,42 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
             var attendableEventId = Guid.Parse("962C87AD-9FC0-45C4-B38D-98F215271746");
             var from = new DateTime(2022, 2, 6, 11, 0, 0);
             var to = new DateTime(2022, 2, 6, 12, 0, 0);
-            _attendableEvent = AttendableEvent.Create(attendableEventId, conferenceId, from, to);
+            _target = AttendableEvent.Create(attendableEventId, conferenceId, from, to);
             var userId = Guid.Parse("BDF65461-9944-4B31-9EC3-C43EA63CFB7F");
             _participant = Participant.Create(conferenceId, userId, attendances: null);
         }
 
         private Attendance Act()
         {
-            return _attendableEvent.Attend(_participant);
+            return _target.Attend(_participant);
         }
 
         [Fact]
         public void Given_No_Slots_When_Attend_Then_Should_Fail()
         {
+            // act
             var actual = Record.Exception(Act);
 
+            // assert
             actual.ShouldNotBeNull();
             actual.ShouldBeOfType<NoFreeSlotsException>();
-            _attendableEvent.Slots.ShouldBeEmpty();
+            _target.Slots.ShouldBeEmpty();
+        }
+
+        [Fact]
+        public void Given_Slots_With_Participant_When_Attend_Then_Should_Fail()
+        {
+            // arrange
+            var slotId = Guid.Parse("B807CF93-9BD2-49A5-999E-F2635A5E67FE");
+            _target.AddSlots(new []{ new Slot(slotId, _participant.Id)});
+
+            // act
+            var actual = Record.Exception(Act);
+
+            // assert
+            actual.ShouldNotBeNull();
+            actual.ShouldBeOfType<AlreadyParticipatingInEventException>();
+            _target.Slots.ShouldNotBeEmpty();
         }
     }
 }
