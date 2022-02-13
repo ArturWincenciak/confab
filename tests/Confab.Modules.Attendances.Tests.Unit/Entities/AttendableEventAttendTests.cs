@@ -8,11 +8,11 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
 {
     public class AttendableEventAttendTests
     {
-        private AttendableEvent _target;
+        private Guid _conferenceId;
         private Participant _participant_1;
         private Participant _participant_2;
         private Slot _slot_1;
-        private Guid _conferenceId;
+        private AttendableEvent _target;
 
         private void Arrange()
         {
@@ -22,13 +22,13 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
             var to = new DateTime(2022, 2, 6, 12, 0, 0);
             _target = AttendableEvent.Create(attendableEventId, _conferenceId, from, to);
             var userId_1 = Guid.Parse("BDF65461-9944-4B31-9EC3-C43EA63CFB7F");
-            _participant_1 = Participant.Create(_conferenceId, userId_1, attendances: null);
+            _participant_1 = Participant.Create(_conferenceId, userId_1, null);
             _slot_1 = new Slot(Guid.Parse("39720949-CD62-4EFA-B1C8-ABBDF8F7334B"));
         }
 
         private void WithSlot()
         {
-            _target.AddSlots(new []{_slot_1});
+            _target.AddSlots(new[] {_slot_1});
         }
 
         private void WithTakeSlot()
@@ -39,7 +39,7 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
         private void WithSecondParticipant()
         {
             var userId_2 = Guid.Parse("BD578305-F3C5-46F2-88CB-956E2F44278E");
-            _participant_2 = Participant.Create(_conferenceId,userId_2, attendances: null);
+            _participant_2 = Participant.Create(_conferenceId, userId_2, null);
         }
 
         private Attendance Act()
