@@ -25,7 +25,7 @@ namespace Confab.Modules.Attendances.Domain.Entities
                     Id = Guid.NewGuid(),
                     ConferenceId = conferenceId,
                     UserId = userId,
-                    Attendances = attendances ?? Array.Empty<Attendance>()
+                    Attendances = attendances ?? new List<Attendance>()
                 };
                 return entity;
             });
