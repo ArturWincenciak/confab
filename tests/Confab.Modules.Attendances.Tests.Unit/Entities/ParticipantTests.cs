@@ -14,7 +14,7 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
         private List<Attendance> _attendances;
         private Guid _userId;
         private Participant _participant;
-        private Attendance _firstNewAttendance;
+        private Attendance _newAttendance;
 
         private void Arrange()
         {
@@ -31,14 +31,24 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
                 new AttendableEventId(Guid.Parse("082453B4-266E-436C-BD7B-560C91C5F73A")),
                 new SlotId(Guid.Parse("BA085127-361B-4710-9B1D-F58F5E4CDE7F")),
                 _participant.Id,
-                new DateTime(2022, 2, 14, 5, 25, 0),
-                new DateTime(2202, 2, 14, 18, 0, 0))
+                new DateTime(2022, 2, 14, 14, 0, 0),
+                new DateTime(2202, 2, 14, 15, 0, 0))
             );
+        }
+
+        private void WithNewAttendance()
+        {
+            _newAttendance = new Attendance(Guid.Parse("CC6C9F06-3FB1-493B-B20F-83981446E953"),
+                new AttendableEventId(Guid.Parse("96AF0256-DBE8-43B1-8D77-376ADCDC04D3")),
+                new SlotId(Guid.Parse("BA085127-361B-4710-9B1D-F58F5E4CDE7F")),
+                _participant.Id,
+                new DateTime(2022, 2, 14, 16, 0, 0),
+                new DateTime(2202, 2, 14, 17, 0, 0));
         }
 
         private void WithNewAttendanceInTheSameTimeAsAlreadyExisting()
         {
-            _firstNewAttendance = new Attendance(Guid.Parse("78CD686D-4FF3-48CE-882B-1C125DB57B81"),
+            _newAttendance = new Attendance(Guid.Parse("78CD686D-4FF3-48CE-882B-1C125DB57B81"),
                 new AttendableEventId(Guid.Parse("650EEDE5-9E03-46F1-B89A-16DE55B4B001")),
                 new SlotId(Guid.Parse("BA085127-361B-4710-9B1D-F58F5E4CDE7F")),
                 _participant.Id,
@@ -71,10 +81,22 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
             WithExistingAttendance();
             WithNewAttendanceInTheSameTimeAsAlreadyExisting();
 
-            var actual = Record.Exception(() => Act(_firstNewAttendance));
+            var actual = Record.Exception(() => Act(_newAttendance));
 
             actual.ShouldNotBeNull();
             actual.ShouldBeOfType<AlreadyParticipatingSameTimeException>();
+        }
+
+        [Fact]
+        public void Given_Next_New_Attendance_Time_When_Attend_Then_Success()
+        {
+            Arrange();
+            WithExistingAttendance();
+            WithNewAttendance();
+
+            Act(_newAttendance);
+
+            _participant.Attendances.ShouldContain(x => x.Id == _newAttendance.Id);
         }
     }
 }

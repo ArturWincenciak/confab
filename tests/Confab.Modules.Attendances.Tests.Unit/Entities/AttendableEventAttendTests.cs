@@ -104,6 +104,5 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
             actual.ShouldNotBeNull();
             actual.ParticipantId.ShouldBe(_participant_1.Id);
         }
-
     }
 }
