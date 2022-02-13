@@ -92,5 +92,17 @@ namespace Confab.Modules.Attendances.Tests.Unit.Entities
             actual.ShouldBeOfType<NoFreeSlotsException>();
             _target.Slots.ShouldNotBeEmpty();
         }
+
+        [Fact]
+        public void Given_Free_Slot_When_Attend_Then_Success()
+        {
+            Arrange();
+            WithSlot();
+
+            var actual = Act();
+
+            actual.ShouldNotBeNull();
+            actual.ParticipantId.ShouldBe(_participant_1.Id);
+        }
     }
 }
