@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Confab.Modules.Attendances.Infrastructure.EF;
 using Confab.Shared.Tests;
@@ -35,6 +36,27 @@ namespace Confab.Modules.Attendances.Tests.Integrations
 
             // assert
             response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+        }
+
+        [Fact]
+        public async Task Given_Not_Existing_Conference_Id_When_Get_Conference_Than_Not_Found_Http_Status()
+        {
+            // arrange
+            WithAuthentication();
+            var notExistsConferenceId = Guid.Parse("5E3D8A6B-14BA-49A1-8736-BAAB10329F0D");
+
+            // act
+            var response = await _client.GetAsync($"{Path}/{notExistsConferenceId}");
+
+            // assert
+            response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
+
+        private void WithAuthentication()
+        {
+            var userId = "B4B599B4-AE95-4AAD-8F22-82BB999C9302";
+            var jwt = AuthHelper.GenerateJwt(userId);
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
         }
     }
 }
