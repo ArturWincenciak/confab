@@ -15,7 +15,7 @@ namespace Confab.Shared.Tests
             return options;
         }
 
-        private static IConfigurationRoot GetConfigurationRoot()
+        public static IConfigurationRoot GetConfigurationRoot()
         {
             return new ConfigurationBuilder()
                 .AddJsonFile(AppSettings)

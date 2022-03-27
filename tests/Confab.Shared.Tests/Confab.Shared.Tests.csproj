@@ -9,4 +9,9 @@
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Bootstrapper\Confab.Bootstrapper\Confab.Bootstrapper.csproj" />
+    <ProjectReference Include="..\..\src\Shared\Confab.Shared.Infrastructure\Confab.Shared.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
