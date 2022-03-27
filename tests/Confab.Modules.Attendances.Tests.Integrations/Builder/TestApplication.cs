@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Confab.Modules.Attendances.Tests.Integrations
+namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
     public class TestApplication
     {

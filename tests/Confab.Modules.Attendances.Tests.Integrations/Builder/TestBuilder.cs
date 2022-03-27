@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Confab.Shared.Tests;
 
-namespace Confab.Modules.Attendances.Tests.Integrations
+namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
     public class TestBuilder
     {

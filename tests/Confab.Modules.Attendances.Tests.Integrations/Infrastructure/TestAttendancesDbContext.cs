@@ -2,7 +2,7 @@ using System;
 using Confab.Modules.Attendances.Infrastructure.EF;
 using Confab.Shared.Tests;
 
-namespace Confab.Modules.Attendances.Tests.Integrations
+namespace Confab.Modules.Attendances.Tests.Integrations.Infrastructure
 {
     public class TestAttendancesDbContext : IDisposable
     {

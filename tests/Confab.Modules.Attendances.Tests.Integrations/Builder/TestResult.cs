@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http;
 using Shouldly;
 
-namespace Confab.Modules.Attendances.Tests.Integrations
+namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
     public class TestResult
     {
