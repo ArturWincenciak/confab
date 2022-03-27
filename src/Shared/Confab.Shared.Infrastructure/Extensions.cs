@@ -28,6 +28,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 [assembly: InternalsVisibleTo("Confab.Bootstrapper")]
+[assembly: InternalsVisibleTo("Confab.Shared.Tests")]
 
 namespace Confab.Shared.Infrastructure
 {
