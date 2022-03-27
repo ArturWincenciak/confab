@@ -39,14 +39,14 @@ namespace Confab.Modules.Attendances.Tests.Integrations
         public async Task Given_Not_Authorized_Http_Client_When_Call_Api_Then_Response_Is_Unauthorized_Http_Status()
         {
             // arrange
-            var notRelevantSomeId = "9D933F52-4D05-4B3C-9250-C0551FB9275E";
-            var notRelevantSomeConferenceId = Guid.Parse(notRelevantSomeId);
+            var target = new TestBuilder()
+                .Build();
 
             // act
-            var response = await _client.GetAsync($"{Path}/{notRelevantSomeConferenceId}");
+            var actual = await target.GetNotExistingConference();
 
             // assert
-            response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+            actual.ShouldBeUnauthorized();
         }
 
         [Fact]

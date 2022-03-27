@@ -17,5 +17,10 @@ namespace Confab.Modules.Attendances.Tests.Integrations
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
+
+        public void ShouldBeUnauthorized()
+        {
+            _httpResponse.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+        }
     }
 }
