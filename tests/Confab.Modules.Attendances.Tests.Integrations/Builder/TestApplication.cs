@@ -20,5 +20,11 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 
             return new TestResult(response);
         }
+
+        public async Task<TestResult> CreateUser()
+        {
+            var response = await _api.CreateUserAsync();
+            return new TestResult(response);
+        }
     }
 }

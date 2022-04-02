@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Confab.Shared.Tests;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
@@ -10,20 +11,6 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
     {
         private readonly List<Action> _actions = new();
         private HttpClient _client;
-
-        public TestBuilder WithAuthentication()
-        {
-            _actions.Add(Authenticate);
-
-            void Authenticate()
-            {
-                var userId = "B4B599B4-AE95-4AAD-8F22-82BB999C9302";
-                var jwt = AuthHelper.GenerateJwt(userId);
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
-            }
-
-            return this;
-        }
 
         public TestApplication Build()
         {
@@ -34,6 +21,19 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 action();
 
             return new TestApplication(_client);
+        }
+
+        public TestBuilder WithAuthentication()
+        {
+            _actions.Add(Authenticate);
+            return this;
+
+            void Authenticate()
+            {
+                var userId = "B4B599B4-AE95-4AAD-8F22-82BB999C9302";
+                var jwt = AuthHelper.GenerateJwt(userId);
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+            }
         }
     }
 }
