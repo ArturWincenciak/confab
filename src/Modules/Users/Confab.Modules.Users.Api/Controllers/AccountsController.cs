@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Confab.Modules.Users.Api.Controllers
 {
-    internal class AccountController : UsersBaseController
+    internal class AccountsController : UsersBaseController
     {
         private readonly IContext _context;
         private readonly IIdentityService _identityService;
 
-        public AccountController(IIdentityService identityService, IContext context)
+        public AccountsController(IIdentityService identityService, IContext context)
         {
             _identityService = identityService;
             _context = context;

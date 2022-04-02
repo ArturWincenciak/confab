@@ -14,11 +14,11 @@
 @accessToken = {{access_token.response.body.accessToken}}
 
 ### Get all users
-GET {{user-api}}/account
+GET {{user-api}}/accounts
 Authorization: Bearer {{accessToken}}
 
 ### Create new user
-POST {{user-api}}/account/sign-up
+POST {{user-api}}/accounts/sign-up
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ### Get access token for the user
 # @name access_token
-POST {{user-api}}/account/sign-in
+POST {{user-api}}/accounts/sign-in
 Content-Type: application/json
 
 {
