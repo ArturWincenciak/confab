@@ -1,22 +1,14 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
-    public static class TestApi
+    public static class TestUsersApi
     {
-        private static readonly string AttendancesModule = "attendances-module";
-        private static readonly string AttendancesPath = $"{AttendancesModule}/attendances";
-
         private static readonly string UserModule = "users-module";
-        private static readonly string AccountPath = $"{UserModule}/accounts";
-
-        public static Task<HttpResponseMessage> GetConferenceAsync(this HttpClient client, Guid conferenceId)
-        {
-            return client.GetAsync($"{AttendancesPath}/{conferenceId}");
-        }
+        private static readonly string Accounts = $"{UserModule}/accounts";
+        private static readonly string SingUn = $"{Accounts}/sign-up";
 
         public static Task<HttpResponseMessage> CreateUserAsync(this HttpClient client)
         {
@@ -33,7 +25,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                     }
                 }
             };
-            return client.PostAsJsonAsync(AccountPath, user);
+            return client.PostAsJsonAsync(SingUn, user);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
             var actual = await target.GetNotExistingConference();
 
             // assert
-            actual.ShouldBeUnauthorized();
+            actual.ShouldBeUnauthorized401();
         }
 
         [Fact]
@@ -32,21 +32,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
             var actual = await target.GetNotExistingConference();
 
             // assert
-            actual.ShouldBeNotFound();
-        }
-
-        [Fact]
-        public async Task Given_Just_App_When_Create_User_Then_Created()
-        {
-            // arrange
-            var target = new TestBuilder()
-                .Build();
-
-            // act
-            var actual = await target.CreateUser();
-
-            // assert
-            Assert.True(true);
+            actual.ShouldBeNotFound404();
         }
     }
 }

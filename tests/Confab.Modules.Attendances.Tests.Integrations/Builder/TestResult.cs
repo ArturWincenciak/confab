@@ -13,14 +13,19 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             _httpResponse = httpResponse;
         }
 
-        public void ShouldBeNotFound()
+        public void ShouldBeNotFound404()
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
-        public void ShouldBeUnauthorized()
+        public void ShouldBeUnauthorized401()
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
+        }
+
+        public void ShouldBeNoContent204()
+        {
+            _httpResponse.StatusCode.ShouldBe(HttpStatusCode.NoContent);
         }
     }
 }
