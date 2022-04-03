@@ -1,8 +1,11 @@
 version: '3.4'
 
 services:
+  postgres:
+    container_name: "confab.postgres.docker-compose.debug"
+
   confab.bootstrapper:
-    container_name: "confab.service"
+    container_name: "confab.service.docker-compose.debug"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
