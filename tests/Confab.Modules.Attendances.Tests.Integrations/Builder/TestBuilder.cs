@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Confab.Modules.Attendances.Tests.Integrations.Builder.Api;
 using Confab.Shared.Tests;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
@@ -12,11 +12,33 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
     {
         private readonly List<Action> _actions = new();
         private HttpClient _client;
+        private TestApplicationFactory _applicationFactory;
 
         public TestApplication Build()
         {
-            var applicationFactory = new TestApplicationFactory();
-            _client = applicationFactory.CreateClient();
+            _applicationFactory = new TestApplicationFactory();
+            _applicationFactory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    // do something here if needed ...
+                    //var serviceProvider = services.BuildServiceProvider();
+                    //using var scope = serviceProvider.CreateScope();
+                    //var scopedServices = scope.ServiceProvider;
+                    //var db = scopedServices.GetRequiredService<UsersDbContext>();
+
+                    //try
+                    //{
+                    //    Utilities.ReinitializeDbForTests(db);
+                    //}
+                    //catch (Exception ex)
+                    //{
+
+                    //}
+                });
+            });
+
+            _client = _applicationFactory.CreateClient();
 
             foreach (var action in _actions)
                 action();
