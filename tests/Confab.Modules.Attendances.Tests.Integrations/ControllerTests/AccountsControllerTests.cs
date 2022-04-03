@@ -10,7 +10,8 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
         public async Task Given_Just_App_When_Create_User_Then_Created()
         {
             // arrange
-            var target = new TestBuilder()
+            using var target = new TestBuilder()
+                .WithEnsureDatabaseDeleted()
                 .Build();
 
             // act

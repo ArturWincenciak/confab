@@ -10,10 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
-    public class TestBuilder
+    public class TestBuilder : IDisposable
     {
         private readonly List<Action> _actions = new();
         private HttpClient _client;
+        private bool _ensureDatabaseDeleted = false;
+        private static IServiceCollection _serviceCollection;
 
         public TestApplication Build()
         {
@@ -22,21 +24,23 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 {
                     builder.ConfigureServices(services =>
                     {
-                        EnsureDatabaseDeleted(services);
+                        _serviceCollection = services;
+
+                        if(_ensureDatabaseDeleted)
+                            EnsureDatabaseDeleted(services);
                     });
                 })
                 .CreateClient();
 
-
             foreach (var action in _actions)
                 action();
 
-            return new TestApplication(_client);
+            return new TestApplication(_client, Dispose);
         }
 
         private static void EnsureDatabaseDeleted(IServiceCollection services)
         {
-            var serviceProvider = services.BuildServiceProvider();
+            var serviceProvider = _serviceCollection.BuildServiceProvider();
             using var scope = serviceProvider.CreateScope();
             var scopedServices = scope.ServiceProvider;
             var dbContextType = GetSomeFirstDbContextType();
@@ -67,6 +71,20 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 var jwt = AuthHelper.GenerateJwt(userId);
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
             }
+        }
+
+        public TestBuilder WithEnsureDatabaseDeleted()
+        {
+            _ensureDatabaseDeleted = true;
+            return this;
+        }
+
+        public void Dispose()
+        {
+            if(_ensureDatabaseDeleted)
+                EnsureDatabaseDeleted(_serviceCollection);
+
+            _client?.Dispose();
         }
     }
 }

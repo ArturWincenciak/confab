@@ -4,13 +4,15 @@ using System.Threading.Tasks;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
 {
-    public class TestApplication
+    public class TestApplication : IDisposable
     {
         private readonly HttpClient _api;
+        private readonly Action _dispose;
 
-        public TestApplication(HttpClient api)
+        public TestApplication(HttpClient api, Action dispose)
         {
             _api = api;
+            _dispose = dispose;
         }
 
         public async Task<TestResult> GetNotExistingConference()
@@ -25,6 +27,12 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         {
             var response = await _api.CreateUserAsync();
             return new TestResult(response);
+        }
+
+        public void Dispose()
+        {
+            _dispose?.Invoke();
+            _api?.Dispose();
         }
     }
 }
