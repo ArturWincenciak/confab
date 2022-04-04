@@ -1,38 +1,40 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Confab.Modules.Users.Core.DTO;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
 {
-    public class TestApplication : IDisposable
+    public class TestApplication
     {
+        private readonly TestResult _testResult;
         private readonly HttpClient _api;
-        private readonly Action _dispose;
+        private readonly SignUpDto _signUpUser;
 
-        public TestApplication(HttpClient api, Action dispose)
+        public TestApplication(HttpClient api, SignUpDto signUpUser)
         {
             _api = api;
-            _dispose = dispose;
+            _signUpUser = signUpUser;
+            _testResult = new TestResult(signUpUser);
         }
 
         public async Task<TestResult> GetNotExistingConference()
         {
             var notExistingConferenceId = Guid.Parse("1E795B8E-A3F1-4E1A-BB94-435BC707F03C");
             var response = await _api.GetConferenceAsync(notExistingConferenceId);
-
-            return new TestResult(response);
+            return _testResult.WithHttpResponse(response);
         }
 
-        public async Task<TestResult> CreateUser()
+        public async Task<TestResult> SignUp()
         {
-            var response = await _api.CreateUserAsync();
-            return new TestResult(response);
+            var response = await _api.SignUp(_signUpUser);
+            return _testResult.WithHttpResponse(response);
         }
 
-        public void Dispose()
+        public async Task<TestResult> GetSignedInUser()
         {
-            _dispose?.Invoke();
-            _api?.Dispose();
+            var response = await _api.GetUser();
+            return _testResult.WithHttpResponse(response);
         }
     }
 }

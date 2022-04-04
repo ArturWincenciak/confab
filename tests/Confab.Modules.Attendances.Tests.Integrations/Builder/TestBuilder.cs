@@ -1,63 +1,63 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 using Confab.Modules.Attendances.Tests.Integrations.Builder.Api;
+using Confab.Modules.Attendances.Tests.Integrations.Infrastructure;
+using Confab.Modules.Users.Core.DTO;
+using Confab.Shared.Abstractions.Auth;
 using Confab.Shared.Tests;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
-    public class TestBuilder : IDisposable
+    public class TestBuilder
     {
-        private readonly List<Action> _actions = new();
+        private readonly List<Func<Task>> _actions = new();
         private HttpClient _client;
-        private bool _ensureDatabaseDeleted = false;
-        private static IServiceCollection _serviceCollection;
+        private bool _ensureDatabaseDeleted;
 
-        public TestApplication Build()
+        private static readonly SignUpDto SignUpUser = new()
+        {
+            Email = "email@email.com",
+            Password = "strict",
+            Role = "user",
+            Claims = new Dictionary<string, IEnumerable<string>>
+            {
+                {
+                    "permissions",
+                    new[]
+                    {
+                        "conferences", "hosts", "speakers", "users", "agendas", "cfps", "submissions", "ticket-sales"
+                    }
+                }
+            }
+        };
+
+        private static readonly SignInDto SignInUser = new()
+        {
+            Email = SignUpUser.Email,
+            Password = SignUpUser.Password
+        };
+
+        public async Task<TestApplication> Build()
         {
             _client = new TestApplicationFactory()
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
                     {
-                        _serviceCollection = services;
-
-                        if(_ensureDatabaseDeleted)
-                            EnsureDatabaseDeleted(services);
+                        if (_ensureDatabaseDeleted)
+                            Db.EnsureDatabaseDeleted(services);
                     });
                 })
                 .CreateClient();
 
             foreach (var action in _actions)
-                action();
+                await action();
 
-            return new TestApplication(_client, Dispose);
-        }
-
-        private static void EnsureDatabaseDeleted(IServiceCollection services)
-        {
-            var serviceProvider = _serviceCollection.BuildServiceProvider();
-            using var scope = serviceProvider.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-            var dbContextType = GetSomeFirstDbContextType();
-            var db = scopedServices.GetRequiredService(dbContextType) as DbContext;
-            db.Database.EnsureDeleted();
-        }
-
-        private static Type GetSomeFirstDbContextType()
-        {
-            var dbContextType = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .SelectMany(x => x.GetTypes())
-                .First(x =>
-                    typeof(DbContext).IsAssignableFrom(x) &&
-                    !x.IsInterface &&
-                    x != typeof(DbContext));
-            return dbContextType;
+            return new TestApplication(_client, SignUpUser);
         }
 
         public TestBuilder WithAuthentication()
@@ -65,11 +65,12 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             _actions.Add(Authenticate);
             return this;
 
-            void Authenticate()
+            Task Authenticate()
             {
                 var userId = "B4B599B4-AE95-4AAD-8F22-82BB999C9302";
                 var jwt = AuthHelper.GenerateJwt(userId);
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+                return Task.CompletedTask;
             }
         }
 
@@ -79,12 +80,30 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             return this;
         }
 
-        public void Dispose()
+        public TestBuilder WithSignUp()
         {
-            if(_ensureDatabaseDeleted)
-                EnsureDatabaseDeleted(_serviceCollection);
+            _actions.Add(SignUp);
+            return this;
 
-            _client?.Dispose();
+            async Task SignUp()
+            {
+                var response = await _client.SignUp(SignUpUser);
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        public TestBuilder WithSignIn()
+        {
+            _actions.Add(SignIn);
+            return this;
+
+            async Task SignIn()
+            {
+                var response = await _client.SignIn(SignInUser);
+                response.EnsureSuccessStatusCode();
+                var jwt = await response.Content.ReadFromJsonAsync<JsonWebToken>();
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+            }
         }
     }
 }
