@@ -20,5 +20,22 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
             // arrange
             actual.ShouldBeCreated201();
         }
+
+        [Fact]
+        public async Task Given_Host_When_Get_The_Host_Then_Ok200()
+        {
+            // arrange
+            var target = await new TestBuilder()
+                .WithAuthentication()
+                .WithHost()
+                .Build();
+
+            // act
+            var actual = await target.GetHost();
+
+            // arrange
+            actual.ShouldBeOk200();
+            await actual.HostShouldBeAsAlreadyCreated();
+        }
     }
 }

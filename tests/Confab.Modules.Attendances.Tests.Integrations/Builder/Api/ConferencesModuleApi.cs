@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -13,6 +14,11 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         internal static Task<HttpResponseMessage> CreateHost(this HttpClient client, HostDto host)
         {
             return client.PostAsJsonAsync(Hosts, host);
+        }
+
+        internal static Task<HttpResponseMessage> GetHost(this HttpClient client, Uri location)
+        {
+            return client.GetAsync(location);
         }
     }
 }

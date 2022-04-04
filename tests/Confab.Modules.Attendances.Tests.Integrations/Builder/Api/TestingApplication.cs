@@ -12,19 +12,21 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         private readonly HttpClient _api;
         private readonly SignUpDto _signUpUser;
         private readonly HostDto _host;
+        private readonly Uri _location;
 
-        internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host)
+        internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host, Uri location)
         {
             _api = api;
             _signUpUser = signUpUser;
             _host = host;
-            _testResult = new TestResult(signUpUser);
+            _location = location;
+            _testResult = new TestResult(signUpUser, host);
         }
 
         internal async Task<TestResult> GetNotExistingConference()
         {
             var notExistingConferenceId = Guid.Parse("1E795B8E-A3F1-4E1A-BB94-435BC707F03C");
-            var response = await _api.GetConferenceAsync(notExistingConferenceId);
+            var response = await _api.GetConference(notExistingConferenceId);
             return _testResult.WithHttpResponse(response);
         }
 
@@ -43,6 +45,12 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         internal async Task<TestResult> CreateHost()
         {
             var response = await _api.CreateHost(_host);
+            return _testResult.WithHttpResponse(response);
+        }
+
+        public async Task<TestResult> GetHost()
+        {
+            var response = await _api.GetHost(_location);
             return _testResult.WithHttpResponse(response);
         }
     }

@@ -48,6 +48,8 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             Description = "Description of shed host"
         };
 
+        private static Uri _createdHostLocation;
+
         internal async Task<TestingApplication> Build()
         {
             _client = new TestApplicationFactory()
@@ -64,7 +66,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             foreach (var action in _actions)
                 await action();
 
-            return new TestingApplication(_client, SignUpUser, Host);
+            return new TestingApplication(_client, SignUpUser, Host, _createdHostLocation);
         }
 
         internal TestBuilder WithAuthentication()
@@ -103,6 +105,19 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 response.EnsureSuccessStatusCode();
                 var jwt = await response.Content.ReadFromJsonAsync<JsonWebToken>();
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
+            }
+        }
+
+        public TestBuilder WithHost()
+        {
+            _actions.Add(CreateHost);
+            return this;
+
+            async Task CreateHost()
+            {
+                var response = await _client.CreateHost(Host);
+                response.EnsureSuccessStatusCode();
+                _createdHostLocation = response.Headers.Location;
             }
         }
     }

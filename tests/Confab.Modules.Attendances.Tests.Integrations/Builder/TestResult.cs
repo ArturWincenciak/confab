@@ -1,7 +1,9 @@
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 using Shouldly;
 using Xunit;
@@ -13,10 +15,12 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
         private HttpResponseMessage _httpResponse;
 
         private readonly SignUpDto _signUpUser;
+        private readonly HostDto _host;
 
-        internal TestResult(SignUpDto signUpUser)
+        internal TestResult(SignUpDto signUpUser, HostDto host)
         {
             _signUpUser = signUpUser;
+            _host = host;
         }
 
         internal TestResult WithHttpResponse(HttpResponseMessage httpResponse)
@@ -56,6 +60,15 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             Assert.Equal(_signUpUser.Email, signedUpUser.Email);
             Assert.Equal(_signUpUser.Role, signedUpUser.Role);
             Assert.Equal(_signUpUser.Claims, signedUpUser.Claims);
+        }
+
+        internal async Task HostShouldBeAsAlreadyCreated()
+        {
+            var createdHost = await _httpResponse.Content.ReadFromJsonAsync<HostDetailsDto>();
+            Assert.NotEqual(Guid.Empty, createdHost.Id);
+            Assert.Equal(0, createdHost.Conferences.Count);
+            Assert.Equal(_host.Name, createdHost.Name);
+            Assert.Equal(_host.Description, createdHost.Description);
         }
     }
 }
