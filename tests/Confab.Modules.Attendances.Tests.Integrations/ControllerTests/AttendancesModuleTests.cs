@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
 {
-    public class AttendancesControllerTests
+    public class AttendancesModuleTests
     {
         [Fact]
         public async Task Given_Not_Authorized_Http_Client_When_Call_Api_Then_Response_Is_Unauthorized_Http_Status()

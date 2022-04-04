@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
 {
-    public class AccountsControllerTests
+    public class UsersModuleTests
     {
         [Fact]
         public async Task Given_Just_App_When_Create_User_Then_Created()
