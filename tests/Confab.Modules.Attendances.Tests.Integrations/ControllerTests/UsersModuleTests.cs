@@ -4,18 +4,6 @@ using Xunit;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
 {
-    public class ConferencesModuleTests
-    {
-        [Fact]
-        public async Task T()
-        {
-            // arrange
-            var target = await new TestBuilder()
-                .WithAuthentication()
-                .Build();
-        }
-    }
-
     public class UsersModuleTests
     {
         [Fact]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Confab.Modules.Users.Core.DTO
 {
-    public class AccountDto
+    internal class AccountDto
     {
         public Guid Id { get; set; }
         public string Email { get; set; }

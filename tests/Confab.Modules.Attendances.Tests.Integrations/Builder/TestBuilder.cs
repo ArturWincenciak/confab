@@ -6,13 +6,14 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Confab.Modules.Attendances.Tests.Integrations.Builder.Api;
 using Confab.Modules.Attendances.Tests.Integrations.Infrastructure;
+using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Shared.Abstractions.Auth;
 using Confab.Shared.Tests;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
-    public class TestBuilder
+    internal class TestBuilder
     {
         private readonly List<Func<Task>> _actions = new();
         private HttpClient _client;
@@ -41,7 +42,13 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             Password = SignUpUser.Password
         };
 
-        public async Task<TestApplication> Build()
+        private static readonly HostDto Host = new()
+        {
+            Name = "Shed host",
+            Description = "Description of shed host"
+        };
+
+        internal async Task<TestingApplication> Build()
         {
             _client = new TestApplicationFactory()
                 .WithWebHostBuilder(builder =>
@@ -57,23 +64,23 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             foreach (var action in _actions)
                 await action();
 
-            return new TestApplication(_client, SignUpUser);
+            return new TestingApplication(_client, SignUpUser, Host);
         }
 
-        public TestBuilder WithAuthentication()
+        internal TestBuilder WithAuthentication()
         {
             WithSignUp();
             WithSignIn();
             return this;
         }
 
-        public TestBuilder WithoutEnsureDatabaseDeleted()
+        internal TestBuilder WithoutEnsureDatabaseDeleted()
         {
             _ensureDatabaseDeleted = false;
             return this;
         }
 
-        public TestBuilder WithSignUp()
+        internal TestBuilder WithSignUp()
         {
             _actions.Add(SignUp);
             return this;
@@ -85,7 +92,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             }
         }
 
-        public TestBuilder WithSignIn()
+        internal TestBuilder WithSignIn()
         {
             _actions.Add(SignIn);
             return this;

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -10,44 +8,49 @@ using Xunit;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
-    public class TestResult
+    internal class TestResult
     {
         private HttpResponseMessage _httpResponse;
 
         private readonly SignUpDto _signUpUser;
 
-        public TestResult(SignUpDto signUpUser)
+        internal TestResult(SignUpDto signUpUser)
         {
             _signUpUser = signUpUser;
         }
 
-        public TestResult WithHttpResponse(HttpResponseMessage httpResponse)
+        internal TestResult WithHttpResponse(HttpResponseMessage httpResponse)
         {
             _httpResponse = httpResponse;
             return this;
         }
 
-        public void ShouldBeNotFound404()
+        internal void ShouldBeNotFound404()
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
 
-        public void ShouldBeUnauthorized401()
+        internal void ShouldBeUnauthorized401()
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
         }
 
-        public void ShouldBeNoContent204()
+        internal void ShouldBeNoContent204()
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.NoContent);
         }
 
-        public void ShouldBeOk200()
+        internal void ShouldBeOk200()
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
         }
 
-        public async Task SignedInUserShouldBeSignedUpUser()
+        internal void ShouldBeCreated201()
+        {
+            _httpResponse.StatusCode.ShouldBe(HttpStatusCode.Created);
+        }
+
+        internal async Task SignedInUserShouldBeSignedUpUser()
         {
             var signedUpUser = await _httpResponse.Content.ReadFromJsonAsync<AccountDto>();
             Assert.Equal(_signUpUser.Email, signedUpUser.Email);

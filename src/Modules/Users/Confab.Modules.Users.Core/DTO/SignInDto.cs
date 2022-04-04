@@ -2,7 +2,7 @@
 
 namespace Confab.Modules.Users.Core.DTO
 {
-    public class SignInDto
+    internal class SignInDto
     {
         [EmailAddress]
         [Required]

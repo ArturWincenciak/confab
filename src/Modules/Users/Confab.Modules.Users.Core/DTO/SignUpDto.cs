@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Confab.Modules.Users.Core.DTO
 {
-    public class SignUpDto
+    internal class SignUpDto
     {
         public Guid Id { get; set; }
 

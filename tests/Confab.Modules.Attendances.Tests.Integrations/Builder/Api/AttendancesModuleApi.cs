@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
 {
-    public static class TestAttendancesApi
+    internal static class AttendancesModuleApi
     {
         private static readonly string AttendancesModule = "attendances-module";
         private static readonly string Attendances = $"{AttendancesModule}/attendances";
