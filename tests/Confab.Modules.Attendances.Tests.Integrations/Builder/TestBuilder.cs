@@ -16,7 +16,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
     {
         private readonly List<Func<Task>> _actions = new();
         private HttpClient _client;
-        private bool _ensureDatabaseDeleted;
+        private bool _ensureDatabaseDeleted = true;
 
         private static readonly SignUpDto SignUpUser = new()
         {
@@ -62,21 +62,14 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 
         public TestBuilder WithAuthentication()
         {
-            _actions.Add(Authenticate);
+            WithSignUp();
+            WithSignIn();
             return this;
-
-            Task Authenticate()
-            {
-                var userId = "B4B599B4-AE95-4AAD-8F22-82BB999C9302";
-                var jwt = AuthHelper.GenerateJwt(userId);
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
-                return Task.CompletedTask;
-            }
         }
 
-        public TestBuilder WithEnsureDatabaseDeleted()
+        public TestBuilder WithoutEnsureDatabaseDeleted()
         {
-            _ensureDatabaseDeleted = true;
+            _ensureDatabaseDeleted = false;
             return this;
         }
 

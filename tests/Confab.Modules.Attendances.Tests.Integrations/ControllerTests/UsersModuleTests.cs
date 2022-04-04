@@ -4,6 +4,18 @@ using Xunit;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
 {
+    public class ConferencesModuleTests
+    {
+        [Fact]
+        public async Task T()
+        {
+            // arrange
+            var target = await new TestBuilder()
+                .WithAuthentication()
+                .Build();
+        }
+    }
+
     public class UsersModuleTests
     {
         [Fact]
@@ -11,7 +23,6 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
         {
             // arrange
             var target = await new TestBuilder()
-                .WithEnsureDatabaseDeleted()
                 .Build();
 
             // act
@@ -26,7 +37,6 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
         {
             // arrange
             var target = await new TestBuilder()
-                .WithEnsureDatabaseDeleted()
                 .WithSignUp()
                 .WithSignIn()
                 .Build();
