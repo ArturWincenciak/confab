@@ -10,6 +10,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
     {
         private static readonly string UserModule = "conferences-module";
         private static readonly string Hosts = $"{UserModule}/hosts";
+        private static readonly string Conferences = $"{UserModule}/conferences";
 
         internal static Task<HttpResponseMessage> CreateHost(this HttpClient client, HostDto host)
         {
@@ -19,6 +20,12 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         internal static Task<HttpResponseMessage> GetHost(this HttpClient client, Uri location)
         {
             return client.GetAsync(location);
+        }
+
+        internal static Task<HttpResponseMessage> CreateConference(this HttpClient client,
+            ConferenceDetailsDto conference)
+        {
+            return client.PostAsJsonAsync(Conferences, conference);
         }
     }
 }

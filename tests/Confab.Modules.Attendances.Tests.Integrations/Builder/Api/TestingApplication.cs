@@ -13,13 +13,16 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         private readonly SignUpDto _signUpUser;
         private readonly HostDto _host;
         private readonly Uri _location;
+        private readonly ConferenceDetailsDto _conference;
 
-        internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host, Uri location)
+        internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host, Uri location,
+            ConferenceDetailsDto conference)
         {
             _api = api;
             _signUpUser = signUpUser;
             _host = host;
             _location = location;
+            _conference = conference;
             _testResult = new TestResult(signUpUser, host);
         }
 
@@ -51,6 +54,12 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         public async Task<TestResult> GetHost()
         {
             var response = await _api.GetHost(_location);
+            return _testResult.WithHttpResponse(response);
+        }
+
+        public async Task<TestResult> CreateConference()
+        {
+            var response = await _api.CreateConference(_conference);
             return _testResult.WithHttpResponse(response);
         }
     }

@@ -17,7 +17,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
             // act
             var actual = await target.CreateHost();
 
-            // arrange
+            // assert
             actual.ShouldBeCreated201();
         }
 
@@ -27,15 +27,31 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
             // arrange
             var target = await new TestBuilder()
                 .WithAuthentication()
-                .WithCreatedHost()
+                .WithHost()
                 .Build();
 
             // act
             var actual = await target.GetHost();
 
-            // arrange
+            // assert
             actual.ShouldBeOk200();
             await actual.HostShouldBeAsAlreadyCreated();
+        }
+
+        [Fact]
+        public async Task Given_Host_When_Create_Conference_Then_Created201()
+        {
+            // arrange
+            var target = await new TestBuilder()
+                .WithAuthentication()
+                .WithHost()
+                .Build();
+
+            // act
+            var actual = await target.CreateConference();
+
+            // assert
+            actual.ShouldBeCreated201();
         }
     }
 }

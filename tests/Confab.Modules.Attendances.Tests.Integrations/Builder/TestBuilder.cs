@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -18,6 +19,25 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
         private readonly List<Func<Task>> _actions = new();
         private HttpClient _client;
         private bool _ensureDatabaseDeleted = true;
+
+        internal async Task<TestingApplication> Build()
+        {
+            _client = new TestApplicationFactory()
+                .WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureServices(services =>
+                    {
+                        if (_ensureDatabaseDeleted)
+                            Db.EnsureDatabaseDeleted(services);
+                    });
+                })
+                .CreateClient();
+
+            foreach (var action in _actions)
+                await action();
+
+            return new TestingApplication(_client, SignUpUser, Host, _createdHostLocation, ArrangeConference());
+        }
 
         private static readonly SignUpDto SignUpUser = new()
         {
@@ -44,41 +64,31 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 
         private static readonly HostDto Host = new()
         {
-            Name = "Shed host",
-            Description = "Description of shed host"
+            Name = "Fowler Host",
+            Description = "Description of Fowler Host"
         };
 
         private static Uri _createdHostLocation;
 
-        private static readonly ConferenceDetailsDto Conference = new()
+        private Guid ResolveHostId(Uri hostLocation)
         {
-            HostId = new Guid("{{hostId}}"),
-            Name = "Conf {{tag-name}}",
-            Localization = "Melbourne",
-            LogoUrl = "http://logo.com/conf1.jpg",
-            ParticipantsLimit = 100,
-            From = default,
-            To = default,
-            Description = "{{$randomInt 1 100}}th edition."
-        };
+            var id = hostLocation.Segments.Last();
+            return Guid.Parse(id);
+        }
 
-        internal async Task<TestingApplication> Build()
+        private ConferenceDetailsDto ArrangeConference()
         {
-            _client = new TestApplicationFactory()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureServices(services =>
-                    {
-                        if (_ensureDatabaseDeleted)
-                            Db.EnsureDatabaseDeleted(services);
-                    });
-                })
-                .CreateClient();
-
-            foreach (var action in _actions)
-                await action();
-
-            return new TestingApplication(_client, SignUpUser, Host, _createdHostLocation);
+            return new()
+            {
+                HostId = ResolveHostId(_createdHostLocation),
+                Name = "Kent Beck Conference",
+                Localization = "Melbourne",
+                LogoUrl = "http://logo.com/conf1.jpg",
+                ParticipantsLimit = 100,
+                From = new DateTime(2022, 4, 5, 9, 0, 0),
+                To = new DateTime(2022, 4, 5, 17, 0, 0),
+                Description = "Description of Kent Back Conference"
+            };
         }
 
         internal TestBuilder WithAuthentication()
@@ -132,10 +142,5 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 _createdHostLocation = response.Headers.Location;
             }
         }
-
-        //public TestBuilder WithHost()
-        //{
-
-        //}
     }
 }
