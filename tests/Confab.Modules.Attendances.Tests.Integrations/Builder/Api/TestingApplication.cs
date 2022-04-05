@@ -12,24 +12,26 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         private readonly HttpClient _api;
         private readonly SignUpDto _signUpUser;
         private readonly HostDto _host;
-        private readonly Uri _location;
+        private readonly Uri _hostLocation;
         private readonly ConferenceDetailsDto _conference;
+        private readonly Uri _conferenceLocation;
 
-        internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host, Uri location,
-            ConferenceDetailsDto conference)
+        internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host, Uri hostLocation,
+            ConferenceDetailsDto conference, Uri conferenceLocation)
         {
             _api = api;
             _signUpUser = signUpUser;
             _host = host;
-            _location = location;
+            _hostLocation = hostLocation;
             _conference = conference;
-            _testResult = new TestResult(signUpUser, host);
+            _conferenceLocation = conferenceLocation;
+            _testResult = new TestResult(signUpUser, host, conference);
         }
 
         internal async Task<TestResult> GetNotExistingConference()
         {
             var notExistingConferenceId = Guid.Parse("1E795B8E-A3F1-4E1A-BB94-435BC707F03C");
-            var response = await _api.GetConference(notExistingConferenceId);
+            var response = await _api.GetAttendancesConference(notExistingConferenceId);
             return _testResult.WithHttpResponse(response);
         }
 
@@ -53,13 +55,19 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
 
         public async Task<TestResult> GetHost()
         {
-            var response = await _api.GetHost(_location);
+            var response = await _api.Get(_hostLocation);
             return _testResult.WithHttpResponse(response);
         }
 
         public async Task<TestResult> CreateConference()
         {
             var response = await _api.CreateConference(_conference);
+            return _testResult.WithHttpResponse(response);
+        }
+
+        public async Task<TestResult> GetConference()
+        {
+            var response = await _api.Get(_conferenceLocation);
             return _testResult.WithHttpResponse(response);
         }
     }

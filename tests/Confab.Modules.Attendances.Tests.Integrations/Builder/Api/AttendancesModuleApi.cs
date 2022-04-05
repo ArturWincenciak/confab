@@ -9,7 +9,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         private static readonly string AttendancesModule = "attendances-module";
         private static readonly string Attendances = $"{AttendancesModule}/attendances";
 
-        public static Task<HttpResponseMessage> GetConference(this HttpClient client, Guid conferenceId)
+        public static Task<HttpResponseMessage> GetAttendancesConference(this HttpClient client, Guid conferenceId)
         {
             return client.GetAsync($"{Attendances}/{conferenceId}");
         }

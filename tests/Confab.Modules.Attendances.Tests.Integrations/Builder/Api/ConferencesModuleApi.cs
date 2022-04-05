@@ -17,7 +17,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
             return client.PostAsJsonAsync(Hosts, host);
         }
 
-        internal static Task<HttpResponseMessage> GetHost(this HttpClient client, Uri location)
+        internal static Task<HttpResponseMessage> Get(this HttpClient client, Uri location)
         {
             return client.GetAsync(location);
         }

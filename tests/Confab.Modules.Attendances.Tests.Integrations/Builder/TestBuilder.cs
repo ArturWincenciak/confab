@@ -36,7 +36,13 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             foreach (var action in _actions)
                 await action();
 
-            return new TestingApplication(_client, SignUpUser, Host, _createdHostLocation, ArrangeConference());
+            return new TestingApplication(
+                api: _client,
+                signUpUser: SignUpUser,
+                host: Host,
+                hostLocation: _createdHostLocation,
+                conference: ArrangeConference(),
+                conferenceLocation: _createdConferenceLocation);
         }
 
         private static readonly SignUpDto SignUpUser = new()
@@ -69,6 +75,8 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
         };
 
         private static Uri _createdHostLocation;
+
+        private Uri _createdConferenceLocation;
 
         private Guid ResolveHostId(Uri hostLocation)
         {
@@ -140,6 +148,19 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 var response = await _client.CreateHost(Host);
                 response.EnsureSuccessStatusCode();
                 _createdHostLocation = response.Headers.Location;
+            }
+        }
+
+        public TestBuilder WithConference()
+        {
+            _actions.Add(CreateConference);
+            return this;
+
+            async Task CreateConference()
+            {
+                var response = await _client.CreateConference(ArrangeConference());
+                response.EnsureSuccessStatusCode();
+                _createdConferenceLocation = response.Headers.Location;
             }
         }
     }

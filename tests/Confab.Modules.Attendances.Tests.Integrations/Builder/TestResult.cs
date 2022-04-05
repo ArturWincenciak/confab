@@ -16,11 +16,13 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 
         private readonly SignUpDto _signUpUser;
         private readonly HostDto _host;
+        private readonly ConferenceDetailsDto _conference;
 
-        internal TestResult(SignUpDto signUpUser, HostDto host)
+        internal TestResult(SignUpDto signUpUser, HostDto host, ConferenceDetailsDto conference)
         {
             _signUpUser = signUpUser;
             _host = host;
+            _conference = conference;
         }
 
         internal TestResult WithHttpResponse(HttpResponseMessage httpResponse)
@@ -69,11 +71,26 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 
         internal async Task HostShouldBeCreatedProperly()
         {
-            var createdHost = await Response<HostDetailsDto>();
-            Assert.NotEqual(Guid.Empty, createdHost.Id);
-            Assert.Equal(0, createdHost.Conferences.Count);
-            Assert.Equal(_host.Name, createdHost.Name);
-            Assert.Equal(_host.Description, createdHost.Description);
+            var host = await Response<HostDetailsDto>();
+            Assert.NotEqual(Guid.Empty, host.Id);
+            Assert.Equal(0, host.Conferences.Count);
+            Assert.Equal(_host.Name, host.Name);
+            Assert.Equal(_host.Description, host.Description);
+        }
+
+        internal async Task ConferenceShouldBeCreatedProperly()
+        {
+            var conference = await Response<ConferenceDetailsDto>();
+            Assert.NotEqual(Guid.Empty, conference.Id);
+            Assert.Equal(_conference.HostId, conference.HostId);
+            Assert.Equal(_conference.Name, _conference.Name);
+            Assert.Equal(_conference.Description, conference.Description);
+            Assert.Equal(_conference.From, conference.From);
+            Assert.Equal(_conference.To, conference.To);
+            Assert.Equal(_conference.Localization, conference.Localization);
+            Assert.Equal(_conference.LogoUrl, conference.LogoUrl);
+            Assert.Equal(_conference.ParticipantsLimit, conference.ParticipantsLimit);
+            Assert.Equal(_host.Name, conference.HostName);
         }
     }
 }

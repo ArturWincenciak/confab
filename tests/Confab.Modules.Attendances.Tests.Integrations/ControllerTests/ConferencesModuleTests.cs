@@ -53,5 +53,23 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
             // assert
             actual.ShouldBeCreated201();
         }
+
+        [Fact]
+        public async Task Given_Conference_When_Get_The_Conference_Then_Ok200()
+        {
+            // arrange
+            var target = await new TestBuilder()
+                .WithAuthentication()
+                .WithHost()
+                .WithConference()
+                .Build();
+
+            // act
+            var actual = await target.GetConference();
+
+            // assert
+            actual.ShouldBeOk200();
+            await actual.ConferenceShouldBeCreatedProperly();
+        }
     }
 }
