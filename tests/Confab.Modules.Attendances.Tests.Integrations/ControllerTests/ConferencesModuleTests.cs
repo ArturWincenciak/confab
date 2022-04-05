@@ -35,7 +35,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
 
             // assert
             actual.ShouldBeOk200();
-            await actual.HostShouldBeAsAlreadyCreated();
+            await actual.HostShouldBeCreatedProperly();
         }
 
         [Fact]

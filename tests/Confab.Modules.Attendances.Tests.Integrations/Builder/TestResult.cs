@@ -29,6 +29,11 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
             return this;
         }
 
+        private async Task<T> Response<T>()
+        {
+            return await _httpResponse.Content.ReadFromJsonAsync<T>();
+        }
+
         internal void ShouldBeNotFound404()
         {
             _httpResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -56,15 +61,15 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 
         internal async Task SignedInUserShouldBeSignedUpUser()
         {
-            var signedUpUser = await _httpResponse.Content.ReadFromJsonAsync<AccountDto>();
+            var signedUpUser = await Response<AccountDto>();
             Assert.Equal(_signUpUser.Email, signedUpUser.Email);
             Assert.Equal(_signUpUser.Role, signedUpUser.Role);
             Assert.Equal(_signUpUser.Claims, signedUpUser.Claims);
         }
 
-        internal async Task HostShouldBeAsAlreadyCreated()
+        internal async Task HostShouldBeCreatedProperly()
         {
-            var createdHost = await _httpResponse.Content.ReadFromJsonAsync<HostDetailsDto>();
+            var createdHost = await Response<HostDetailsDto>();
             Assert.NotEqual(Guid.Empty, createdHost.Id);
             Assert.Equal(0, createdHost.Conferences.Count);
             Assert.Equal(_host.Name, createdHost.Name);
