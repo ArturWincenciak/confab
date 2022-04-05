@@ -50,6 +50,18 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 
         private static Uri _createdHostLocation;
 
+        private static readonly ConferenceDetailsDto Conference = new()
+        {
+            HostId = new Guid("{{hostId}}"),
+            Name = "Conf {{tag-name}}",
+            Localization = "Melbourne",
+            LogoUrl = "http://logo.com/conf1.jpg",
+            ParticipantsLimit = 100,
+            From = default,
+            To = default,
+            Description = "{{$randomInt 1 100}}th edition."
+        };
+
         internal async Task<TestingApplication> Build()
         {
             _client = new TestApplicationFactory()
@@ -120,5 +132,10 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 _createdHostLocation = response.Headers.Location;
             }
         }
+
+        //public TestBuilder WithHost()
+        //{
+
+        //}
     }
 }

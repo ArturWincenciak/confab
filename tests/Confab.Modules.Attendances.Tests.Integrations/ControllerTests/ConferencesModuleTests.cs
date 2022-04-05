@@ -27,7 +27,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
             // arrange
             var target = await new TestBuilder()
                 .WithAuthentication()
-                .WithHost()
+                .WithCreatedHost()
                 .Build();
 
             // act
