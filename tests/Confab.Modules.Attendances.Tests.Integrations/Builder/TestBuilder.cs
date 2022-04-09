@@ -16,35 +16,6 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
     internal class TestBuilder
     {
-        private readonly List<Func<Task>> _actions = new();
-        private HttpClient _client;
-        private bool _ensureDatabaseDeleted = true;
-
-        internal async Task<TestingApplication> Build()
-        {
-            _client = new TestApplicationFactory()
-                .WithWebHostBuilder(builder =>
-                {
-                    builder.ConfigureServices(services =>
-                    {
-                        if (_ensureDatabaseDeleted)
-                            Db.EnsureDatabaseDeleted(services);
-                    });
-                })
-                .CreateClient();
-
-            foreach (var action in _actions)
-                await action();
-
-            return new TestingApplication(
-                api: _client,
-                signUpUser: SignUpUser,
-                host: Host,
-                hostLocation: _createdHostLocation,
-                conference: ArrangeConference(),
-                conferenceLocation: _createdConferenceLocation);
-        }
-
         private static readonly SignUpDto SignUpUser = new()
         {
             Email = "email@email.com",
@@ -75,18 +46,49 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
         };
 
         private static Uri _createdHostLocation;
+        private readonly List<Func<Task>> _actions = new();
+        private HttpClient _client;
 
         private Uri _createdConferenceLocation;
+        private bool _ensureDatabaseDeleted = true;
+
+        internal async Task<TestingApplication> Build()
+        {
+            _client = new TestApplicationFactory()
+                .WithWebHostBuilder(builder =>
+                {
+                    builder.ConfigureServices(services =>
+                    {
+                        if (_ensureDatabaseDeleted)
+                            Db.EnsureDatabaseDeleted(services);
+                    });
+                })
+                .CreateClient();
+
+            foreach (var action in _actions)
+                await action();
+
+            return new TestingApplication(
+                _client,
+                SignUpUser,
+                Host,
+                _createdHostLocation,
+                ArrangeConference(),
+                _createdConferenceLocation);
+        }
 
         private Guid ResolveHostId(Uri hostLocation)
         {
-            var id = hostLocation.Segments.Last();
+            var id = hostLocation?.Segments.Last();
+            if (id is null)
+                return Guid.Empty;
+
             return Guid.Parse(id);
         }
 
         private ConferenceDetailsDto ArrangeConference()
         {
-            return new()
+            return new ConferenceDetailsDto
             {
                 HostId = ResolveHostId(_createdHostLocation),
                 Name = "Kent Beck Conference",
