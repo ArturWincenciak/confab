@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Confab.Modules.Attendances.Tests.Integrations.Builder.Api;
 using Confab.Modules.Attendances.Tests.Integrations.Infrastructure;
@@ -11,11 +12,15 @@ using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Shared.Abstractions.Auth;
 using Confab.Shared.Tests;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder
 {
     internal class TestBuilder
     {
+        private static Configuration DbConnectionString(string dbName) =>
+            new("postgres:connectionString", $"Host=localhost;Database={dbName};Username=postgres;Password=");
+
         private static readonly SignUpDto SignUpUser = new()
         {
             Email = "email@email.com",
@@ -50,17 +55,18 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
         private HttpClient _client;
 
         private Uri _createdConferenceLocation;
-        private bool _ensureDatabaseDeleted = true;
 
-        internal async Task<TestingApplication> Build()
+        internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
         {
+            IServiceCollection servicesCollection = null;
             _client = new TestApplicationFactory()
+                .WithSetting(DbConnectionString($"Test_{callerName}"))
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
                     {
-                        if (_ensureDatabaseDeleted)
-                            Db.EnsureDatabaseDeleted(services);
+                        servicesCollection = services;
+                        Db.EnsureDatabaseDeleted(servicesCollection);
                     });
                 })
                 .CreateClient();
@@ -69,6 +75,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
                 await action();
 
             return new TestingApplication(
+                onDisposeCallback: () => Db.EnsureDatabaseDeleted(servicesCollection),
                 _client,
                 SignUpUser,
                 Host,
@@ -105,12 +112,6 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder
         {
             WithSignUp();
             WithSignIn();
-            return this;
-        }
-
-        internal TestBuilder WithoutEnsureDatabaseDeleted()
-        {
-            _ensureDatabaseDeleted = false;
             return this;
         }
 

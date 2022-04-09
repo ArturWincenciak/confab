@@ -13,7 +13,7 @@ namespace Confab.Modules.Agendas.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             return services
-                .AddPostgres<AgendasDbContext>()
+                .AddPostgresDbContext<AgendasDbContext>()
                 .AddScoped<ISubmissionRepository, SubmissionRepository>()
                 .AddScoped<ISpeakerRepository, SpeakerRepository>()
                 .AddScoped<IAgendaItemRepository, AgendaItemRepository>()

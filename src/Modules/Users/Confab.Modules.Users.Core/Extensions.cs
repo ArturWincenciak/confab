@@ -21,7 +21,7 @@ namespace Confab.Modules.Users.Core
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>()
                 .AddTransient<IIdentityService, IdentityService>()
-                .AddPostgres<UsersDbContext>();
+                .AddPostgresDbContext<UsersDbContext>();
 
             return services;
         }

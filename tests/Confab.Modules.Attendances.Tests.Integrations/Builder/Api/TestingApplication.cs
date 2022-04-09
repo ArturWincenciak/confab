@@ -6,7 +6,7 @@ using Confab.Modules.Users.Core.DTO;
 
 namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
 {
-    internal class TestingApplication
+    internal class TestingApplication : IDisposable
     {
         private readonly TestResult _testResult;
         private readonly HttpClient _api;
@@ -15,10 +15,12 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         private readonly Uri _hostLocation;
         private readonly ConferenceDetailsDto _conference;
         private readonly Uri _conferenceLocation;
+        private readonly Action _onDisposeCallback;
 
-        internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host, Uri hostLocation,
+        internal TestingApplication(Action onDisposeCallback, HttpClient api, SignUpDto signUpUser, HostDto host, Uri hostLocation,
             ConferenceDetailsDto conference, Uri conferenceLocation)
         {
+            _onDisposeCallback = onDisposeCallback;
             _api = api;
             _signUpUser = signUpUser;
             _host = host;
@@ -69,6 +71,11 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
         {
             var response = await _api.Get(_conferenceLocation);
             return _testResult.WithHttpResponse(response);
+        }
+
+        public void Dispose()
+        {
+            _onDisposeCallback.Invoke();
         }
     }
 }

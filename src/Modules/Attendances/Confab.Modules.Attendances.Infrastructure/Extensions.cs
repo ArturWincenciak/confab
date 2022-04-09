@@ -20,7 +20,7 @@ namespace Confab.Modules.Attendances.Infrastructure
                 .AddScoped<IAttendableEventsRepository, AttendableEventsRepository>()
                 .AddScoped<IParticipantsRepository, ParticipantsRepository>()
                 .AddScoped<IAttendanceRepository, AttendanceRepository>()
-                .AddPostgres<AttendancesDbContext>()
+                .AddPostgresDbContext<AttendancesDbContext>()
                 .WithTransactionalCommandHandles();
         }
 

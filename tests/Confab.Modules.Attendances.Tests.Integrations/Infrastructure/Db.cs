@@ -14,7 +14,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Infrastructure
             var scopedServices = scope.ServiceProvider;
             var dbContextType = GetSomeFirstDbContextType();
             var db = scopedServices.GetRequiredService(dbContextType) as DbContext;
-            db.Database.EnsureDeleted();
+            db?.Database?.EnsureDeleted();
         }
 
         private static Type GetSomeFirstDbContextType()
@@ -22,7 +22,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.Infrastructure
             var dbContextType = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(x => x.GetTypes())
-                .First(x =>
+                .FirstOrDefault(x =>
                     typeof(DbContext).IsAssignableFrom(x) &&
                     !x.IsInterface &&
                     x != typeof(DbContext));

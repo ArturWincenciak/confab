@@ -21,7 +21,7 @@ namespace Confab.Modules.Tickets.Core
                 .AddScoped<ITicketRepository, TicketRepository>()
                 .AddScoped<ITicketSaleRepository, TicketSaleRepository>()
                 .AddSingleton<ITicketGenerator, TicketGenerator>()
-                .AddPostgres<TicketsDbContext>();
+                .AddPostgresDbContext<TicketsDbContext>();
         }
     }
 }

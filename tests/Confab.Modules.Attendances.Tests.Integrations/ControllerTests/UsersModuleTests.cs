@@ -10,7 +10,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
         public async Task Given_Just_App_When_Create_User_Then_Created()
         {
             // arrange
-            var target = await new TestBuilder()
+            using var target = await new TestBuilder()
                 .Build();
 
             // act
@@ -24,7 +24,7 @@ namespace Confab.Modules.Attendances.Tests.Integrations.ControllerTests
         public async Task Given_Signed_In_User_When_Get_His_Details_Then_Ok200()
         {
             // arrange
-            var target = await new TestBuilder()
+            using var target = await new TestBuilder()
                 .WithSignUp()
                 .WithSignIn()
                 .Build();

@@ -36,7 +36,8 @@ namespace Confab.Shared.Infrastructure
     {
         private const string CorsPolicy = "cors";
 
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IList<IModule> modules,
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+            IList<IModule> modules,
             IEnumerable<Assembly> assemblies)
         {
             services.AddCors(corsOption =>
@@ -74,7 +75,7 @@ namespace Confab.Shared.Infrastructure
             services.AddEvents(assemblies);
             services.AddDomainEvents(assemblies);
             services.AddQueries(assemblies);
-            services.AddPostgres();
+            services.AddPostgresOptions();
             services.AddSingleton<IClock, UtcClock>();
             services.AddHostedService<AppInitializer>();
 

@@ -5,14 +5,14 @@ namespace Confab.Shared.Infrastructure.Postgres
 {
     public static class Extensions
     {
-        public static IServiceCollection AddPostgres(this IServiceCollection services)
+        public static IServiceCollection AddPostgresOptions(this IServiceCollection services)
         {
             var options = services.GetOptions<PostgresOptions>("postgres");
             services.AddSingleton(options);
             return services;
         }
 
-        public static IServiceCollection AddPostgres<T>(this IServiceCollection services) where T : DbContext
+        public static IServiceCollection AddPostgresDbContext<T>(this IServiceCollection services) where T : DbContext
         {
             var options = services.GetOptions<PostgresOptions>("postgres");
             services.AddDbContext<T>(dbContextOptionsBuilder =>
