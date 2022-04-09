@@ -16,8 +16,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Confab.Modules.Tests.Integrations.Builder
 {
-    internal class TestBuilder
+    public class TestBuilder : IDisposable
     {
+        private IServiceCollection _servicesCollection;
+
         private static Configuration DbConnectionString(string dbName) =>
             new("postgres:connectionString", $"Host=localhost;Database={dbName};Username=postgres;Password=");
 
@@ -58,15 +60,14 @@ namespace Confab.Modules.Tests.Integrations.Builder
 
         internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
         {
-            IServiceCollection servicesCollection = null;
             _client = new TestApplicationFactory()
                 .WithSetting(DbConnectionString($"Test_{callerName}"))
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
                     {
-                        servicesCollection = services;
-                        Db.EnsureDatabaseDeleted(servicesCollection);
+                        _servicesCollection = services;
+                        Db.EnsureDatabaseDeleted(_servicesCollection);
                     });
                 })
                 .CreateClient();
@@ -75,7 +76,6 @@ namespace Confab.Modules.Tests.Integrations.Builder
                 await action();
 
             return new TestingApplication(
-                onDisposeCallback: () => Db.EnsureDatabaseDeleted(servicesCollection),
                 _client,
                 SignUpUser,
                 Host,
@@ -165,6 +165,12 @@ namespace Confab.Modules.Tests.Integrations.Builder
                 response.EnsureSuccessStatusCode();
                 _createdConferenceLocation = response.Headers.Location;
             }
+        }
+
+        public void Dispose()
+        {
+            Db.EnsureDatabaseDeleted(_servicesCollection);
+            _client.Dispose();
         }
     }
 }
