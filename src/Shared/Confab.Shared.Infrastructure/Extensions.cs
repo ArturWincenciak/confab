@@ -124,8 +124,6 @@ namespace Confab.Shared.Infrastructure
 
         public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
         {
-            Console.WriteLine($"Building service provider for get option '{sectionName}' of '{typeof(T)}'.");
-
             using var serviceProvider = services.BuildServiceProvider();
             var configuration = serviceProvider.GetService<IConfiguration>();
             return configuration.GetOptions<T>(sectionName);
@@ -141,13 +139,7 @@ namespace Confab.Shared.Infrastructure
         private static IEnumerable<string> DetectDisabledModules(IServiceCollection services)
         {
             using var serviceProvider = services.BuildServiceProvider();
-
             var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-
-            Console.WriteLine("\n\nRecursive all configs printing...");
-            PrintConfiguration(configuration.GetChildren());
-
-            Console.WriteLine("\n\nDisabled modules:");
             var disabledModules = new List<string>();
             foreach (var (key, value) in configuration.AsEnumerable())
             {
@@ -159,7 +151,6 @@ namespace Confab.Shared.Infrastructure
                     var splitKey = key.Split(":");
                     var moduleName = splitKey[0];
                     disabledModules.Add(moduleName);
-                    Console.WriteLine($"\t* Disabled module '{moduleName}' by key '{key}' with value '{value}'");
                 }
             }
 
@@ -169,10 +160,6 @@ namespace Confab.Shared.Infrastructure
         private static ApplicationPartManager AddOnlyNotDisabledModuleParts(this ApplicationPartManager manager,
             IEnumerable<string> disabledModules)
         {
-            Console.WriteLine(
-                "\nConfigure application part manager starting with parts: " +
-                $"{string.Join("\n\t* ", manager.ApplicationParts.Select(x => x.Name))}\n");
-
             var removedParts = new List<ApplicationPart>();
             foreach (var disabledModule in disabledModules)
             {
@@ -186,32 +173,8 @@ namespace Confab.Shared.Infrastructure
             foreach (var part in removedParts)
                 manager.ApplicationParts.Remove(part);
 
-            Console.WriteLine(
-                "Removed application parts: " +
-                $"{string.Join("\n\t* ", removedParts.Select(x => x.Name))}\n");
-
             manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
-
-            Console.WriteLine("Configure application part manager done.");
-
             return manager;
-        }
-
-        private static void PrintConfiguration(IEnumerable<IConfigurationSection> configurationSections)
-        {
-            var children = configurationSections.ToArray();
-            foreach (var child in children)
-                if (child is not null)
-                {
-                    var key = child.Key;
-                    var value = child.Value;
-                    var path = child.Path;
-                    Console.WriteLine($"Path: [{path}], Key: [{key}], Value: [{value}]");
-
-                    var childChildren = child.GetChildren().ToArray();
-                    if (childChildren.Any())
-                        PrintConfiguration(childChildren);
-                }
         }
     }
 }

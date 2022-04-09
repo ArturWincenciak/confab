@@ -27,41 +27,32 @@ namespace Confab.Bootstrapper
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Console.WriteLine("Registering common types in IoC ...");
             services.AddInfrastructure(_modules, _assemblies);
 
             foreach (var module in _modules)
             {
-                Console.WriteLine($"Module '{module.Name}' is registering its type in IoC container ...");
                 module.Register(services);
             }
-
-            Console.WriteLine("All common and module types has been registered in IoC container. " +
-                              $"Modules: [{string.Join(" | ", _modules.Select(module => module.Name))}].\n\n");
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            logger.LogInformation("Configure of uses common middleware/infrastructure " +
-                                  $"(environment name: '{env.EnvironmentName}') ...");
-
             app.UseInfrastructure();
 
             foreach (var module in _modules)
             {
-                logger.LogInformation($"Module '{module.Name}' is configuring of uses its infrastructure ...");
                 module.Use(app);
             }
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapGet("/", async context => await context.Response.WriteAsync("Confab API!"));
+                endpoints.MapGet("/", async context =>
+                    await context.Response.WriteAsync("Confab API!"));
                 endpoints.MapModuleInfo();
             });
 
-            logger.LogInformation("All common and module uses of infrastructure has been configured. " +
-                                  $"Modules: [{string.Join(" | ", _modules.Select(module => module.Name))}].");
+            logger.LogInformation($"Modules: [{string.Join(" | ", _modules.Select(module => module.Name))}].");
         }
     }
 }

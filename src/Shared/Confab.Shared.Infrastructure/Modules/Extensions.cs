@@ -39,26 +39,20 @@ namespace Confab.Shared.Infrastructure.Modules
 
         internal static IHostBuilder ConfigureModules(this IHostBuilder builder)
         {
-            Console.WriteLine("Configuring modules setting by host builder configuration...");
-
             return builder.ConfigureAppConfiguration((ctx, cfg) =>
             {
                 var appSettingsPath = GetEnvironmentRuntimeAppSettingsJson();
                 cfg.AddJsonFile(appSettingsPath, true, true);
-                Console.WriteLine($"Added dev and runtime fallback settings Json: {appSettingsPath}.");
-
                 var moduleMainAppSettingsJsonFiles = GetModulesMainAppSettingsJson();
                 foreach (var appSettingsJson in moduleMainAppSettingsJsonFiles)
                 {
                     cfg.AddJsonFile(appSettingsJson, false, true);
-                    Console.WriteLine($"Added module main app setting Json: {appSettingsJson}.");
                 }
 
                 var fallbackEnvironmentSettings = GetModulesFallbackEnvAppSettingsJson();
                 foreach (var appSettingsJson in fallbackEnvironmentSettings)
                 {
                     cfg.AddJsonFile(appSettingsJson, true, true);
-                    Console.WriteLine($"Added module fallback env app setting Json: {appSettingsJson}.");
                 }
 
                 string GetEnvironmentRuntimeAppSettingsJson()
@@ -118,10 +112,7 @@ namespace Confab.Shared.Infrastructure.Modules
 
         private static void AddModuleRegistry(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            Console.WriteLine("\n\nAdding module registry...\n\n");
-
             var registry = new ModuleRegistry();
-
             var types = assemblies.SelectMany(x => x.GetTypes()).ToArray();
             var eventTypes = types
                 .Where(x => x.IsClass && typeof(IEvent).IsAssignableFrom(x))
@@ -129,7 +120,6 @@ namespace Confab.Shared.Infrastructure.Modules
 
             services.AddSingleton<IModuleRegistry>(sp =>
             {
-                Console.WriteLine("\n\nResolving module registry...");
                 var eventDispatcher = sp.GetRequiredService<IEventDispatcher>();
                 var eventDispatcherType = eventDispatcher.GetType();
 
@@ -138,23 +128,11 @@ namespace Confab.Shared.Infrastructure.Modules
                     registry.AddBroadcastAction(eventType,
                         @event =>
                         {
-                            try
-                            {
-                                Console.WriteLine($"[Trace] Invoking weaved action for event: '{@event}'.");
-                                var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
-                                var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
-                                var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
-                                return (Task) methodResult;
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Exception: '{ex.Message}'; Event: '{@event}'.");
-                                throw;
-                            }
+                            var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
+                            var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
+                            var methodResult = genericMethodInfo.Invoke(eventDispatcher, new[] {@event});
+                            return (Task) methodResult;
                         });
-
-                    Console.WriteLine(
-                        $"[Trace] Module registry item added for event type: '{eventType.FullName}'.");
                 }
 
                 return registry;

@@ -15,10 +15,8 @@ namespace Confab.Modules.Speakers.Core
         public static IServiceCollection AddCore(this IServiceCollection services)
         {
             services.AddPostgres<SpeakersDbContext>();
-
             services.AddScoped<ISpeakerService, SpeakerService>();
             services.AddScoped<ISpeakerRepository, SpeakerRepository>();
-
             return services;
         }
     }
