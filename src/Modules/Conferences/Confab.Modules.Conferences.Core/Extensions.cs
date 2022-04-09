@@ -8,7 +8,7 @@ using Confab.Shared.Infrastructure.Postgres;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Modules.Conferences.Api")]
-[assembly: InternalsVisibleTo("Confab.Modules.Attendances.Tests.Integrations")]
+[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
 
 namespace Confab.Modules.Conferences.Core
 {

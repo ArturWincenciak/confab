@@ -7,6 +7,7 @@ using Confab.Shared.Infrastructure.Postgres;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Modules.Tickets.Api")]
+[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
 
 namespace Confab.Modules.Tickets.Core
 {

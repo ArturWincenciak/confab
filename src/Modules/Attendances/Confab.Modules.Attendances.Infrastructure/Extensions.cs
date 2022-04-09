@@ -1,4 +1,5 @@
-﻿using Confab.Modules.Attendances.Application.Clients.Agendas;
+﻿using System.Runtime.CompilerServices;
+using Confab.Modules.Attendances.Application.Clients.Agendas;
 using Confab.Modules.Attendances.Application.Commands;
 using Confab.Modules.Attendances.Domain.Repositories;
 using Confab.Modules.Attendances.Infrastructure.Clients;
@@ -8,6 +9,8 @@ using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Infrastructure.Postgres;
 using Confab.Shared.Infrastructure.Postgres.Decorators;
 using Microsoft.Extensions.DependencyInjection;
+
+[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
 
 namespace Confab.Modules.Attendances.Infrastructure
 {

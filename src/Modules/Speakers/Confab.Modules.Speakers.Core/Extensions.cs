@@ -7,6 +7,7 @@ using Confab.Shared.Infrastructure.Postgres;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Modules.Speakers.Api")]
+[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
 
 namespace Confab.Modules.Speakers.Core
 {

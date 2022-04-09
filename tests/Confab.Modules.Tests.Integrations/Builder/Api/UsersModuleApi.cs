@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Confab.Modules.Users.Core.DTO;
 
-namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
+namespace Confab.Modules.Tests.Integrations.Builder.Api
 {
     internal static class UsersModuleApi
     {

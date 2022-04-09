@@ -3,17 +3,17 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Attendances.Tests.Integrations.Infrastructure
+namespace Confab.Modules.Tests.Integrations.Infrastructure
 {
-    public static class Db
+    internal static class Db
     {
-        public static void EnsureDatabaseDeleted(IServiceCollection services)
+        internal static void EnsureDatabaseDeleted(IServiceCollection services)
         {
             var serviceProvider = services.BuildServiceProvider();
             using var scope = serviceProvider.CreateScope();
             var scopedServices = scope.ServiceProvider;
             var dbContextType = GetSomeFirstDbContextType();
-            var db = scopedServices.GetRequiredService(dbContextType) as DbContext;
+            var db = scopedServices.GetService(dbContextType) as DbContext;
             db?.Database?.EnsureDeleted();
         }
 

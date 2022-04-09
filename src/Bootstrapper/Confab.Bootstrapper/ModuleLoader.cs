@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions.Modules;
 using Microsoft.Extensions.Configuration;
+
+[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
 
 namespace Confab.Bootstrapper
 {

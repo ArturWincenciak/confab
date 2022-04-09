@@ -2,7 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Confab.Modules.Attendances.Tests.Integrations.Builder.Api
+namespace Confab.Modules.Tests.Integrations.Builder.Api
 {
     internal static class AttendancesModuleApi
     {
