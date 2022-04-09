@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Confab.Modules.Tests.Integrations.ControllerTests
+namespace Confab.Tests.Integrations.ControllerTests
 {
-    public class AttendancesModuleTest : ModuleTests
+    public class AttendancesModuleTest : ModuleIntegrationTests
     {
         [Fact]
         internal async Task Given_Not_Authorized_Http_Client_When_Call_Api_Then_Response_Is_Unauthorized_Http_Status()

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 
-namespace Confab.Modules.Tests.Integrations.Builder.Api
+namespace Confab.Tests.Integrations.Builder.Api
 {
     internal class TestingApplication
     {

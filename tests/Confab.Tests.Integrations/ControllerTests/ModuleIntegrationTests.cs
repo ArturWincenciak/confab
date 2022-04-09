@@ -1,13 +1,13 @@
 using System;
-using Confab.Modules.Tests.Integrations.Builder;
+using Confab.Tests.Integrations.Builder;
 
-namespace Confab.Modules.Tests.Integrations.ControllerTests
+namespace Confab.Tests.Integrations.ControllerTests
 {
-    public abstract class ModuleTests : IDisposable
+    public abstract class ModuleIntegrationTests : IDisposable
     {
         protected readonly TestBuilder TestBuilder;
 
-        public ModuleTests()
+        public ModuleIntegrationTests()
         {
             TestBuilder = new TestBuilder();
         }

@@ -8,7 +8,7 @@ using Confab.Modules.Users.Core.DTO;
 using Shouldly;
 using Xunit;
 
-namespace Confab.Modules.Tests.Integrations.Builder
+namespace Confab.Tests.Integrations.Builder
 {
     internal class TestResult
     {

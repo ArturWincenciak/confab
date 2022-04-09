@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Tests.Integrations.Infrastructure
+namespace Confab.Tests.Integrations.Infrastructure
 {
     internal static class Db
     {

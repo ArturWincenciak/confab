@@ -7,14 +7,14 @@ using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Confab.Modules.Conferences.Core.DTO;
-using Confab.Modules.Tests.Integrations.Builder.Api;
-using Confab.Modules.Tests.Integrations.Infrastructure;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Shared.Abstractions.Auth;
 using Confab.Shared.Tests;
+using Confab.Tests.Integrations.Builder.Api;
+using Confab.Tests.Integrations.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Tests.Integrations.Builder
+namespace Confab.Tests.Integrations.Builder
 {
     public class TestBuilder : IDisposable
     {

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using Confab.Shared.Abstractions.Modules;
 using Microsoft.Extensions.Configuration;
 
-[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
+[assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
 namespace Confab.Bootstrapper
 {

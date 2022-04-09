@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Confab.Modules.Tests.Integrations.ControllerTests
+namespace Confab.Tests.Integrations.ControllerTests
 {
-    public class ConferencesModuleTests : ModuleTests
+    public class ConferencesModuleTests : ModuleIntegrationTests
     {
         [Fact]
         internal async Task Given_App_When_Create_Host_Then_Created200()

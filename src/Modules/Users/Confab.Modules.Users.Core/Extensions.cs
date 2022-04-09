@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Modules.Users.Api")]
-[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
+[assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
 namespace Confab.Modules.Users.Core
 {

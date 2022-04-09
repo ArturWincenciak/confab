@@ -10,7 +10,7 @@ using Confab.Shared.Infrastructure.Postgres;
 using Confab.Shared.Infrastructure.Postgres.Decorators;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: InternalsVisibleTo("Confab.Modules.Tests.Integrations")]
+[assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
 namespace Confab.Modules.Attendances.Infrastructure
 {

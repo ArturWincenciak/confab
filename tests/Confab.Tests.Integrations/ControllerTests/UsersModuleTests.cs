@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Confab.Modules.Tests.Integrations.ControllerTests
+namespace Confab.Tests.Integrations.ControllerTests
 {
-    public class UsersModuleTest : ModuleTests
+    public class UsersModuleTest : ModuleIntegrationTests
     {
         [Fact]
         internal async Task Given_Just_App_When_Create_User_Then_Created()
