@@ -17,5 +17,10 @@ namespace Confab.Tests.Integrations.Builder.Api
         {
             return client.PostAsJsonAsync(Tracks(conferenceId), track);
         }
+
+        internal static Task<HttpResponseMessage> GetTrack(this HttpClient client, Guid conferenceId, Guid trackId)
+        {
+            return client.GetAsync($"{Tracks(conferenceId)}/{trackId}");
+        }
     }
 }

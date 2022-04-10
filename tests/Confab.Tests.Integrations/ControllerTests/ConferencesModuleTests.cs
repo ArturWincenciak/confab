@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using Shouldly;
 using Xunit;
 
 namespace Confab.Tests.Integrations.ControllerTests
@@ -21,7 +23,7 @@ namespace Confab.Tests.Integrations.ControllerTests
         }
 
         [Fact]
-        internal async Task Given_Host_When_Get_The_Host_Then_Ok200()
+        internal async Task Given_Host_When_Get_The_Already_Defined_Host_Then_Ok200()
         {
             // arrange
             var target = await TestBuilder
@@ -34,11 +36,17 @@ namespace Confab.Tests.Integrations.ControllerTests
 
             // assert
             actual.ShouldBeOk200();
-            await actual.HostShouldBeCreatedProperly();
+            await actual.HostShouldContainExpectedProperties(assert =>
+            {
+                assert.ActualResult.Id.ShouldBe(assert.Expected.AlreadyCreatedHostId);
+                assert.ActualResult.Conferences.Count.ShouldBe(0);
+                assert.ActualResult.Name.ShouldBe(assert.Expected.InputHostDto.Name);
+                assert.ActualResult.Description.ShouldBe(assert.Expected.InputHostDto.Description);
+            });
         }
 
         [Fact]
-        internal async Task Given_Host_When_Create_Conference_Then_Created201()
+        internal async Task Given_Host_When_Create_Conference_In_The_Host_Then_Created201()
         {
             // arrange
             var target = await TestBuilder
@@ -54,7 +62,7 @@ namespace Confab.Tests.Integrations.ControllerTests
         }
 
         [Fact]
-        internal async Task Given_Conference_When_Get_The_Conference_Then_Ok200()
+        internal async Task Given_Host_With_Conference_When_Get_The_Already_Defined_Conference_Then_Ok200()
         {
             // arrange
             var target = await TestBuilder
@@ -68,7 +76,19 @@ namespace Confab.Tests.Integrations.ControllerTests
 
             // assert
             actual.ShouldBeOk200();
-            await actual.ConferenceShouldBeCreatedProperly();
+            await actual.ConferenceShouldContainExpectedProperties((assert) =>
+            {
+                assert.ActualResult.Id.ShouldBe(assert.Expected.AlreadyCreatedConferenceId);
+                assert.ActualResult.HostId.ShouldBe(assert.Expected.AlreadyCreatedHostId);
+                assert.ActualResult.HostName.ShouldBe(assert.Expected.InputHostDto.Name);
+                assert.ActualResult.Name.ShouldBe(assert.Expected.InputConferenceDto.Name);
+                assert.ActualResult.Description.ShouldBe(assert.Expected.InputConferenceDto.Description);
+                assert.ActualResult.From.ShouldBe(assert.Expected.InputConferenceDto.From);
+                assert.ActualResult.To.ShouldBe(assert.Expected.InputConferenceDto.To);
+                assert.ActualResult.Localization.ShouldBe(assert.Expected.InputConferenceDto.Localization);
+                assert.ActualResult.LogoUrl.ShouldBe(assert.Expected.InputConferenceDto.LogoUrl);
+                assert.ActualResult.ParticipantsLimit.ShouldBe(assert.Expected.InputConferenceDto.ParticipantsLimit);
+            });
         }
     }
 }

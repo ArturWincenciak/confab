@@ -7,6 +7,7 @@ using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Api.Controllers;
+using Confab.Modules.Agendas.Application.Agendas.Commands;
 using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Shared.Abstractions.Auth;
@@ -61,6 +62,8 @@ namespace Confab.Tests.Integrations.Builder
 
         private static readonly AgendasController.CreateAgendaTrackCommand Track = new("Robert C. Martin Track");
 
+        private string _trackResourceId;
+
         internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
         {
             _client = new TestApplicationFactory()
@@ -85,7 +88,8 @@ namespace Confab.Tests.Integrations.Builder
                 _createdHostLocation,
                 ArrangeConference(),
                 _createdConferenceLocation,
-                Track);
+                Track,
+                _trackResourceId);
         }
 
         private Guid ResolveHostId(Uri hostLocation)
@@ -169,6 +173,22 @@ namespace Confab.Tests.Integrations.Builder
                 response.EnsureSuccessStatusCode();
                 _createdConferenceLocation = response.Headers.Location;
             }
+        }
+
+        public TestBuilder WithTrack()
+        {
+            _actions.Add(CreateTrack);
+            return this;
+
+            async Task CreateTrack()
+            {
+                var confernceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
+                var response = await _client.CreateTrack(confernceId, Track);
+                response.EnsureSuccessStatusCode();
+                _trackResourceId = response.Headers.GetValues("Resource-ID").Single();
+            }
+
+            return this;
         }
 
         public void Dispose()

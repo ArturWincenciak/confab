@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Confab.Modules.Agendas.Api.Controllers;
+using Confab.Modules.Agendas.Application.Agendas.Queries;
 using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 using Shouldly;
@@ -13,16 +15,26 @@ namespace Confab.Tests.Integrations.Builder
     internal class TestResult
     {
         private HttpResponseMessage _httpResponse;
-
         private readonly SignUpDto _signUpUser;
-        private readonly HostDto _host;
-        private readonly ConferenceDetailsDto _conference;
 
-        internal TestResult(SignUpDto signUpUser, HostDto host, ConferenceDetailsDto conference)
+        private readonly ConferenceDetailsDto _inputConferenceDto;
+        private readonly HostDto _inputHostDto;
+        private readonly Guid _createdHostId;
+        private readonly AgendasController.CreateAgendaTrackCommand _inputTrackDto;
+        private readonly Guid _createdConferenceId;
+        private readonly Guid _createdTrackId;
+
+        internal TestResult(SignUpDto signUpUser, HostDto inputHostDto, Guid createdHostId,
+            ConferenceDetailsDto inputConferenceDto, AgendasController.CreateAgendaTrackCommand inputTrackDto,
+            Guid createdConferenceId, Guid createdTrackId)
         {
             _signUpUser = signUpUser;
-            _host = host;
-            _conference = conference;
+            _inputHostDto = inputHostDto;
+            _createdHostId = createdHostId;
+            _inputConferenceDto = inputConferenceDto;
+            _inputTrackDto = inputTrackDto;
+            _createdConferenceId = createdConferenceId;
+            _createdTrackId = createdTrackId;
         }
 
         internal TestResult WithHttpResponse(HttpResponseMessage httpResponse)
@@ -69,28 +81,32 @@ namespace Confab.Tests.Integrations.Builder
             Assert.Equal(_signUpUser.Claims, signedUpUser.Claims);
         }
 
-        internal async Task HostShouldBeCreatedProperly()
+        internal async Task HostShouldContainExpectedProperties(
+            Action<(HostDetailsDto ActualResult, (
+                HostDto InputHostDto, Guid AlreadyCreatedHostId) Expected)> assert)
         {
-            var host = await Response<HostDetailsDto>();
-            Assert.NotEqual(Guid.Empty, host.Id);
-            Assert.Equal(0, host.Conferences.Count);
-            Assert.Equal(_host.Name, host.Name);
-            Assert.Equal(_host.Description, host.Description);
+            var actualResult = await Response<HostDetailsDto>();
+            assert((actualResult, (_inputHostDto, _createdHostId)));
         }
 
-        internal async Task ConferenceShouldBeCreatedProperly()
+        internal async Task ConferenceShouldContainExpectedProperties(
+            Action<(ConferenceDetailsDto ActualResult, (
+                ConferenceDetailsDto InputConferenceDto,
+                HostDto InputHostDto,
+                Guid AlreadyCreatedConferenceId,
+                Guid AlreadyCreatedHostId) Expected)> assert)
         {
-            var conference = await Response<ConferenceDetailsDto>();
-            Assert.NotEqual(Guid.Empty, conference.Id);
-            Assert.Equal(_conference.HostId, conference.HostId);
-            Assert.Equal(_conference.Name, _conference.Name);
-            Assert.Equal(_conference.Description, conference.Description);
-            Assert.Equal(_conference.From, conference.From);
-            Assert.Equal(_conference.To, conference.To);
-            Assert.Equal(_conference.Localization, conference.Localization);
-            Assert.Equal(_conference.LogoUrl, conference.LogoUrl);
-            Assert.Equal(_conference.ParticipantsLimit, conference.ParticipantsLimit);
-            Assert.Equal(_host.Name, conference.HostName);
+            var actualResult = await Response<ConferenceDetailsDto>();
+            assert((actualResult, (_inputConferenceDto, _inputHostDto, _createdConferenceId, _createdHostId)));
+        }
+
+        internal async Task TrackShouldContainExpectedProperties(
+            Action<(GetAgendaTrack.Result ActaulResult, (
+                AgendasController.CreateAgendaTrackCommand CreateAgendaTrackCommand,
+                Guid AlreadyCreatedConferenceId, Guid AlreadyCreatedTrackId) Expected)> assert)
+        {
+            var actualResult = await Response<GetAgendaTrack.Result>();
+            assert((actualResult, (_inputTrackDto, _createdConferenceId, _createdTrackId)));
         }
     }
 }
