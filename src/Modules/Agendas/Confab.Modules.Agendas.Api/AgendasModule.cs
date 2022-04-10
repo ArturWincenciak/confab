@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Confab.Modules.Agendas.Api.Controllers;
 using Confab.Modules.Agendas.Application;
 using Confab.Modules.Agendas.Application.Agendas.Queries;
@@ -8,6 +9,8 @@ using Confab.Shared.Abstractions.Modules;
 using Confab.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+
+[assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
 namespace Confab.Modules.Agendas.Api
 {

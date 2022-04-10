@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Confab.Modules.Agendas.Api.Controllers;
 using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Shared.Abstractions.Auth;
@@ -18,6 +19,10 @@ namespace Confab.Tests.Integrations.Builder
 {
     public class TestBuilder : IDisposable
     {
+        private Uri _createdConferenceLocation;
+        private readonly List<Func<Task>> _actions = new();
+        private HttpClient _client;
+
         private IServiceCollection _servicesCollection;
 
         private static Configuration DbConnectionString(string dbName) =>
@@ -53,10 +58,8 @@ namespace Confab.Tests.Integrations.Builder
         };
 
         private static Uri _createdHostLocation;
-        private readonly List<Func<Task>> _actions = new();
-        private HttpClient _client;
 
-        private Uri _createdConferenceLocation;
+        private static readonly AgendasController.CreateAgendaTrackCommand Track = new("Robert C. Martin Track");
 
         internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
         {
@@ -81,7 +84,8 @@ namespace Confab.Tests.Integrations.Builder
                 Host,
                 _createdHostLocation,
                 ArrangeConference(),
-                _createdConferenceLocation);
+                _createdConferenceLocation,
+                Track);
         }
 
         private Guid ResolveHostId(Uri hostLocation)

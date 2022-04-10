@@ -38,7 +38,7 @@ namespace Confab.Modules.Agendas.Api.Controllers
         }
 
         [HttpPost("tracks")]
-        public async Task<ActionResult> CreateAgendaTrackAsync(Guid conferenceId, CreateAgendaTrackApi command)
+        public async Task<ActionResult> CreateAgendaTrackAsync(Guid conferenceId, CreateAgendaTrackCommand command)
         {
             var created = await _commandDispatcher.SendAsync(new CreateAgendaTrack(conferenceId, command.Name));
             AddResourceIdHeader(created.Id);
@@ -74,6 +74,6 @@ namespace Confab.Modules.Agendas.Api.Controllers
             return NoContent();
         }
 
-        public record CreateAgendaTrackApi(string Name);
+        public record CreateAgendaTrackCommand(string Name);
     }
 }

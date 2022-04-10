@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Confab.Modules.Agendas.Api.Controllers;
 using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 
@@ -15,9 +16,10 @@ namespace Confab.Tests.Integrations.Builder.Api
         private readonly Uri _hostLocation;
         private readonly ConferenceDetailsDto _conference;
         private readonly Uri _conferenceLocation;
+        private readonly AgendasController.CreateAgendaTrackCommand _track;
 
         internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto host, Uri hostLocation,
-            ConferenceDetailsDto conference, Uri conferenceLocation)
+            ConferenceDetailsDto conference, Uri conferenceLocation, AgendasController.CreateAgendaTrackCommand track)
         {
             _api = api;
             _signUpUser = signUpUser;
@@ -25,6 +27,7 @@ namespace Confab.Tests.Integrations.Builder.Api
             _hostLocation = hostLocation;
             _conference = conference;
             _conferenceLocation = conferenceLocation;
+            _track = track;
             _testResult = new TestResult(signUpUser, host, conference);
         }
 
@@ -68,6 +71,12 @@ namespace Confab.Tests.Integrations.Builder.Api
         public async Task<TestResult> GetConference()
         {
             var response = await _api.Get(_conferenceLocation);
+            return _testResult.WithHttpResponse(response);
+        }
+
+        public async Task<TestResult> CreateTrack()
+        {
+            var response = await _api.CreateTrack(_conference.Id, _track);
             return _testResult.WithHttpResponse(response);
         }
     }
