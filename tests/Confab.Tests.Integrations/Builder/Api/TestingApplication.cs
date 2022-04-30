@@ -39,7 +39,7 @@ namespace Confab.Tests.Integrations.Builder.Api
                 inputConferenceDto,
                 createTrackCommand,
                 ResolveConferenceId(),
-                Guid.Parse(createdTrackResourceId));
+                ResolveTrackId(createdTrackResourceId));
         }
 
         internal async Task<TestResult> GetNotExistingConference()
@@ -102,20 +102,28 @@ namespace Confab.Tests.Integrations.Builder.Api
 
         private Guid ResolveConferenceId()
         {
-            return ResolveFormLocationUrl(_createdConferenceLocation);
+            return ResolveIdByLocationUrl(_createdConferenceLocation);
         }
 
         private Guid ResolveHostId()
         {
-            return ResolveFormLocationUrl(_createdHostLocation);
+            return ResolveIdByLocationUrl(_createdHostLocation);
         }
 
-        private Guid ResolveFormLocationUrl(Uri location)
+        private Guid ResolveIdByLocationUrl(Uri location)
         {
             if(location is null)
                 return Guid.Empty;
 
             return Guid.Parse(location.Segments.Last());
+        }
+
+        private static Guid ResolveTrackId(string createdTrackResourceId)
+        {
+            if(createdTrackResourceId is null)
+                return Guid.Empty;
+
+            return Guid.Parse(createdTrackResourceId);
         }
     }
 }
