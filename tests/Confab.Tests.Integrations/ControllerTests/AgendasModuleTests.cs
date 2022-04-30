@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using NSubstitute.Routing.Handlers;
 using Shouldly;
 using Xunit;
 
@@ -47,6 +48,24 @@ namespace Confab.Tests.Integrations.ControllerTests
                 assert.ActaulResult.Name.ShouldBe(assert.Expected.CreateAgendaTrackCommand.Name);
                 assert.ActaulResult.Slots.Count().ShouldBe(0);
             });
+        }
+
+        [Fact]
+        internal async Task Given_Track_When_Create_Slot_Then_NotContent204()
+        {
+            // arrange
+            var target = await TestBuilder
+                .WithAuthentication()
+                .WithHost()
+                .WithConference()
+                .WithTrack()
+                .Build();
+
+            // act
+            var actual = await target.CreateRegularSlot();
+
+            // assert
+            actual.ShouldBeNoContent204();
         }
     }
 }

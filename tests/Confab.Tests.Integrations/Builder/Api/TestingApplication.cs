@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Confab.Modules.Agendas.Api.Controllers;
+using Confab.Modules.Agendas.Application.Agendas.Commands;
 using Confab.Modules.Conferences.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 
@@ -18,11 +19,13 @@ namespace Confab.Tests.Integrations.Builder.Api
         private readonly SignUpDto _signUpUser;
         private readonly TestResult _testResult;
         private readonly AgendasController.CreateAgendaTrackCommand _createTrackCommand;
+        private readonly CreateAgendaSlot _createAgendaSlotCommand;
         private readonly string _createdTrackResourceId;
 
         internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto inputHostDto,
             Uri createdHostLocation, ConferenceDetailsDto inputConferenceDto, Uri createdConferenceLocation,
-            AgendasController.CreateAgendaTrackCommand createTrackCommand, string createdTrackResourceId)
+            AgendasController.CreateAgendaTrackCommand createTrackCommand, string createdTrackResourceId,
+            CreateAgendaSlot createAgendaSlotCommand)
         {
             _api = api;
             _signUpUser = signUpUser;
@@ -32,6 +35,7 @@ namespace Confab.Tests.Integrations.Builder.Api
             _createdConferenceLocation = createdConferenceLocation;
             _createTrackCommand = createTrackCommand;
             _createdTrackResourceId = createdTrackResourceId;
+            _createAgendaSlotCommand = createAgendaSlotCommand;
             _testResult = new TestResult(
                 signUpUser,
                 inputHostDto,
@@ -97,6 +101,13 @@ namespace Confab.Tests.Integrations.Builder.Api
             var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
             var trackId = Guid.Parse(_createdTrackResourceId);
             var response = await _api.GetTrack(conferenceId, trackId);
+            return _testResult.WithHttpResponse(response);
+        }
+
+        public async Task<TestResult> CreateRegularSlot()
+        {
+            var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
+            var response = await _api.CreateSlot(conferenceId, _createAgendaSlotCommand);
             return _testResult.WithHttpResponse(response);
         }
 

@@ -60,9 +60,18 @@ namespace Confab.Tests.Integrations.Builder
 
         private static Uri _createdHostLocation;
 
-        private static readonly AgendasController.CreateAgendaTrackCommand Track = new("Robert C. Martin Track");
+        private static readonly AgendasController.CreateAgendaTrackCommand CreateTrackCommand =
+            new("Robert C. Martin Track");
+
+        private CreateAgendaSlot CreateRegularSlotCommand => new(AgendaTrackId: ResolveTrackId(), From: StartFirstSlot,
+            To: EndFirstSlot, 50, "regular");
 
         private string _trackResourceId;
+
+        private static readonly DateTime StartConferenceTime = new(2022, 4, 5, 9, 0, 0);
+        private static readonly DateTime EndConferenceTime = new(2022, 4, 5, 17, 0, 0);
+        private static readonly DateTime StartFirstSlot = StartConferenceTime;
+        private static readonly DateTime EndFirstSlot = StartConferenceTime.AddHours(1);
 
         internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
         {
@@ -88,8 +97,9 @@ namespace Confab.Tests.Integrations.Builder
                 _createdHostLocation,
                 ArrangeConference(),
                 _createdConferenceLocation,
-                Track,
-                _trackResourceId);
+                CreateTrackCommand,
+                _trackResourceId,
+                CreateRegularSlotCommand);
         }
 
         private Guid ResolveHostId(Uri hostLocation)
@@ -101,8 +111,17 @@ namespace Confab.Tests.Integrations.Builder
             return Guid.Parse(id);
         }
 
+        private Guid ResolveTrackId()
+        {
+            if (string.IsNullOrWhiteSpace(_trackResourceId))
+                return Guid.Empty;
+
+            return Guid.Parse(_trackResourceId);
+        }
+
         private ConferenceDetailsDto ArrangeConference()
         {
+
             return new ConferenceDetailsDto
             {
                 HostId = ResolveHostId(_createdHostLocation),
@@ -110,8 +129,8 @@ namespace Confab.Tests.Integrations.Builder
                 Localization = "Melbourne",
                 LogoUrl = "http://logo.com/conf1.jpg",
                 ParticipantsLimit = 100,
-                From = new DateTime(2022, 4, 5, 9, 0, 0),
-                To = new DateTime(2022, 4, 5, 17, 0, 0),
+                From = StartConferenceTime,
+                To = EndConferenceTime,
                 Description = "Description of Kent Back Conference"
             };
         }
@@ -183,12 +202,10 @@ namespace Confab.Tests.Integrations.Builder
             async Task CreateTrack()
             {
                 var confernceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
-                var response = await _client.CreateTrack(confernceId, Track);
+                var response = await _client.CreateTrack(confernceId, CreateTrackCommand);
                 response.EnsureSuccessStatusCode();
                 _trackResourceId = response.Headers.GetValues("Resource-ID").Single();
             }
-
-            return this;
         }
 
         public void Dispose()
