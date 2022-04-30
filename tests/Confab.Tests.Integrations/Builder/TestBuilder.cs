@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Confab.Modules.Agendas.Api.Controllers;
 using Confab.Modules.Agendas.Application.Agendas.Commands;
 using Confab.Modules.Conferences.Core.DTO;
+using Confab.Modules.Speakers.Core.DTO;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Shared.Abstractions.Auth;
 using Confab.Shared.Tests;
@@ -75,6 +76,14 @@ namespace Confab.Tests.Integrations.Builder
 
         private string _slotResourceId;
 
+        private readonly SpeakerDto _inputSpeakerDto = new()
+        {
+            FullName = "Konrad Kokosa",
+            Email = "konrad@kokosa.email",
+            Bio = "Garbage Collector Master of the Masters",
+            AvatarUrl = "https://konrad.kokosa.site.com"
+        };
+
         internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
         {
             _client = new TestApplicationFactory()
@@ -102,7 +111,8 @@ namespace Confab.Tests.Integrations.Builder
                 CreateTrackCommand,
                 _trackResourceId,
                 CreateRegularSlotCommand,
-                _slotResourceId);
+                _slotResourceId,
+                _inputSpeakerDto);
         }
 
         private Guid ResolveHostId(Uri hostLocation)
