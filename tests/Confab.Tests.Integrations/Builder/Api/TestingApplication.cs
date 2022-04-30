@@ -21,11 +21,12 @@ namespace Confab.Tests.Integrations.Builder.Api
         private readonly AgendasController.CreateAgendaTrackCommand _createTrackCommand;
         private readonly CreateAgendaSlot _createAgendaSlotCommand;
         private readonly string _createdTrackResourceId;
+        private readonly string _createdSlotResourceId;
 
         internal TestingApplication(HttpClient api, SignUpDto signUpUser, HostDto inputHostDto,
             Uri createdHostLocation, ConferenceDetailsDto inputConferenceDto, Uri createdConferenceLocation,
             AgendasController.CreateAgendaTrackCommand createTrackCommand, string createdTrackResourceId,
-            CreateAgendaSlot createAgendaSlotCommand)
+            CreateAgendaSlot createAgendaSlotCommand, string createdSlotResourceId)
         {
             _api = api;
             _signUpUser = signUpUser;
@@ -36,6 +37,7 @@ namespace Confab.Tests.Integrations.Builder.Api
             _createTrackCommand = createTrackCommand;
             _createdTrackResourceId = createdTrackResourceId;
             _createAgendaSlotCommand = createAgendaSlotCommand;
+            _createdSlotResourceId = createdSlotResourceId;
             _testResult = new TestResult(
                 signUpUser,
                 inputHostDto,

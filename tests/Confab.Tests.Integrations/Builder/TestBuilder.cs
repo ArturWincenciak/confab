@@ -73,6 +73,8 @@ namespace Confab.Tests.Integrations.Builder
         private static readonly DateTime StartFirstSlot = StartConferenceTime;
         private static readonly DateTime EndFirstSlot = StartConferenceTime.AddHours(1);
 
+        private string _slotResourceId;
+
         internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
         {
             _client = new TestApplicationFactory()
@@ -99,7 +101,8 @@ namespace Confab.Tests.Integrations.Builder
                 _createdConferenceLocation,
                 CreateTrackCommand,
                 _trackResourceId,
-                CreateRegularSlotCommand);
+                CreateRegularSlotCommand,
+                _slotResourceId);
         }
 
         private Guid ResolveHostId(Uri hostLocation)
@@ -201,10 +204,24 @@ namespace Confab.Tests.Integrations.Builder
 
             async Task CreateTrack()
             {
-                var confernceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
-                var response = await _client.CreateTrack(confernceId, CreateTrackCommand);
+                var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
+                var response = await _client.CreateTrack(conferenceId, CreateTrackCommand);
                 response.EnsureSuccessStatusCode();
                 _trackResourceId = response.Headers.GetValues("Resource-ID").Single();
+            }
+        }
+
+        public TestBuilder WithRegularSlot()
+        {
+            _actions.Add(CreateRegularSlot);
+            return this;
+
+            async Task CreateRegularSlot()
+            {
+                var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
+                var response = await _client.CreateSlot(conferenceId, CreateRegularSlotCommand);
+                response.EnsureSuccessStatusCode();
+                _slotResourceId = response.Headers.GetValues("Resource-ID").Single();
             }
         }
 
