@@ -75,6 +75,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confab.Shared.Tests", "test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confab.Tests.Integrations", "tests\Confab.Tests.Integrations\Confab.Tests.Integrations.csproj", "{8C062419-5D68-406C-AFF7-5991D0844C86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82ECFBA5-ADFB-4139-BAAB-35A151D40058}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
