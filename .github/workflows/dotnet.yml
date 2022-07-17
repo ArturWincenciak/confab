@@ -21,5 +21,3 @@ jobs:
       run: dotnet restore Confab.sln
     - name: Build
       run: dotnet build Confab.sln --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
