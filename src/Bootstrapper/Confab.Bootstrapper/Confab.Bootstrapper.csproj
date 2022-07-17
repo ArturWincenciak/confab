@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Modules\Agendas\Confab.Modules.Agendas.Api\Confab.Modules.Agendas.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Attendances\Confab.Modules.Attendances.Api\Confab.Modules.Attendances.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Conferences\Confab.Modules.Conferences.Api\Confab.Modules.Conferences.Api.csproj" />
+    <ProjectReference Include="..\..\Modules\Saga\Confab.Modules.Saga\Confab.Modules.Saga.csproj" />
     <ProjectReference Include="..\..\Modules\Speakers\Confab.Modules.Speakers.Api\Confab.Modules.Speakers.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Tickets\Confab.Modules.Tickets.Api\Confab.Modules.Tickets.Api.csproj" />
     <ProjectReference Include="..\..\Modules\Users\Confab.Modules.Users.Api\Confab.Modules.Users.Api.csproj" />
