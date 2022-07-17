@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Confab.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
