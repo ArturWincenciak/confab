@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Confab.Modules.Users.Core.DTO;
 using Confab.Modules.Users.Core.Entities;
+using Confab.Modules.Users.Core.Events;
 using Confab.Modules.Users.Core.Exceptions;
 using Confab.Modules.Users.Core.Mappings;
 using Confab.Modules.Users.Core.Repositories;
 using Confab.Shared.Abstractions;
 using Confab.Shared.Abstractions.Auth;
+using Confab.Shared.Abstractions.Messaging;
 using Microsoft.AspNetCore.Identity;
 
 namespace Confab.Modules.Users.Core.Services
@@ -18,12 +20,14 @@ namespace Confab.Modules.Users.Core.Services
         private readonly IClock _clock;
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IUserRepository _userRepository;
+        private readonly IMessageBroker _messageBroker;
 
         public IdentityService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher,
-            IAuthManager authManager, IClock clock)
+            IAuthManager authManager, IClock clock, IMessageBroker messageBroker)
         {
             _authManager = authManager;
             _clock = clock;
+            _messageBroker = messageBroker;
             _passwordHasher = passwordHasher;
             _userRepository = userRepository;
         }
@@ -49,6 +53,7 @@ namespace Confab.Modules.Users.Core.Services
 
             var jwt = _authManager.CreateToken(user.Id.ToString(), user.Role, claims: user.Claims);
             jwt.Email = user.Email;
+            await _messageBroker.PublishAsync(new SignedIn(user.Id));
 
             return jwt;
         }
@@ -74,6 +79,7 @@ namespace Confab.Modules.Users.Core.Services
             };
 
             await _userRepository.AddAsync(user);
+            await _messageBroker.PublishAsync(new SignedUp(user.Id, user.Email));
         }
     }
 }
