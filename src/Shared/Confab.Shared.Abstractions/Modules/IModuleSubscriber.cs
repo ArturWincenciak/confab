@@ -6,7 +6,9 @@ namespace Confab.Shared.Abstractions.Modules
     public interface IModuleSubscriber
     {
         public IModuleSubscriber MapRequest<TRequest, TResponse>(string path)
-            where TRequest : class, IQuery<TResponse>, IModuleRequest
-            where TResponse : class, IQueryResult, IModuleResponse;
+            where TRequest : class, IRequestMessage<TResponse>, IModuleRequest
+            where TResponse : class, IResponseMessage, IModuleResponse;
     }
+
+    public record Null : IResponseMessage, IModuleResponse;
 }

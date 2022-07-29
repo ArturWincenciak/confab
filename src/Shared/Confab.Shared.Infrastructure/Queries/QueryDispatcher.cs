@@ -17,7 +17,7 @@ namespace Confab.Shared.Infrastructure.Queries
             _logger = logger;
         }
 
-        public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query) where TResult : class, IQueryResult
+        public async Task<TResult> QueryAsync<TResult>(IRequestMessage<TResult> query) where TResult : class, IResponseMessage
         {
             try
             {
@@ -25,7 +25,7 @@ namespace Confab.Shared.Infrastructure.Queries
                 using var scope = _serviceProvider.CreateScope();
                 var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TResult));
                 var handler = scope.ServiceProvider.GetRequiredService(handlerType);
-                var handleMethod = handlerType.GetMethod(nameof(IQueryHandler<IQuery<TResult>, TResult>.HandleAsync));
+                var handleMethod = handlerType.GetMethod(nameof(IQueryHandler<IRequestMessage<TResult>, TResult>.HandleAsync));
                 var result = handleMethod.Invoke(handler, new[] {query});
                 return await (result as Task<TResult>);
             }

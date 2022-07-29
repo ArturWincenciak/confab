@@ -6,12 +6,12 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Attendances.Application.Queries
 {
-    public class BrowseAttendances : IQuery<BrowseAttendances.Result>
+    public class BrowseAttendances : IRequestMessage<BrowseAttendances.Result>
     {
         public Guid UserId { get; set; }
         public Guid ConferenceId { get; set; }
 
-        public class Result : IReadOnlyList<AttendanceDto>, IQueryResult
+        public class Result : IReadOnlyList<AttendanceDto>, IResponseMessage
         {
             private readonly IReadOnlyList<AttendanceDto> _attendances;
 

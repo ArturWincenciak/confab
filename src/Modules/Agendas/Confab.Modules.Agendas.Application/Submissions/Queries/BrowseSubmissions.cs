@@ -5,9 +5,9 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Submissions.Queries
 {
-    public sealed record BrowseSubmissions(Guid? ConferenceId, Guid? SpeakerId) : IQuery<BrowseSubmissions.Result>
+    public sealed record BrowseSubmissions(Guid? ConferenceId, Guid? SpeakerId) : IRequestMessage<BrowseSubmissions.Result>
     {
-        public sealed class Result : IEnumerable<Result.SubmissionDto>, IQueryResult
+        public sealed class Result : IEnumerable<Result.SubmissionDto>, IResponseMessage
         {
             private readonly IEnumerable<SubmissionDto> _submissions;
 

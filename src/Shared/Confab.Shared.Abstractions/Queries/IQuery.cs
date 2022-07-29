@@ -1,10 +1,10 @@
 ﻿namespace Confab.Shared.Abstractions.Queries
 {
-    public interface IQuery
+    public interface IRequestMessage
     {
     }
 
-    public interface IQuery<TResult> : IQuery where TResult : class, IQueryResult
+    public interface IRequestMessage<TResult> : IRequestMessage where TResult : class, IResponseMessage
     {
     }
 }

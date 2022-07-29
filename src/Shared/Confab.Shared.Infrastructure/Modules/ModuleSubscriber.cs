@@ -18,8 +18,8 @@ namespace Confab.Shared.Infrastructure.Modules
         }
 
         public IModuleSubscriber MapRequest<TRequest, TResponse>(string path)
-            where TRequest : class, IQuery<TResponse>, IModuleRequest
-            where TResponse : class, IQueryResult, IModuleResponse
+            where TRequest : class, IRequestMessage<TResponse>, IModuleRequest
+            where TResponse : class, IResponseMessage, IModuleResponse
         {
             return Subscribe<TRequest, TResponse>(path,
                 (request, sp) => sp.GetRequiredService<IQueryDispatcher>().QueryAsync(request));
@@ -27,8 +27,8 @@ namespace Confab.Shared.Infrastructure.Modules
 
         private IModuleSubscriber Subscribe<TRequest, TResponse>(string path,
             Func<TRequest, IServiceProvider, Task<TResponse>> action)
-            where TRequest : class, IQuery<TResponse>, IModuleRequest
-            where TResponse : class, IQueryResult, IModuleResponse
+            where TRequest : class, IRequestMessage<TResponse>, IModuleRequest
+            where TResponse : class, IResponseMessage, IModuleResponse
         {
             _registry.AddRequestAction(path, typeof(TRequest), typeof(TResponse),
                 async request => await action((TRequest) request, _serviceProvider));

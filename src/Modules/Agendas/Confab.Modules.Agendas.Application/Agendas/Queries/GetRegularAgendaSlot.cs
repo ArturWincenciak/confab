@@ -4,12 +4,12 @@ using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Agendas.Application.Agendas.Queries
 {
-    public sealed record GetRegularAgendaSlot(Guid AgendaItemId) : IQuery<GetRegularAgendaSlot.Result>, IModuleRequest
+    public sealed record GetRegularAgendaSlot(Guid AgendaItemId) : IRequestMessage<GetRegularAgendaSlot.Result>, IModuleRequest
     {
         public sealed record Result(
                 Guid Id, DateTime From, DateTime To, string Type,
                 int? ParticipantLimit, Result.AgendaItemDto AgendaItem)
-            : IQueryResult, IModuleResponse
+            : IResponseMessage, IModuleResponse
         {
             public sealed record AgendaItemDto(
                 Guid Id, Guid ConferenceId, string Title, string Description, int Level,

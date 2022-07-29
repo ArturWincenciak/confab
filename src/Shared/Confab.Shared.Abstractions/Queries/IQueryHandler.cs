@@ -3,8 +3,8 @@
 namespace Confab.Shared.Abstractions.Queries
 {
     public interface IQueryHandler<in TQuery, TResult>
-        where TQuery : class, IQuery<TResult>
-        where TResult : class, IQueryResult
+        where TQuery : class, IRequestMessage<TResult>
+        where TResult : class, IResponseMessage
     {
         Task<TResult> HandleAsync(TQuery query);
     }
