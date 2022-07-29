@@ -21,6 +21,15 @@ namespace Confab.Modules.Saga.InviteSpeaker
             _messageBroker = messageBroker;
         }
 
+        public override SagaId ResolveId(object message, ISagaContext context) =>
+            message switch
+            {
+                SignedUp signedUp => signedUp.UserId.ToString(),
+                SignedIn signedIn => signedIn.UserId.ToString(),
+                SpeakerCreated created => created.Id.ToString(),
+                _ => throw new ArgumentOutOfRangeException(message.GetType().FullName)
+            };
+
         public async Task HandleAsync(SignedUp message, ISagaContext context)
         {
             var (userId, email) = message;
