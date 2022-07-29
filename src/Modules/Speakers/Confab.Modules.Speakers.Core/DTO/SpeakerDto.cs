@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Confab.Shared.Abstractions.Modules;
+using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Speakers.Core.DTO
 {
-    internal class SpeakerDto
+    internal class SpeakerDto : IRequestMessage<Null>, IModuleRequest
     {
         public Guid Id { get; set; }
 

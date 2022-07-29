@@ -1,61 +1,75 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 using Chronicle;
 using Confab.Modules.Saga.Messages;
+using Confab.Modules.Saga.Services;
+using Confab.Shared.Abstractions.Messaging;
+using Confab.Shared.Abstractions.Modules;
+using Confab.Shared.Abstractions.Queries;
 
 namespace Confab.Modules.Saga.InviteSpeaker
 {
     internal class InviteSpeakerSaga : Saga<InviteSpeakerSaga.SagaData>,
         ISagaStartAction<SignedUp>, ISagaAction<SpeakerCreated>, ISagaAction<SignedIn>
     {
-        public Task HandleAsync(SignedUp message, ISagaContext context)
+        private readonly IModuleClient _moduleClient;
+        private readonly IMessageBroker _messageBroker;
+
+        public InviteSpeakerSaga(IModuleClient moduleClient, IMessageBroker messageBroker)
+        {
+            _moduleClient = moduleClient;
+            _messageBroker = messageBroker;
+        }
+
+        public async Task HandleAsync(SignedUp message, ISagaContext context)
         {
             var (userId, email) = message;
-            if (Data.InvitedSpeaker.TryGetValue(email, out var name))
+            if (InvitedSpeakersStub.InvitedSpeaker.TryGetValue(email, out var fullName))
             {
                 Data.Email = email;
-                Data.FullName = name;
+                Data.FullName = fullName;
+
+                //todo:aw: consider use here message broker
+                await _moduleClient.SendAsync<Null>("speakers/create",
+                    new SpeakerDto(userId, email, fullName, "Lorem ipsum."));
+
+                return;
             }
 
-            return Task.CompletedTask;
+            await CompensateAsync(message, context);
+        }
+
+        public async Task HandleAsync(SignedIn message, ISagaContext context)
+        {
+            if (Data.SpeakerCreated)
+            {
+                await _messageBroker.PublishAsync(new SendWelcomeMessage(Data.Email, Data.FullName));
+                await CompensateAsync(message, context);
+            }
         }
 
         public Task HandleAsync(SpeakerCreated message, ISagaContext context)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task HandleAsync(SignedIn message, ISagaContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task CompensateAsync(SignedUp message, ISagaContext context)
-        {
+            Data.SpeakerCreated = true;
             return Task.CompletedTask;
         }
 
-        public Task CompensateAsync(SpeakerCreated message, ISagaContext context)
-        {
-            return Task.CompletedTask;
-        }
+        public Task CompensateAsync(SignedUp message, ISagaContext context) =>
+            Task.CompletedTask;
 
-        public Task CompensateAsync(SignedIn message, ISagaContext context)
-        {
-            return Task.CompletedTask;
-        }
+        public Task CompensateAsync(SignedIn message, ISagaContext context) =>
+            Task.CompletedTask;
+
+        public Task CompensateAsync(SpeakerCreated message, ISagaContext context) =>
+            Task.CompletedTask;
 
         internal class SagaData
         {
             public string Email { get; set; }
             public string FullName { get; set; }
             public bool SpeakerCreated { get; set; }
-
-            public readonly Dictionary<string, string> InvitedSpeaker = new()
-            {
-                {"testspeaker1@confab.io", "John Smith"},
-                {"testspeaker2@confab.io", "Mark Sim"}
-            };
         }
+
+        private record SpeakerDto(Guid UserId, string Email, string FullName, string Bio) : IModuleRequest;
     }
 }
