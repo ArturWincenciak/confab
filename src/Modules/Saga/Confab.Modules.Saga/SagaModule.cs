@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Confab.Modules.Saga.Services;
 using Confab.Shared.Abstractions.Modules;
 using Confab.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +20,7 @@ namespace Confab.Modules.Saga
         public void Register(IServiceCollection services)
         {
             services.AddSaga();
+            services.AddScoped<InvitationSpeakersStub>();
         }
 
         public void Use(IApplicationBuilder app)

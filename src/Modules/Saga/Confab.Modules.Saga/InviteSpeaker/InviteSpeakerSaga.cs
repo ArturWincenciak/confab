@@ -14,11 +14,14 @@ namespace Confab.Modules.Saga.InviteSpeaker
     {
         private readonly IModuleClient _moduleClient;
         private readonly IMessageBroker _messageBroker;
+        private readonly InvitationSpeakersStub _invitedSpeakers;
 
-        public InviteSpeakerSaga(IModuleClient moduleClient, IMessageBroker messageBroker)
+        public InviteSpeakerSaga(IModuleClient moduleClient, IMessageBroker messageBroker,
+            InvitationSpeakersStub invitedSpeakers)
         {
             _moduleClient = moduleClient;
             _messageBroker = messageBroker;
+            _invitedSpeakers = invitedSpeakers;
         }
 
         public override SagaId ResolveId(object message, ISagaContext context) =>
@@ -33,14 +36,14 @@ namespace Confab.Modules.Saga.InviteSpeaker
         public async Task HandleAsync(SignedUp message, ISagaContext context)
         {
             var (userId, email) = message;
-            if (InvitedSpeakersStub.IsInvited(email))
+            if (_invitedSpeakers.IsInvited(email))
             {
-                var fullName = InvitedSpeakersStub.FullName(email);
+                var fullName = _invitedSpeakers.FullName(email);
 
                 Data.Email = email;
                 Data.FullName = fullName;
 
-                var bio = InvitedSpeakersStub.SpeakerBio(email);
+                var bio = _invitedSpeakers.SpeakerBio(email);
 
                 await _moduleClient.SendAsync<Null>("speakers/create",
                     new SpeakerDto(userId, email, Data.FullName, bio));
