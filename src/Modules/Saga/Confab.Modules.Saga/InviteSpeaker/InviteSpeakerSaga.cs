@@ -33,14 +33,17 @@ namespace Confab.Modules.Saga.InviteSpeaker
         public async Task HandleAsync(SignedUp message, ISagaContext context)
         {
             var (userId, email) = message;
-            if (InvitedSpeakersStub.InvitedSpeaker.TryGetValue(email, out var fullName))
+            if (InvitedSpeakersStub.IsInvited(email))
             {
+                var fullName = InvitedSpeakersStub.FullName(email);
+
                 Data.Email = email;
                 Data.FullName = fullName;
 
-                //todo:aw: consider use here message broker
+                var bio = InvitedSpeakersStub.SpeakerBio(email);
+
                 await _moduleClient.SendAsync<Null>("speakers/create",
-                    new SpeakerDto(userId, email, fullName, "Lorem ipsum."));
+                    new SpeakerDto(userId, email, Data.FullName, bio));
 
                 return;
             }
