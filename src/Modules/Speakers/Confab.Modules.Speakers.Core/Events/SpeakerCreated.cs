@@ -3,5 +3,5 @@ using Confab.Shared.Abstractions.Events;
 
 namespace Confab.Modules.Speakers.Core.Events
 {
-    internal record SpeakerCreated(Guid Id, string FullName) : IEvent;
+    internal record SpeakerCreated(Guid Id, string Email, string FullName) : IEvent;
 }

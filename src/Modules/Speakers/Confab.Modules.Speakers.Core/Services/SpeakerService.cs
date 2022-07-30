@@ -32,7 +32,8 @@ namespace Confab.Modules.Speakers.Core.Services
 
             var entity = dto.AsEntity();
             await _repository.AddAsync(entity);
-            await _messageBroker.PublishAsync(new SpeakerCreated(entity.Id, entity.FullName));
+            var speakerCreated = new SpeakerCreated(entity.Id, entity.Email, entity.FullName);
+            await _messageBroker.PublishAsync(speakerCreated);
         }
 
         public async Task<SpeakerDto> GetAsync(Guid id)

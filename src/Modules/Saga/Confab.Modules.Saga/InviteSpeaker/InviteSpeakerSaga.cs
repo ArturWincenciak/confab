@@ -27,9 +27,9 @@ namespace Confab.Modules.Saga.InviteSpeaker
         public override SagaId ResolveId(object message, ISagaContext context) =>
             message switch
             {
-                SignedUp signedUp => signedUp.UserId.ToString(),
-                SignedIn signedIn => signedIn.UserId.ToString(),
-                SpeakerCreated created => created.Id.ToString(),
+                SignedUp signedUp => signedUp.Email,
+                SignedIn signedIn => signedIn.Email,
+                SpeakerCreated created => created.Email,
                 _ => throw new ArgumentOutOfRangeException(message.GetType().FullName)
             };
 

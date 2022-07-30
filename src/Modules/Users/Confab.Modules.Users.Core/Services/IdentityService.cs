@@ -53,7 +53,7 @@ namespace Confab.Modules.Users.Core.Services
 
             var jwt = _authManager.CreateToken(user.Id.ToString(), user.Role, claims: user.Claims);
             jwt.Email = user.Email;
-            await _messageBroker.PublishAsync(new SignedIn(user.Id));
+            await _messageBroker.PublishAsync(new SignedIn(user.Id, user.Email));
 
             return jwt;
         }
