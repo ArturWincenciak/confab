@@ -51,7 +51,7 @@ namespace Confab.Modules.Saga.InviteSpeaker
                 return;
             }
 
-            await CompensateAsync(message, context);
+            await CompleteAsync();
         }
 
         public async Task HandleAsync(SignedIn message, ISagaContext context)
@@ -59,7 +59,7 @@ namespace Confab.Modules.Saga.InviteSpeaker
             if (Data.SpeakerCreated)
             {
                 await _messageBroker.PublishAsync(new SendWelcomeMessage(Data.Email, Data.FullName));
-                await CompensateAsync(message, context);
+                await CompleteAsync();
             }
         }
 
