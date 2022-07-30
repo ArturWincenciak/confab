@@ -14,10 +14,10 @@ namespace Confab.Modules.Speakers.Core.Services
             _speakerService = speakerService;
         }
 
-        public Task<Null> HandleAsync(SpeakerDto dto)
+        public async Task<Null> HandleAsync(SpeakerDto dto)
         {
-            _speakerService.AddAsync(dto);
-            return Task.FromResult(new Null());
+            await _speakerService.AddAsync(dto);
+            return new Null();
         }
     }
 }
