@@ -3,20 +3,18 @@ using Chronicle;
 using Confab.Modules.Saga.Messages;
 using Confab.Shared.Abstractions.Events;
 
-namespace Confab.Modules.Saga
+namespace Confab.Modules.Saga.Handlers
 {
-    internal class Handler : IEventHandler<SpeakerCreated>, IEventHandler<SignedIn>, IEventHandler<SignedUp>
+    internal class WelcomeSpeakerHandler :
+        IEventHandler<SpeakerCreated>,
+        IEventHandler<SignedIn>,
+        IEventHandler<SignedUp>
     {
         private readonly ISagaCoordinator _sagaCoordinator;
 
-        public Handler(ISagaCoordinator sagaCoordinator)
+        public WelcomeSpeakerHandler(ISagaCoordinator sagaCoordinator)
         {
             _sagaCoordinator = sagaCoordinator;
-        }
-
-        public Task HandleAsync(SpeakerCreated @event)
-        {
-            return _sagaCoordinator.ProcessAsync(@event, SagaContext.Empty);
         }
 
         public Task HandleAsync(SignedIn @event)
@@ -25,6 +23,11 @@ namespace Confab.Modules.Saga
         }
 
         public Task HandleAsync(SignedUp @event)
+        {
+            return _sagaCoordinator.ProcessAsync(@event, SagaContext.Empty);
+        }
+
+        public Task HandleAsync(SpeakerCreated @event)
         {
             return _sagaCoordinator.ProcessAsync(@event, SagaContext.Empty);
         }
