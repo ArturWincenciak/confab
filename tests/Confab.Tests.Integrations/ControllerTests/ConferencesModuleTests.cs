@@ -83,8 +83,8 @@ namespace Confab.Tests.Integrations.ControllerTests
                 assert.ActualResult.HostName.ShouldBe(assert.Expected.InputHostDto.Name);
                 assert.ActualResult.Name.ShouldBe(assert.Expected.InputConferenceDto.Name);
                 assert.ActualResult.Description.ShouldBe(assert.Expected.InputConferenceDto.Description);
-                assert.ActualResult.From.ShouldBe(assert.Expected.InputConferenceDto.From);
-                assert.ActualResult.To.ShouldBe(assert.Expected.InputConferenceDto.To);
+                assert.ActualResult.From.ShouldBe(assert.Expected.InputConferenceDto.From.ToUniversalTime());
+                assert.ActualResult.To.ShouldBe(assert.Expected.InputConferenceDto.To.ToUniversalTime());
                 assert.ActualResult.Localization.ShouldBe(assert.Expected.InputConferenceDto.Localization);
                 assert.ActualResult.LogoUrl.ShouldBe(assert.Expected.InputConferenceDto.LogoUrl);
                 assert.ActualResult.ParticipantsLimit.ShouldBe(assert.Expected.InputConferenceDto.ParticipantsLimit);

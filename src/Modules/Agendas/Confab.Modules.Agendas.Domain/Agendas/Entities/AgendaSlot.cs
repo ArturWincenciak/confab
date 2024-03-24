@@ -16,8 +16,8 @@ namespace Confab.Modules.Agendas.Domain.Agendas.Entities
             if (from.Date > to.Date)
                 throw new InvalidCallForPapersDateException(from, to);
 
-            From = from;
-            To = to;
+            From = from.ToUniversalTime();
+            To = to.ToUniversalTime();
         }
     }
 }

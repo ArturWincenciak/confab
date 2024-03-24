@@ -40,8 +40,8 @@ namespace Confab.Modules.Conferences.Core.Services
                 HostId = dto.HostId,
                 Name = dto.Name,
                 Description = dto.Description,
-                From = dto.From,
-                To = dto.To,
+                From = dto.From.ToUniversalTime(),
+                To = dto.To.ToUniversalTime(),
                 Localization = dto.Localization,
                 LogoUrl = dto.LogoUrl,
                 ParticipantsLimit = dto.ParticipantsLimit
