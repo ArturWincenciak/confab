@@ -12,6 +12,9 @@ services:
         - 5432:5432
     volumes:
         - postgres:/var/lib/postgresql/data
+    profiles:
+        - infra
+        - all
 
   confab.bootstrapper:
     image: ${DOCKER_REGISTRY-}confabbootstrapper
@@ -19,6 +22,8 @@ services:
     build:
       context: .
       dockerfile: src/Bootstrapper/Confab.Bootstrapper/Dockerfile
+    profiles:
+      - all
 
 volumes:
     postgres:
