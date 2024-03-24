@@ -249,3 +249,5 @@ src/WebClient/ElevenQ.WebClient/ClientApp/components/Spinner/Spinner.css.d.ts
 
 src/Server/.vscode
 src/ElevenQ.Server.code-workspace
+
+.mono/*
