@@ -21,7 +21,9 @@
         "DEVELOPMENT_RUNTIME": "Console"
       },
       "applicationUrl": "http://localhost:5000",
-      "dotnetRunMessages": "true"
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:5000/swagger"
     },
     "Docker": {
       "commandName": "Docker",
