@@ -15,7 +15,6 @@ jobs:
         with:
           distribution: 'temurin' # AdoptOpenJDK is now Eclipse Temurin
           java-version: '17'
-          cache: 'gradle' # or maven, depending on your project
 
       - uses: actions/checkout@v2
         with:
