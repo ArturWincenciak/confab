@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using Confab.Modules.Attendances.Domain.Entities;
 
-namespace Confab.Modules.Attendances.Domain.Policies
+namespace Confab.Modules.Attendances.Domain.Policies;
+
+public interface ISlotPolicy
 {
-    public interface ISlotPolicy
-    {
-        IEnumerable<Slot> Generate(int participantsLimit);
-    }
+    IEnumerable<Slot> Generate(int participantsLimit);
 }

@@ -5,27 +5,26 @@ using Confab.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Conferences.Api
+namespace Confab.Modules.Conferences.Api;
+
+internal class ConferencesModule : IModule
 {
-    internal class ConferencesModule : IModule
+    public const string BasePath = "conferences-module";
+    public string Name { get; } = "Conferences";
+    public string Path { get; } = BasePath;
+
+    public IEnumerable<string> Policies { get; } = new[]
     {
-        public const string BasePath = "conferences-module";
-        public string Name { get; } = "Conferences";
-        public string Path { get; } = BasePath;
+        ConferencesController.Policy,
+        HostsController.Policy
+    };
 
-        public IEnumerable<string> Policies { get; } = new[]
-        {
-            ConferencesController.Policy,
-            HostsController.Policy
-        };
+    public void Register(IServiceCollection services)
+    {
+        services.AddCore();
+    }
 
-        public void Register(IServiceCollection services)
-        {
-            services.AddCore();
-        }
-
-        public void Use(IApplicationBuilder app)
-        {
-        }
+    public void Use(IApplicationBuilder app)
+    {
     }
 }

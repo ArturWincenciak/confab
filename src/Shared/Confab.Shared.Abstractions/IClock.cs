@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace Confab.Shared.Abstractions
+namespace Confab.Shared.Abstractions;
+
+public interface IClock
 {
-    public interface IClock
-    {
-        DateTime CurrentDate();
-    }
+    DateTime CurrentDate();
 }

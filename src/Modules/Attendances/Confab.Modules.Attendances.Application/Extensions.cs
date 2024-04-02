@@ -1,12 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Attendances.Application
+namespace Confab.Modules.Attendances.Application;
+
+public static class Extensions
 {
-    public static class Extensions
-    {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
-        {
-            return services;
-        }
-    }
+    public static IServiceCollection AddApplication(this IServiceCollection services) =>
+        services;
 }

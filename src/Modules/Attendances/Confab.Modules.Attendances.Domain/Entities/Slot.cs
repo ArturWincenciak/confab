@@ -1,22 +1,21 @@
 ﻿using Confab.Modules.Attendances.Domain.Types;
 
-namespace Confab.Modules.Attendances.Domain.Entities
+namespace Confab.Modules.Attendances.Domain.Entities;
+
+public class Slot
 {
-    public class Slot
+    public SlotId Id { get; }
+    public ParticipantId ParticipantId { get; private set; }
+    public bool IsFree => ParticipantId is null;
+
+    public Slot(SlotId id, ParticipantId participantId = null)
     {
-        public Slot(SlotId id, ParticipantId participantId = null)
-        {
-            Id = id;
-            ParticipantId = participantId;
-        }
+        Id = id;
+        ParticipantId = participantId;
+    }
 
-        public SlotId Id { get; }
-        public ParticipantId ParticipantId { get; private set; }
-        public bool IsFree => ParticipantId is null;
-
-        public void Take(ParticipantId participantId)
-        {
-            ParticipantId = participantId;
-        }
+    public void Take(ParticipantId participantId)
+    {
+        ParticipantId = participantId;
     }
 }

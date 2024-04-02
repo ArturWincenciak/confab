@@ -6,35 +6,34 @@ using Confab.Modules.Agendas.Domain.Agendas.Services;
 using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Abstractions.Messaging;
 
-namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
+namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers;
+
+internal sealed class AssignRegularAgendaSlotHandler : ICommandHandler<AssignRegularAgendaSlot>
 {
-    internal sealed class AssignRegularAgendaSlotHandler : ICommandHandler<AssignRegularAgendaSlot>
+    private readonly IAgendaTrackRepository _agendaTrackRepository;
+    private readonly IAgendaTracksDomainService _agendaTracksDomainService;
+    private readonly IMessageBroker _messageBroker;
+
+    public AssignRegularAgendaSlotHandler(IAgendaTrackRepository agendaTrackRepository,
+        IAgendaTracksDomainService agendaTracksDomainService, IMessageBroker messageBroker)
     {
-        private readonly IAgendaTrackRepository _agendaTrackRepository;
-        private readonly IAgendaTracksDomainService _agendaTracksDomainService;
-        private readonly IMessageBroker _messageBroker;
+        _agendaTrackRepository = agendaTrackRepository;
+        _agendaTracksDomainService = agendaTracksDomainService;
+        _messageBroker = messageBroker;
+    }
 
-        public AssignRegularAgendaSlotHandler(IAgendaTrackRepository agendaTrackRepository,
-            IAgendaTracksDomainService agendaTracksDomainService, IMessageBroker messageBroker)
-        {
-            _agendaTrackRepository = agendaTrackRepository;
-            _agendaTracksDomainService = agendaTracksDomainService;
-            _messageBroker = messageBroker;
-        }
+    public async Task HandleAsync(AssignRegularAgendaSlot command)
+    {
+        var agendaTrack = await _agendaTrackRepository.GetAsync(command.AgendaTrackId);
+        if (agendaTrack is null)
+            throw new AgendaTrackNotFoundException(command.AgendaTrackId);
 
-        public async Task HandleAsync(AssignRegularAgendaSlot command)
-        {
-            var agendaTrack = await _agendaTrackRepository.GetAsync(command.AgendaTrackId);
-            if (agendaTrack is null)
-                throw new AgendaTrackNotFoundException(command.AgendaTrackId);
+        await _agendaTracksDomainService.AssignAgendaItemAsync(agendaTrack, command.AgendaSlotId,
+            command.AgendaItemId);
 
-            await _agendaTracksDomainService.AssignAgendaItemAsync(agendaTrack, command.AgendaSlotId,
-                command.AgendaItemId);
+        await _agendaTrackRepository.UpdateAsync(agendaTrack);
 
-            await _agendaTrackRepository.UpdateAsync(agendaTrack);
-
-            var @event = new AgendaItemAssignedToAgendaSlot(command.AgendaSlotId, command.AgendaItemId);
-            await _messageBroker.PublishAsync(@event);
-        }
+        var @event = new AgendaItemAssignedToAgendaSlot(command.AgendaSlotId, command.AgendaItemId);
+        await _messageBroker.PublishAsync(@event);
     }
 }

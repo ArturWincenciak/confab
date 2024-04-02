@@ -2,13 +2,12 @@
 using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
 using Confab.Shared.Kernel.Types;
 
-namespace Confab.Modules.Agendas.Application.CallForProps.Repositories
+namespace Confab.Modules.Agendas.Application.CallForProps.Repositories;
+
+public interface ICallForPapersRepository
 {
-    public interface ICallForPapersRepository
-    {
-        Task<CallForPapers> GetAsync(ConferenceId conferenceId);
-        Task<bool> ExistsAsync(ConferenceId conferenceId);
-        Task AddAsync(CallForPapers entity);
-        Task UpdateAsync(CallForPapers entity);
-    }
+    Task<CallForPapers> GetAsync(ConferenceId conferenceId);
+    Task<bool> ExistsAsync(ConferenceId conferenceId);
+    Task AddAsync(CallForPapers entity);
+    Task UpdateAsync(CallForPapers entity);
 }

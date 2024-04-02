@@ -12,39 +12,30 @@ using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
-namespace Confab.Modules.Attendances.Infrastructure
+namespace Confab.Modules.Attendances.Infrastructure;
+
+public static class Extensions
 {
-    public static class Extensions
-    {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
-        {
-            return services
-                .AddSingleton<IAgendasApiClient, AgendasApiClient>()
-                .AddScoped<IAttendableEventsRepository, AttendableEventsRepository>()
-                .AddScoped<IParticipantsRepository, ParticipantsRepository>()
-                .AddScoped<IAttendanceRepository, AttendanceRepository>()
-                .AddPostgresDbContext<AttendancesDbContext>()
-                .WithTransactionalCommandHandles();
-        }
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services) =>
+        services
+            .AddSingleton<IAgendasApiClient, AgendasApiClient>()
+            .AddScoped<IAttendableEventsRepository, AttendableEventsRepository>()
+            .AddScoped<IParticipantsRepository, ParticipantsRepository>()
+            .AddScoped<IAttendanceRepository, AttendanceRepository>()
+            .AddPostgresDbContext<AttendancesDbContext>()
+            .WithTransactionalCommandHandles();
 
-        private static IServiceCollection WithTransactionalCommandHandles(this IServiceCollection services)
-        {
-            return services
-                .AddUnityOfWork()
-                .WithTransactionalCommandHandlerOf<AttendEvent>();
-        }
+    private static IServiceCollection WithTransactionalCommandHandles(this IServiceCollection services) =>
+        services
+            .AddUnityOfWork()
+            .WithTransactionalCommandHandlerOf<AttendEvent>();
 
-        private static IServiceCollection WithTransactionalCommandHandlerOf<T>(this IServiceCollection services)
-            where T : class, ICommand
-        {
-            return services
-                .Decorate<ICommandHandler<T>, TransactionalCommandHandlerDecorator<T, IAttendancesUnitOfWork>>();
-        }
+    private static IServiceCollection WithTransactionalCommandHandlerOf<T>(this IServiceCollection services)
+        where T : class, ICommand =>
+        services
+            .Decorate<ICommandHandler<T>, TransactionalCommandHandlerDecorator<T, IAttendancesUnitOfWork>>();
 
-        private static IServiceCollection AddUnityOfWork(this IServiceCollection services)
-        {
-            return services
-                .AddScoped<IAttendancesUnitOfWork, AttendancesUnitOfWork>();
-        }
-    }
+    private static IServiceCollection AddUnityOfWork(this IServiceCollection services) =>
+        services
+            .AddScoped<IAttendancesUnitOfWork, AttendancesUnitOfWork>();
 }

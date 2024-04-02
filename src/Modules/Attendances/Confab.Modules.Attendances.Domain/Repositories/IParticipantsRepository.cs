@@ -3,13 +3,12 @@ using Confab.Modules.Attendances.Domain.Entities;
 using Confab.Modules.Attendances.Domain.Types;
 using Confab.Shared.Kernel.Types;
 
-namespace Confab.Modules.Attendances.Domain.Repositories
+namespace Confab.Modules.Attendances.Domain.Repositories;
+
+public interface IParticipantsRepository
 {
-    public interface IParticipantsRepository
-    {
-        Task<Participant> GetAsync(ParticipantId id);
-        Task<Participant> GetAsync(ConferenceId conferenceId, UserId userId);
-        Task AddAsync(Participant participant);
-        Task UpdateAsync(Participant participant);
-    }
+    Task<Participant> GetAsync(ParticipantId id);
+    Task<Participant> GetAsync(ConferenceId conferenceId, UserId userId);
+    Task AddAsync(Participant participant);
+    Task UpdateAsync(Participant participant);
 }

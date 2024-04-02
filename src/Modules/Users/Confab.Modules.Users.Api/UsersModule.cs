@@ -4,22 +4,21 @@ using Confab.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Users.Api
+namespace Confab.Modules.Users.Api;
+
+public class UsersModule : IModule
 {
-    public class UsersModule : IModule
+    public const string BasePath = "users-module";
+    public string Name => "Users";
+    public string Path => BasePath;
+    public IEnumerable<string> Policies { get; } = new[] {"users"};
+
+    public void Register(IServiceCollection services)
     {
-        public const string BasePath = "users-module";
-        public string Name => "Users";
-        public string Path => BasePath;
-        public IEnumerable<string> Policies { get; } = new[] {"users"};
+        services.AddCore();
+    }
 
-        public void Register(IServiceCollection services)
-        {
-            services.AddCore();
-        }
-
-        public void Use(IApplicationBuilder app)
-        {
-        }
+    public void Use(IApplicationBuilder app)
+    {
     }
 }

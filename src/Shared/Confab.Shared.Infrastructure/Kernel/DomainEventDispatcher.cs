@@ -6,60 +6,59 @@ using Confab.Shared.Kernel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Confab.Shared.Infrastructure.Kernel
+namespace Confab.Shared.Infrastructure.Kernel;
+
+internal sealed class DomainEventDispatcher : IDomainEventDispatcher
 {
-    internal sealed class DomainEventDispatcher : IDomainEventDispatcher
+    private readonly ILogger<DomainEventDispatcher> _logger;
+    private readonly IServiceProvider _serviceProvider;
+
+    public DomainEventDispatcher(IServiceProvider serviceProvider, ILogger<DomainEventDispatcher> logger)
     {
-        private readonly ILogger<DomainEventDispatcher> _logger;
-        private readonly IServiceProvider _serviceProvider;
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+    }
 
-        public DomainEventDispatcher(IServiceProvider serviceProvider, ILogger<DomainEventDispatcher> logger)
+    public async Task SendAsync(params IDomainEvent[] events)
+    {
+        var eventsLog = string.Join(separator: ";", values: events ?? Enumerable.Empty<IDomainEvent>());
+
+        try
         {
-            _serviceProvider = serviceProvider;
-            _logger = logger;
-        }
+            _logger.LogTrace($"Dispatching domain events: '{eventsLog}'.");
 
-        public async Task SendAsync(params IDomainEvent[] events)
-        {
-            var eventsLog = string.Join(";", events ?? Enumerable.Empty<IDomainEvent>());
+            using var scope = _serviceProvider.CreateScope();
 
-            try
+            foreach (var @event in events)
             {
-                _logger.LogTrace($"Dispatching domain events: '{eventsLog}'.");
-
-                using var scope = _serviceProvider.CreateScope();
-
-                foreach (var @event in events)
+                var eventType = @event.GetType();
+                var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
+                var handlers = scope.ServiceProvider.GetServices(handlerType);
+                if (!handlers.Any())
                 {
-                    var eventType = @event.GetType();
-                    var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
-                    var handlers = scope.ServiceProvider.GetServices(handlerType);
-                    if (!handlers.Any())
-                    {
-                        _logger.LogTrace($"There are no handlers for event: '{@event}'.");
-                        continue;
-                    }
-
-                    var tasks = new List<Task>();
-                    foreach (var handler in handlers)
-                    {
-                        var method = handlerType.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync));
-                        _logger.LogTrace($"Executing handler: '{handler}', with event: '{@event}'.");
-                        var task = (Task) method.Invoke(handler, new[] {@event});
-                        tasks.Add(task);
-                    }
-
-                    await Task.WhenAll(tasks);
-                    _logger.LogTrace($"Event has been dispatched to all handlers: '{@event}'.");
+                    _logger.LogTrace($"There are no handlers for event: '{@event}'.");
+                    continue;
                 }
 
-                _logger.LogTrace($"All events has been dispatched to all handlers: '{eventsLog}'.");
+                var tasks = new List<Task>();
+                foreach (var handler in handlers)
+                {
+                    var method = handlerType.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync));
+                    _logger.LogTrace($"Executing handler: '{handler}', with event: '{@event}'.");
+                    var task = (Task) method.Invoke(handler, parameters: new[] {@event});
+                    tasks.Add(task);
+                }
+
+                await Task.WhenAll(tasks);
+                _logger.LogTrace($"Event has been dispatched to all handlers: '{@event}'.");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"{ex.Message}; Event: '{eventsLog}'.");
-                throw;
-            }
+
+            _logger.LogTrace($"All events has been dispatched to all handlers: '{eventsLog}'.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, message: $"{ex.Message}; Event: '{eventsLog}'.");
+            throw;
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿namespace Confab.Shared.Kernel
+﻿namespace Confab.Shared.Kernel;
+
+public interface IDomainEvent
 {
-    public interface IDomainEvent
-    {
-    }
 }

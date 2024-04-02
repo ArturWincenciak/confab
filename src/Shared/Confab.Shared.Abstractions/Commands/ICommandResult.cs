@@ -1,6 +1,5 @@
-﻿namespace Confab.Shared.Abstractions.Commands
+﻿namespace Confab.Shared.Abstractions.Commands;
+
+public interface ICommandResult
 {
-    public interface ICommandResult
-    {
-    }
 }

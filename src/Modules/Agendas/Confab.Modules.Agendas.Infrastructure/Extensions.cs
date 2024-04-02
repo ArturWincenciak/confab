@@ -9,19 +9,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
-namespace Confab.Modules.Agendas.Infrastructure
+namespace Confab.Modules.Agendas.Infrastructure;
+
+public static class Extensions
 {
-    public static class Extensions
-    {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
-        {
-            return services
-                .AddPostgresDbContext<AgendasDbContext>()
-                .AddScoped<ISubmissionRepository, SubmissionRepository>()
-                .AddScoped<ISpeakerRepository, SpeakerRepository>()
-                .AddScoped<IAgendaItemRepository, AgendaItemRepository>()
-                .AddScoped<ICallForPapersRepository, CallForPapersRepository>()
-                .AddScoped<IAgendaTrackRepository, AgendaTrackRepository>();
-        }
-    }
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services) =>
+        services
+            .AddPostgresDbContext<AgendasDbContext>()
+            .AddScoped<ISubmissionRepository, SubmissionRepository>()
+            .AddScoped<ISpeakerRepository, SpeakerRepository>()
+            .AddScoped<IAgendaItemRepository, AgendaItemRepository>()
+            .AddScoped<ICallForPapersRepository, CallForPapersRepository>()
+            .AddScoped<IAgendaTrackRepository, AgendaTrackRepository>();
 }

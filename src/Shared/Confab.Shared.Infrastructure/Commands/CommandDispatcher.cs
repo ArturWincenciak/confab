@@ -4,58 +4,57 @@ using Confab.Shared.Abstractions.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Confab.Shared.Infrastructure.Commands
+namespace Confab.Shared.Infrastructure.Commands;
+
+internal sealed class CommandDispatcher : ICommandDispatcher
 {
-    internal sealed class CommandDispatcher : ICommandDispatcher
+    private readonly ILogger<CommandDispatcher> _logger;
+    private readonly IServiceProvider _serviceProvider;
+
+    public CommandDispatcher(IServiceProvider serviceProvider, ILogger<CommandDispatcher> logger)
     {
-        private readonly ILogger<CommandDispatcher> _logger;
-        private readonly IServiceProvider _serviceProvider;
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+    }
 
-        public CommandDispatcher(IServiceProvider serviceProvider, ILogger<CommandDispatcher> logger)
+    public async Task SendAsync(ICommand command)
+    {
+        try
         {
-            _serviceProvider = serviceProvider;
-            _logger = logger;
+            _logger.LogTrace($"Dispatching command: '{command}'.");
+
+            using var scope = _serviceProvider.CreateScope();
+            var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
+            var handler = scope.ServiceProvider.GetRequiredService(handlerType);
+            var handleMethod = handlerType.GetMethod(nameof(ICommandHandler<ICommand>.HandleAsync));
+            var result = handleMethod.Invoke(handler, parameters: new[] {command});
+            await (Task) result;
+
+            _logger.LogInformation($"Command has been dispatched: '{command}'.");
         }
-
-        public async Task SendAsync(ICommand command)
+        catch (Exception ex)
         {
-            try
-            {
-                _logger.LogTrace($"Dispatching command: '{command}'.");
-
-                using var scope = _serviceProvider.CreateScope();
-                var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
-                var handler = scope.ServiceProvider.GetRequiredService(handlerType);
-                var handleMethod = handlerType.GetMethod(nameof(ICommandHandler<ICommand>.HandleAsync));
-                var result = handleMethod.Invoke(handler, new[] {command});
-                await (Task) result;
-
-                _logger.LogInformation($"Command has been dispatched: '{command}'.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"{ex.Message}; Command: {command}");
-                throw;
-            }
+            _logger.LogError(ex, message: $"{ex.Message}; Command: {command}");
+            throw;
         }
+    }
 
-        public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command) where TResult : class, ICommandResult
+    public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command) where TResult : class, ICommandResult
+    {
+        try
         {
-            try
-            {
-                _logger.LogTrace($"Dispatching command: '{command}'.");
-                using var scope = _serviceProvider.CreateScope();
-                var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
-                var handler = scope.ServiceProvider.GetRequiredService(handlerType);
-                var method = handlerType.GetMethod(nameof(ICommandHandler<ICommand<TResult>, TResult>.HandleAsync));
-                var result = method.Invoke(handler, new[] {command});
-                return await (result as Task<TResult>);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"{ex.Message}; Command: '{command}'.");
-                throw;
-            }
+            _logger.LogTrace($"Dispatching command: '{command}'.");
+            using var scope = _serviceProvider.CreateScope();
+            var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
+            var handler = scope.ServiceProvider.GetRequiredService(handlerType);
+            var method = handlerType.GetMethod(nameof(ICommandHandler<ICommand<TResult>, TResult>.HandleAsync));
+            var result = method.Invoke(handler, parameters: new[] {command});
+            return await (result as Task<TResult>);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, message: $"{ex.Message}; Command: '{command}'.");
+            throw;
         }
     }
 }

@@ -10,49 +10,48 @@ using Confab.Shared.Abstractions.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Confab.Modules.Attendances.Api.Controllers
+namespace Confab.Modules.Attendances.Api.Controllers;
+
+[Authorize]
+internal class AttendancesController : BaseController
 {
-    [Authorize]
-    internal class AttendancesController : BaseController
+    private readonly ICommandDispatcher _commandDispatcher;
+    private readonly IContext _context;
+    private readonly IQueryDispatcher _queryDispatcher;
+
+    public AttendancesController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher,
+        IContext context)
     {
-        private readonly ICommandDispatcher _commandDispatcher;
-        private readonly IContext _context;
-        private readonly IQueryDispatcher _queryDispatcher;
+        _commandDispatcher = commandDispatcher;
+        _queryDispatcher = queryDispatcher;
+        _context = context;
+    }
 
-        public AttendancesController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher,
-            IContext context)
+    [HttpGet("{conferenceId:guid}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(404)]
+    public async Task<ActionResult<IReadOnlyList<AttendanceDto>>> BrowseAttendancesAsync(Guid conferenceId)
+    {
+        var attendances = await _queryDispatcher.QueryAsync(new BrowseAttendances
         {
-            _commandDispatcher = commandDispatcher;
-            _queryDispatcher = queryDispatcher;
-            _context = context;
-        }
+            ConferenceId = conferenceId,
+            UserId = _context.Identity.Id
+        });
 
-        [HttpGet("{conferenceId:guid}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<IReadOnlyList<AttendanceDto>>> BrowseAttendancesAsync(Guid conferenceId)
-        {
-            var attendances = await _queryDispatcher.QueryAsync(new BrowseAttendances
-            {
-                ConferenceId = conferenceId,
-                UserId = _context.Identity.Id
-            });
+        if (attendances is null)
+            return NotFound();
 
-            if (attendances is null)
-                return NotFound();
+        return Ok(attendances);
+    }
 
-            return Ok(attendances);
-        }
-
-        [HttpPost("events/{eventId:guid}/attend")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(401)]
-        public async Task<ActionResult> AttendAsync(Guid eventId)
-        {
-            await _commandDispatcher.SendAsync(new AttendEvent(eventId, _context.Identity.Id));
-            return NoContent();
-        }
+    [HttpPost("events/{eventId:guid}/attend")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(401)]
+    public async Task<ActionResult> AttendAsync(Guid eventId)
+    {
+        await _commandDispatcher.SendAsync(new AttendEvent(eventId, _context.Identity.Id));
+        return NoContent();
     }
 }

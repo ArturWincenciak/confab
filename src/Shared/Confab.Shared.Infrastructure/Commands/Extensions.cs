@@ -4,27 +4,26 @@ using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Infrastructure.Postgres.Decorators;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Shared.Infrastructure.Commands
+namespace Confab.Shared.Infrastructure.Commands;
+
+internal static class Extensions
 {
-    internal static class Extensions
+    public static IServiceCollection AddCommands(this IServiceCollection services, IEnumerable<Assembly> assemblies)
     {
-        public static IServiceCollection AddCommands(this IServiceCollection services, IEnumerable<Assembly> assemblies)
-        {
-            services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
+        services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
 
-            services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
-                .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<,>))
-                    .WithoutAttribute<DecoratorAttribute>())
-                .AsImplementedInterfaces()
-                .WithScopedLifetime());
+        services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
+            .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<,>))
+                .WithoutAttribute<DecoratorAttribute>())
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
 
-            services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
-                .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<>))
-                    .WithoutAttribute<DecoratorAttribute>())
-                .AsImplementedInterfaces()
-                .WithScopedLifetime());
+        services.Scan(typeSourceSelector => typeSourceSelector.FromAssemblies(assemblies)
+            .AddClasses(filter => filter.AssignableTo(typeof(ICommandHandler<>))
+                .WithoutAttribute<DecoratorAttribute>())
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
 
-            return services;
-        }
+        return services;
     }
 }

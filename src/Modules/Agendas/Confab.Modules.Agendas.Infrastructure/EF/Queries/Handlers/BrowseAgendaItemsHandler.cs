@@ -6,46 +6,39 @@ using Confab.Modules.Agendas.Domain.Submissions.Entities;
 using Confab.Shared.Abstractions.Queries;
 using Microsoft.EntityFrameworkCore;
 
-namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
+namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers;
+
+internal sealed class BrowseAgendaItemsHandler : IQueryHandler<BrowsAgendaItems, BrowsAgendaItems.Result>
 {
-    internal sealed class BrowseAgendaItemsHandler : IQueryHandler<BrowsAgendaItems, BrowsAgendaItems.Result>
+    private readonly DbSet<AgendaItem> _agendaItems;
+
+    public BrowseAgendaItemsHandler(AgendasDbContext context) =>
+        _agendaItems = context.AgendaItems;
+
+    public async Task<BrowsAgendaItems.Result> HandleAsync(BrowsAgendaItems query)
     {
-        private readonly DbSet<AgendaItem> _agendaItems;
+        var items = await _agendaItems
+            .AsNoTracking()
+            .Include(x => x.Speakers)
+            .Where(x => x.ConferenceId == query.ConferenceId)
+            .Select(x => AsDto(x))
+            .ToListAsync();
 
-        public BrowseAgendaItemsHandler(AgendasDbContext context)
-        {
-            _agendaItems = context.AgendaItems;
-        }
-
-        public async Task<BrowsAgendaItems.Result> HandleAsync(BrowsAgendaItems query)
-        {
-            var items = await _agendaItems
-                .AsNoTracking()
-                .Include(x => x.Speakers)
-                .Where(x => x.ConferenceId == query.ConferenceId)
-                .Select(x => AsDto(x))
-                .ToListAsync();
-
-            return new BrowsAgendaItems.Result(items);
-        }
-
-        private static BrowsAgendaItems.Result.AgendaItemDto AsDto(AgendaItem agendaItem)
-        {
-            return new BrowsAgendaItems.Result.AgendaItemDto(
-                agendaItem.Id,
-                agendaItem.ConferenceId,
-                agendaItem.Title,
-                agendaItem.Description,
-                agendaItem.Level,
-                agendaItem.Tags,
-                agendaItem.Speakers.Select(AsDto));
-        }
-
-        private static BrowsAgendaItems.Result.AgendaItemDto.SpeakerDto AsDto(Speaker agendaItemSpeaker)
-        {
-            return new BrowsAgendaItems.Result.AgendaItemDto.SpeakerDto(
-                agendaItemSpeaker.Id,
-                agendaItemSpeaker.FullName);
-        }
+        return new(items);
     }
+
+    private static BrowsAgendaItems.Result.AgendaItemDto AsDto(AgendaItem agendaItem) =>
+        new(
+            agendaItem.Id,
+            agendaItem.ConferenceId,
+            agendaItem.Title,
+            agendaItem.Description,
+            agendaItem.Level,
+            agendaItem.Tags,
+            Speakers: agendaItem.Speakers.Select(AsDto));
+
+    private static BrowsAgendaItems.Result.AgendaItemDto.SpeakerDto AsDto(Speaker agendaItemSpeaker) =>
+        new(
+            agendaItemSpeaker.Id,
+            agendaItemSpeaker.FullName);
 }

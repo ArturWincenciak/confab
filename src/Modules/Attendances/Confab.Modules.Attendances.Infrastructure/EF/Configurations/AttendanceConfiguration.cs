@@ -1,22 +1,20 @@
 using Confab.Modules.Attendances.Domain.Entities;
-using Confab.Modules.Attendances.Domain.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Confab.Modules.Attendances.Infrastructure.EF.Configurations
+namespace Confab.Modules.Attendances.Infrastructure.EF.Configurations;
+
+internal class AttendanceConfiguration : IEntityTypeConfiguration<Attendance>
 {
-    internal class AttendanceConfiguration : IEntityTypeConfiguration<Attendance>
+    public void Configure(EntityTypeBuilder<Attendance> builder)
     {
-        public void Configure(EntityTypeBuilder<Attendance> builder)
-        {
-            builder.Property(x => x.AttendableEventId)
-                .HasConversion(x => x.Value, x => new AttendableEventId(x));
+        builder.Property(x => x.AttendableEventId)
+            .HasConversion(convertToProviderExpression: x => x.Value, convertFromProviderExpression: x => new(x));
 
-            builder.Property(x => x.SlotId)
-                .HasConversion(x => x.Value, x => new SlotId(x));
+        builder.Property(x => x.SlotId)
+            .HasConversion(convertToProviderExpression: x => x.Value, convertFromProviderExpression: x => new(x));
 
-            builder.Property(x => x.ParticipantId)
-                .HasConversion(x => x.Value, x => new ParticipantId(x));
-        }
+        builder.Property(x => x.ParticipantId)
+            .HasConversion(convertToProviderExpression: x => x.Value, convertFromProviderExpression: x => new(x));
     }
 }

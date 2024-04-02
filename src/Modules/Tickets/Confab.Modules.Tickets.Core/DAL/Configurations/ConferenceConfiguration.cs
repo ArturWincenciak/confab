@@ -2,12 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Confab.Modules.Tickets.Core.DAL.Configurations
+namespace Confab.Modules.Tickets.Core.DAL.Configurations;
+
+internal class ConferenceConfiguration : IEntityTypeConfiguration<Conference>
 {
-    internal class ConferenceConfiguration : IEntityTypeConfiguration<Conference>
+    public void Configure(EntityTypeBuilder<Conference> builder)
     {
-        public void Configure(EntityTypeBuilder<Conference> builder)
-        {
-        }
     }
 }

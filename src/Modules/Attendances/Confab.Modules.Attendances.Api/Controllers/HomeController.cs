@@ -1,14 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Confab.Modules.Attendances.Api.Controllers
+namespace Confab.Modules.Attendances.Api.Controllers;
+
+[Route(AttendancesModule.BasePath)]
+internal class HomeController : BaseController
 {
-    [Route(AttendancesModule.BasePath)]
-    internal class HomeController : BaseController
-    {
-        [HttpGet]
-        public ActionResult<string> Get()
-        {
-            return "Attendances API";
-        }
-    }
+    [HttpGet]
+    public ActionResult<string> Get() =>
+        "Attendances API";
 }

@@ -1,4 +1,3 @@
-﻿namespace Confab.Shared.Tests
-{
-    public record Configuration(string Key, string Value);
-}
+﻿namespace Confab.Shared.Tests;
+
+public record Configuration(string Key, string Value);

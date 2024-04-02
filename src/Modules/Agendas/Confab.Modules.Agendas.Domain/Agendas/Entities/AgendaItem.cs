@@ -6,79 +6,78 @@ using Confab.Modules.Agendas.Domain.Submissions.Exceptions;
 using Confab.Shared.Kernel.Types;
 using Confab.Shared.Kernel.Types.Base;
 
-namespace Confab.Modules.Agendas.Domain.Agendas.Entities
+namespace Confab.Modules.Agendas.Domain.Agendas.Entities;
+
+public class AgendaItem : AggregateRoot
 {
-    public class AgendaItem : AggregateRoot
+    public ConferenceId ConferenceId { get; private set; }
+    public string Title { get; private set; }
+    public string Description { get; private set; }
+    public int Level { get; private set; }
+
+    public IEnumerable<string> Tags { get; private set; }
+
+    public ICollection<Speaker> Speakers { get; private set; }
+
+    public AgendaSlot AgendaSlot { get; }
+
+    public static AgendaItem Create(AggregateId submissionId, ConferenceId conferenceId, string title,
+        string description, int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
     {
-        public ConferenceId ConferenceId { get; private set; }
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public int Level { get; private set; }
-
-        public IEnumerable<string> Tags { get; private set; }
-
-        public ICollection<Speaker> Speakers { get; private set; }
-
-        public AgendaSlot AgendaSlot { get; private set; }
-
-        public static AgendaItem Create(AggregateId submissionId, ConferenceId conferenceId, string title,
-            string description, int level, IEnumerable<string> tags, ICollection<Speaker> speakers)
+        return Build(() =>
         {
-            return Build(() =>
+            var entity = new AgendaItem
             {
-                var entity = new AgendaItem
-                {
-                    Id = submissionId,
-                    ConferenceId = conferenceId
-                };
-                entity.ChangeTitle(title);
-                entity.ChangeDescription(description);
-                entity.ChangeLevel(level);
-                entity.ChangeTags(tags);
-                entity.ChangeSpeakers(speakers);
-                return entity;
-            });
-        }
+                Id = submissionId,
+                ConferenceId = conferenceId
+            };
+            entity.ChangeTitle(title);
+            entity.ChangeDescription(description);
+            entity.ChangeLevel(level);
+            entity.ChangeTags(tags);
+            entity.ChangeSpeakers(speakers);
+            return entity;
+        });
+    }
 
-        private void ChangeSpeakers(ICollection<Speaker> speakers)
-        {
-            if (speakers is null || !speakers.Any())
-                throw new MissingSubmissionSpeakersException(Id);
+    private void ChangeSpeakers(ICollection<Speaker> speakers)
+    {
+        if (speakers is null || !speakers.Any())
+            throw new MissingSubmissionSpeakersException(Id);
 
-            Apply(() => Speakers = speakers);
-        }
+        Apply(() => Speakers = speakers);
+    }
 
-        private void ChangeTags(IEnumerable<string> tags)
-        {
-            if (tags is null || !tags.Any())
-                throw new EmptyAgendaItemTagsException(Id);
+    private void ChangeTags(IEnumerable<string> tags)
+    {
+        if (tags is null || !tags.Any())
+            throw new EmptyAgendaItemTagsException(Id);
 
-            Apply(() => Tags = tags);
-        }
+        Apply(() => Tags = tags);
+    }
 
-        private void ChangeLevel(int level)
-        {
-            var isNotInRange = level is < 1 or > 6;
-            if (isNotInRange)
-                throw new InvalidSubmissionLevelException(Id);
+    private void ChangeLevel(int level)
+    {
+        var isNotInRange = level is < 1 or > 6;
+        if (isNotInRange)
+            throw new InvalidSubmissionLevelException(Id);
 
-            Apply(() => Level = level);
-        }
+        Apply(() => Level = level);
+    }
 
-        private void ChangeDescription(string description)
-        {
-            if (string.IsNullOrWhiteSpace(description))
-                throw new EmptySubmissionDescriptionException(Id);
+    private void ChangeDescription(string description)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+            throw new EmptySubmissionDescriptionException(Id);
 
-            Apply(() => Description = description);
-        }
+        Apply(() => Description = description);
+    }
 
-        private void ChangeTitle(string title)
-        {
-            if (string.IsNullOrWhiteSpace(title))
-                throw new EmptySubmissionTitleException(Id);
+    private void ChangeTitle(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new EmptySubmissionTitleException(Id);
 
-            Apply(() => Title = title);
-        }
+        Apply(() => Title = title);
     }
 }

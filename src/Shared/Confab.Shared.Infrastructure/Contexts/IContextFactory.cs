@@ -1,9 +1,8 @@
 ﻿using Confab.Shared.Abstractions.Contexts;
 
-namespace Confab.Shared.Infrastructure.Contexts
+namespace Confab.Shared.Infrastructure.Contexts;
+
+internal interface IContextFactory
 {
-    internal interface IContextFactory
-    {
-        IContext Create();
-    }
+    IContext Create();
 }

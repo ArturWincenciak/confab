@@ -12,35 +12,34 @@ using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
-namespace Confab.Modules.Agendas.Api
+namespace Confab.Modules.Agendas.Api;
+
+internal class AgendasModule : IModule
 {
-    internal class AgendasModule : IModule
+    public const string BasePath = "agendas-module";
+
+    public string Name => "Agendas";
+    public string Path => BasePath;
+
+    public IEnumerable<string> Policies => new[]
     {
-        public const string BasePath = "agendas-module";
+        AgendasController.Policy,
+        CallForPapersController.Policy,
+        SubmissionsController.Policy
+    };
 
-        public string Name => "Agendas";
-        public string Path => BasePath;
+    public void Register(IServiceCollection services)
+    {
+        services
+            .AddDomain()
+            .AddApplication()
+            .AddInfrastructure();
+    }
 
-        public IEnumerable<string> Policies => new[]
-        {
-            AgendasController.Policy,
-            CallForPapersController.Policy,
-            SubmissionsController.Policy
-        };
-
-        public void Register(IServiceCollection services)
-        {
-            services
-                .AddDomain()
-                .AddApplication()
-                .AddInfrastructure();
-        }
-
-        public void Use(IApplicationBuilder app)
-        {
-            app.UseModuleRequests()
-                .MapRequest<GetRegularAgendaSlot, GetRegularAgendaSlot.Result>($"{Name}/{nameof(GetRegularAgendaSlot)}")
-                .MapRequest<GetAgenda, GetAgenda.Result>($"{Name}/{nameof(GetAgenda)}");
-        }
+    public void Use(IApplicationBuilder app)
+    {
+        app.UseModuleRequests()
+            .MapRequest<GetRegularAgendaSlot, GetRegularAgendaSlot.Result>($"{Name}/{nameof(GetRegularAgendaSlot)}")
+            .MapRequest<GetAgenda, GetAgenda.Result>($"{Name}/{nameof(GetAgenda)}");
     }
 }

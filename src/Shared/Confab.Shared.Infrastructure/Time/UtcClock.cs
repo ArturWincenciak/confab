@@ -1,13 +1,10 @@
 ﻿using System;
 using Confab.Shared.Abstractions;
 
-namespace Confab.Shared.Infrastructure.Time
+namespace Confab.Shared.Infrastructure.Time;
+
+internal class UtcClock : IClock
 {
-    internal class UtcClock : IClock
-    {
-        public DateTime CurrentDate()
-        {
-            return DateTime.UtcNow;
-        }
-    }
+    public DateTime CurrentDate() =>
+        DateTime.UtcNow;
 }

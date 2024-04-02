@@ -2,11 +2,10 @@
 using Confab.Shared.Abstractions.Messaging;
 using Confab.Shared.Kernel;
 
-namespace Confab.Modules.Agendas.Application.Submissions.Services
+namespace Confab.Modules.Agendas.Application.Submissions.Services;
+
+internal interface IMessageMapper
 {
-    internal interface IMessageMapper
-    {
-        IMessage Map(IDomainEvent @event);
-        IEnumerable<IMessage> Map(IEnumerable<IDomainEvent> events);
-    }
+    IMessage Map(IDomainEvent @event);
+    IEnumerable<IMessage> Map(IEnumerable<IDomainEvent> events);
 }

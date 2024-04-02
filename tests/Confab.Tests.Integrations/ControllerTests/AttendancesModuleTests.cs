@@ -1,37 +1,36 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Confab.Tests.Integrations.ControllerTests
+namespace Confab.Tests.Integrations.ControllerTests;
+
+public class AttendancesModuleTest : ModuleIntegrationTests
 {
-    public class AttendancesModuleTest : ModuleIntegrationTests
+    [Fact]
+    internal async Task Given_Not_Authorized_Http_Client_When_Call_Api_Then_Response_Is_Unauthorized_Http_Status()
     {
-        [Fact]
-        internal async Task Given_Not_Authorized_Http_Client_When_Call_Api_Then_Response_Is_Unauthorized_Http_Status()
-        {
-            // arrange
-            var target = await TestBuilder
-                .Build();
+        // arrange
+        var target = await TestBuilder
+            .Build();
 
-            // act
-            var actual = await target.GetNotExistingConference();
+        // act
+        var actual = await target.GetNotExistingConference();
 
-            // assert
-            actual.ShouldBeUnauthorized401();
-        }
+        // assert
+        actual.ShouldBeUnauthorized401();
+    }
 
-        [Fact]
-        internal async Task Given_Not_Existing_Conference_Id_When_Get_Conference_Than_Not_Found_Http_Status()
-        {
-            // arrange
-            var target = await TestBuilder
-                .WithAuthentication()
-                .Build();
+    [Fact]
+    internal async Task Given_Not_Existing_Conference_Id_When_Get_Conference_Than_Not_Found_Http_Status()
+    {
+        // arrange
+        var target = await TestBuilder
+            .WithAuthentication()
+            .Build();
 
-            // act
-            var actual = await target.GetNotExistingConference();
+        // act
+        var actual = await target.GetNotExistingConference();
 
-            // assert
-            actual.ShouldBeNotFound404();
-        }
+        // assert
+        actual.ShouldBeNotFound404();
     }
 }

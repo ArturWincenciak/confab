@@ -9,16 +9,15 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: InternalsVisibleTo("Confab.Modules.Speakers.Api")]
 [assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
-namespace Confab.Modules.Speakers.Core
+namespace Confab.Modules.Speakers.Core;
+
+internal static class Extensions
 {
-    internal static class Extensions
+    public static IServiceCollection AddCore(this IServiceCollection services)
     {
-        public static IServiceCollection AddCore(this IServiceCollection services)
-        {
-            services.AddPostgresDbContext<SpeakersDbContext>();
-            services.AddScoped<ISpeakerService, SpeakerService>();
-            services.AddScoped<ISpeakerRepository, SpeakerRepository>();
-            return services;
-        }
+        services.AddPostgresDbContext<SpeakersDbContext>();
+        services.AddScoped<ISpeakerService, SpeakerService>();
+        services.AddScoped<ISpeakerRepository, SpeakerRepository>();
+        return services;
     }
 }

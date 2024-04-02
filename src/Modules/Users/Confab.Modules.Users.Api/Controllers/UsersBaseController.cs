@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Confab.Modules.Users.Api.Controllers
-{
-    [ApiController]
-    [Route(UsersModule.BasePath + "/[controller]")]
-    internal abstract class UsersBaseController : ControllerBase
-    {
-        protected ActionResult<T> OkOrNotFound<T>(T model)
-        {
-            if (model is not null)
-                return Ok(model);
+namespace Confab.Modules.Users.Api.Controllers;
 
-            return NotFound();
-        }
+[ApiController]
+[Route(UsersModule.BasePath + "/[controller]")]
+internal abstract class UsersBaseController : ControllerBase
+{
+    protected ActionResult<T> OkOrNotFound<T>(T model)
+    {
+        if (model is not null)
+            return Ok(model);
+
+        return NotFound();
     }
 }

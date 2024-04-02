@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Confab.Shared.Kernel
+namespace Confab.Shared.Kernel;
+
+public interface IDomainEventHandler<in TEvent> where TEvent : class, IDomainEvent
 {
-    public interface IDomainEventHandler<in TEvent> where TEvent : class, IDomainEvent
-    {
-        Task HandleAsync(TEvent @event);
-    }
+    Task HandleAsync(TEvent @event);
 }

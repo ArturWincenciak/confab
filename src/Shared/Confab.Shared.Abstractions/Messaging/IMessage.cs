@@ -1,6 +1,5 @@
-﻿namespace Confab.Shared.Abstractions.Messaging
+﻿namespace Confab.Shared.Abstractions.Messaging;
+
+public interface IMessage
 {
-    public interface IMessage
-    {
-    }
 }

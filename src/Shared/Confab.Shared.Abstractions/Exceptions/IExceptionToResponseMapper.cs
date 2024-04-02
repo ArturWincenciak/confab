@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace Confab.Shared.Abstractions.Exceptions
+namespace Confab.Shared.Abstractions.Exceptions;
+
+public interface IExceptionToResponseMapper
 {
-    public interface IExceptionToResponseMapper
-    {
-        ExceptionResponse Map(Exception ex);
-    }
+    ExceptionResponse Map(Exception ex);
 }

@@ -4,33 +4,32 @@ using Confab.Modules.Tickets.Core.Repositories;
 using Confab.Shared.Abstractions.Events;
 using Microsoft.Extensions.Logging;
 
-namespace Confab.Modules.Tickets.Core.Events.External.Handlers
+namespace Confab.Modules.Tickets.Core.Events.External.Handlers;
+
+internal class ConferenceCreatedHandler : IEventHandler<ConferenceCreated>
 {
-    internal class ConferenceCreatedHandler : IEventHandler<ConferenceCreated>
+    private readonly IConferenceRepository _conferenceRepository;
+    private readonly ILogger<ConferenceCreatedHandler> _logger;
+
+    public ConferenceCreatedHandler(IConferenceRepository conferenceRepository,
+        ILogger<ConferenceCreatedHandler> logger)
     {
-        private readonly IConferenceRepository _conferenceRepository;
-        private readonly ILogger<ConferenceCreatedHandler> _logger;
+        _conferenceRepository = conferenceRepository;
+        _logger = logger;
+    }
 
-        public ConferenceCreatedHandler(IConferenceRepository conferenceRepository,
-            ILogger<ConferenceCreatedHandler> logger)
+    public async Task HandleAsync(ConferenceCreated @event)
+    {
+        var entity = new Conference
         {
-            _conferenceRepository = conferenceRepository;
-            _logger = logger;
-        }
+            Id = @event.Id,
+            Name = @event.Name,
+            ParticipantsLimit = @event.ParticipantsLimit,
+            From = @event.From,
+            To = @event.To
+        };
 
-        public async Task HandleAsync(ConferenceCreated @event)
-        {
-            var entity = new Conference
-            {
-                Id = @event.Id,
-                Name = @event.Name,
-                ParticipantsLimit = @event.ParticipantsLimit,
-                From = @event.From,
-                To = @event.To
-            };
-
-            await _conferenceRepository.AddAsync(entity);
-            _logger.LogInformation($"Added a conference with ID: '{@event.Id}'.");
-        }
+        await _conferenceRepository.AddAsync(entity);
+        _logger.LogInformation($"Added a conference with ID: '{@event.Id}'.");
     }
 }

@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Confab.Shared.Infrastructure.Modules
-{
-    internal class ModuleInfoProvider
-    {
-        public ModuleInfoProvider(IEnumerable<ModuleInfo> modules)
-        {
-            Modules = modules;
-        }
+namespace Confab.Shared.Infrastructure.Modules;
 
-        public IEnumerable<ModuleInfo> Modules { get; }
-    }
+internal class ModuleInfoProvider
+{
+    public IEnumerable<ModuleInfo> Modules { get; }
+
+    public ModuleInfoProvider(IEnumerable<ModuleInfo> modules) =>
+        Modules = modules;
 }

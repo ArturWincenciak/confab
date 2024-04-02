@@ -8,39 +8,38 @@ using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Abstractions.Messaging;
 using Confab.Shared.Kernel.Types.Base;
 
-namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers
+namespace Confab.Modules.Agendas.Application.Agendas.Commands.Handlers;
+
+internal sealed class CreateAgendaSlotHandler : ICommandHandler<CreateAgendaSlot, CreateAgendaSlot.AgendaSlotId>
 {
-    internal sealed class CreateAgendaSlotHandler : ICommandHandler<CreateAgendaSlot, CreateAgendaSlot.AgendaSlotId>
+    private readonly IAgendaTrackRepository _agendaTrackRepository;
+    private readonly IMessageBroker _messageBroker;
+
+    public CreateAgendaSlotHandler(IAgendaTrackRepository agendaTrackRepository, IMessageBroker messageBroker)
     {
-        private readonly IAgendaTrackRepository _agendaTrackRepository;
-        private readonly IMessageBroker _messageBroker;
+        _agendaTrackRepository = agendaTrackRepository;
+        _messageBroker = messageBroker;
+    }
 
-        public CreateAgendaSlotHandler(IAgendaTrackRepository agendaTrackRepository, IMessageBroker messageBroker)
-        {
-            _agendaTrackRepository = agendaTrackRepository;
-            _messageBroker = messageBroker;
-        }
+    public async Task<CreateAgendaSlot.AgendaSlotId> HandleAsync(CreateAgendaSlot command)
+    {
+        var agendaTrack = await _agendaTrackRepository.GetAsync(command.AgendaTrackId);
+        if (agendaTrack is null)
+            throw new AgendaTrackNotFoundException(command.AgendaTrackId);
 
-        public async Task<CreateAgendaSlot.AgendaSlotId> HandleAsync(CreateAgendaSlot command)
-        {
-            var agendaTrack = await _agendaTrackRepository.GetAsync(command.AgendaTrackId);
-            if (agendaTrack is null)
-                throw new AgendaTrackNotFoundException(command.AgendaTrackId);
+        EntityId createdSlotId = Guid.Empty;
 
-            EntityId createdSlotId = Guid.Empty;
+        if (command.Type is AgendaSlotType.Regular)
+            createdSlotId = agendaTrack.AddRegularSlot(command.From, command.To, command.ParticipantsLimit);
+        else if (command.Type is AgendaSlotType.Placeholder)
+            createdSlotId = agendaTrack.AddPlaceholderSlot(command.From, command.To);
+        else
+            throw new AgendaSlotTypeOutOfRangeException(command.Type);
 
-            if (command.Type is AgendaSlotType.Regular)
-                createdSlotId = agendaTrack.AddRegularSlot(command.From, command.To, command.ParticipantsLimit);
-            else if (command.Type is AgendaSlotType.Placeholder)
-                createdSlotId = agendaTrack.AddPlaceholderSlot(command.From, command.To);
-            else
-                throw new AgendaSlotTypeOutOfRangeException(command.Type);
+        await _agendaTrackRepository.UpdateAsync(agendaTrack);
 
-            await _agendaTrackRepository.UpdateAsync(agendaTrack);
+        await _messageBroker.PublishAsync(new AgendaTrackUpdated(agendaTrack.Id));
 
-            await _messageBroker.PublishAsync(new AgendaTrackUpdated(agendaTrack.Id));
-
-            return new CreateAgendaSlot.AgendaSlotId(createdSlotId);
-        }
+        return new(createdSlotId);
     }
 }

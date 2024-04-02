@@ -5,36 +5,30 @@ using Confab.Modules.Agendas.Domain.CallForPaper.Entities;
 using Confab.Shared.Abstractions.Queries;
 using Microsoft.EntityFrameworkCore;
 
-namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers
+namespace Confab.Modules.Agendas.Infrastructure.EF.Queries.Handlers;
+
+internal sealed class GetCallForPapersHandler : IQueryHandler<GetCallForPapers, GetCallForPapers.Result>
 {
-    internal sealed class GetCallForPapersHandler : IQueryHandler<GetCallForPapers, GetCallForPapers.Result>
+    private readonly DbSet<CallForPapers> _callForPapers;
+
+    public GetCallForPapersHandler(AgendasDbContext context) =>
+        _callForPapers = context.CallForPapers;
+
+    public async Task<GetCallForPapers.Result> HandleAsync(GetCallForPapers query)
     {
-        private readonly DbSet<CallForPapers> _callForPapers;
-
-        public GetCallForPapersHandler(AgendasDbContext context)
-        {
-            _callForPapers = context.CallForPapers;
-        }
-
-        public async Task<GetCallForPapers.Result> HandleAsync(GetCallForPapers query)
-        {
-            return await _callForPapers
-                .AsNoTracking()
-                .Where(x => x.ConferenceId == query.ConferenceId)
-                .Select(x => AsDto(x))
-                .SingleOrDefaultAsync();
-        }
-
-        private static GetCallForPapers.Result AsDto(CallForPapers callForPapers)
-        {
-            return new GetCallForPapers.Result
-            (
-                callForPapers.Id,
-                callForPapers.ConferenceId,
-                callForPapers.From,
-                callForPapers.To,
-                callForPapers.IsOpened
-            );
-        }
+        return await _callForPapers
+            .AsNoTracking()
+            .Where(x => x.ConferenceId == query.ConferenceId)
+            .Select(x => AsDto(x))
+            .SingleOrDefaultAsync();
     }
+
+    private static GetCallForPapers.Result AsDto(CallForPapers callForPapers) =>
+        new(
+            callForPapers.Id,
+            callForPapers.ConferenceId,
+            callForPapers.From,
+            callForPapers.To,
+            callForPapers.IsOpened
+        );
 }

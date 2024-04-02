@@ -1,16 +1,13 @@
 ﻿using System;
 using Confab.Shared.Kernel.Exceptions;
 
-namespace Confab.Modules.Conferences.Core.Exceptions
-{
-    internal class CannotDeleteHostException : ConfabException
-    {
-        public CannotDeleteHostException(Guid id)
-            : base($"Host with ID: '{id}' cannot be deleted.")
-        {
-            Id = id;
-        }
+namespace Confab.Modules.Conferences.Core.Exceptions;
 
-        public Guid Id { get; }
-    }
+internal class CannotDeleteHostException : ConfabException
+{
+    public Guid Id { get; }
+
+    public CannotDeleteHostException(Guid id)
+        : base($"Host with ID: '{id}' cannot be deleted.") =>
+        Id = id;
 }

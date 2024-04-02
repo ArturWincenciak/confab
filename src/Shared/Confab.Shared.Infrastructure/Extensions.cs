@@ -25,157 +25,153 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 [assembly: InternalsVisibleTo("Confab.Bootstrapper")]
 [assembly: InternalsVisibleTo("Confab.Shared.Tests")]
 
-namespace Confab.Shared.Infrastructure
+namespace Confab.Shared.Infrastructure;
+
+internal static class Extensions
 {
-    internal static class Extensions
+    private const string CorsPolicy = "cors";
+
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+        IList<IModule> modules,
+        IEnumerable<Assembly> assemblies)
     {
-        private const string CorsPolicy = "cors";
-
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
-            IList<IModule> modules,
-            IEnumerable<Assembly> assemblies)
+        services.AddCors(corsOption =>
         {
-            services.AddCors(corsOption =>
+            corsOption.AddPolicy(CorsPolicy, configurePolicy: builder =>
             {
-                corsOption.AddPolicy(CorsPolicy, builder =>
-                {
-                    builder
-                        .WithOrigins("*")
-                        .WithMethods("POST", "PUT", "DELETE")
-                        .WithHeaders("Content-Type", "Authorization");
-                });
+                builder
+                    .WithOrigins("*")
+                    .WithMethods("POST", "PUT", "DELETE")
+                    .WithHeaders("Content-Type", "Authorization");
+            });
+        });
+
+        services.AddSwaggerGen(options =>
+        {
+            options.CustomSchemaIds(type => type.FullName);
+            options.SwaggerDoc(name: "v1", info: new()
+            {
+                Title = "Confab API",
+                Version = "v1"
+            });
+        });
+
+        services.AddMemoryCache();
+        services.AddSingleton<IRequestStorage, RequestStorage>();
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddSingleton<IContextFactory, ContextFactory>();
+        services.AddTransient(sp => sp.GetRequiredService<IContextFactory>().Create());
+        services.AddModuleInfo(modules);
+        services.AddModuleRequests(assemblies);
+        services.AddAuth(modules);
+        services.AddErrorHandling();
+        services.AddCommands(assemblies);
+        services.AddMessaging();
+        services.AddEvents(assemblies);
+        services.AddDomainEvents(assemblies);
+        services.AddQueries(assemblies);
+        services.AddPostgresOptions();
+        services.AddSingleton<IClock, UtcClock>();
+        services.AddHostedService<AppInitializer>();
+
+        services.AddControllers()
+            .ConfigureApplicationPartManager(manager =>
+            {
+                var disabledModules = DetectDisabledModules(services);
+                manager.AddOnlyNotDisabledModuleParts(disabledModules);
             });
 
-            services.AddSwaggerGen(options =>
-            {
-                options.CustomSchemaIds(type => type.FullName);
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "Confab API",
-                    Version = "v1"
-                });
-            });
+        return services;
+    }
 
-            services.AddMemoryCache();
-            services.AddSingleton<IRequestStorage, RequestStorage>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IContextFactory, ContextFactory>();
-            services.AddTransient(sp => sp.GetRequiredService<IContextFactory>().Create());
-            services.AddModuleInfo(modules);
-            services.AddModuleRequests(assemblies);
-            services.AddAuth(modules);
-            services.AddErrorHandling();
-            services.AddCommands(assemblies);
-            services.AddMessaging();
-            services.AddEvents(assemblies);
-            services.AddDomainEvents(assemblies);
-            services.AddQueries(assemblies);
-            services.AddPostgresOptions();
-            services.AddSingleton<IClock, UtcClock>();
-            services.AddHostedService<AppInitializer>();
+    public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
+    {
+        app.UseCors(CorsPolicy);
+        app.UseErrorHandling();
 
-            services.AddControllers()
-                .ConfigureApplicationPartManager(manager =>
-                {
-                    var disabledModules = DetectDisabledModules(services);
-                    manager.AddOnlyNotDisabledModuleParts(disabledModules);
-                });
-
-            return services;
-        }
-
-        public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
+            c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Confab Api"));
+        app.UseReDoc(options =>
         {
-            app.UseCors(CorsPolicy);
-            app.UseErrorHandling();
+            options.RoutePrefix = "docs";
+            options.SpecUrl("/swagger/v1/swagger.json");
+            options.DocumentTitle = "Confab API";
+        });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Confab Api"));
-            app.UseReDoc(options =>
-            {
-                options.RoutePrefix = "docs";
-                options.SpecUrl("/swagger/v1/swagger.json");
-                options.DocumentTitle = "Confab API";
-            });
+        app.UseAuthentication();
+        app.UseRouting();
+        app.UseAuthorization();
 
-            app.UseAuthentication();
-            app.UseRouting();
-            app.UseAuthorization();
+        return app;
+    }
 
-            return app;
-        }
+    public static string GetModuleName(this Type type)
+    {
+        if (string.IsNullOrEmpty(type.Namespace))
+            return string.Empty;
 
-        public static string GetModuleName(this Type type)
+        return type.Namespace.StartsWith("Confab.Modules.")
+            ? type.Namespace.Split(".")[2].ToLowerInvariant()
+            : string.Empty;
+    }
+
+    public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
+    {
+        using var serviceProvider = services.BuildServiceProvider();
+        var configuration = serviceProvider.GetService<IConfiguration>();
+        return configuration.GetOptions<T>(sectionName);
+    }
+
+    private static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : new()
+    {
+        var options = new T();
+        configuration.GetSection(sectionName).Bind(options);
+        return options;
+    }
+
+    private static IEnumerable<string> DetectDisabledModules(IServiceCollection services)
+    {
+        using var serviceProvider = services.BuildServiceProvider();
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        var disabledModules = new List<string>();
+        foreach (var (key, value) in configuration.AsEnumerable())
         {
-            if (string.IsNullOrEmpty(type.Namespace))
+            if (!key.Contains(":module:enabled"))
+                continue;
+
+            if (!bool.Parse(value))
             {
-                return string.Empty;
+                var splitKey = key.Split(":");
+                var moduleName = splitKey[0];
+                disabledModules.Add(moduleName);
             }
-
-            return type.Namespace.StartsWith("Confab.Modules.")
-                ? type.Namespace.Split(".")[2].ToLowerInvariant()
-                : string.Empty;
         }
 
-        public static T GetOptions<T>(this IServiceCollection services, string sectionName) where T : new()
+        return disabledModules;
+    }
+
+    private static ApplicationPartManager AddOnlyNotDisabledModuleParts(this ApplicationPartManager manager,
+        IEnumerable<string> disabledModules)
+    {
+        var removedParts = new List<ApplicationPart>();
+        foreach (var disabledModule in disabledModules)
         {
-            using var serviceProvider = services.BuildServiceProvider();
-            var configuration = serviceProvider.GetService<IConfiguration>();
-            return configuration.GetOptions<T>(sectionName);
+            var parts = manager.ApplicationParts
+                .Where(applicationPart => applicationPart.Name.Contains(disabledModule,
+                    StringComparison.InvariantCultureIgnoreCase));
+
+            removedParts.AddRange(parts);
         }
 
-        private static T GetOptions<T>(this IConfiguration configuration, string sectionName) where T : new()
-        {
-            var options = new T();
-            configuration.GetSection(sectionName).Bind(options);
-            return options;
-        }
+        foreach (var part in removedParts)
+            manager.ApplicationParts.Remove(part);
 
-        private static IEnumerable<string> DetectDisabledModules(IServiceCollection services)
-        {
-            using var serviceProvider = services.BuildServiceProvider();
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            var disabledModules = new List<string>();
-            foreach (var (key, value) in configuration.AsEnumerable())
-            {
-                if (!key.Contains(":module:enabled"))
-                    continue;
-
-                if (!bool.Parse(value))
-                {
-                    var splitKey = key.Split(":");
-                    var moduleName = splitKey[0];
-                    disabledModules.Add(moduleName);
-                }
-            }
-
-            return disabledModules;
-        }
-
-        private static ApplicationPartManager AddOnlyNotDisabledModuleParts(this ApplicationPartManager manager,
-            IEnumerable<string> disabledModules)
-        {
-            var removedParts = new List<ApplicationPart>();
-            foreach (var disabledModule in disabledModules)
-            {
-                var parts = manager.ApplicationParts
-                    .Where(applicationPart => applicationPart.Name.Contains(disabledModule,
-                        StringComparison.InvariantCultureIgnoreCase));
-
-                removedParts.AddRange(parts);
-            }
-
-            foreach (var part in removedParts)
-                manager.ApplicationParts.Remove(part);
-
-            manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
-            return manager;
-        }
+        manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
+        return manager;
     }
 }

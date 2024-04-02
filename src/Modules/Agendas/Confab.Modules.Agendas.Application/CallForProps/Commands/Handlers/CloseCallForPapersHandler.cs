@@ -5,29 +5,28 @@ using Confab.Modules.Agendas.Application.CallForProps.Repositories;
 using Confab.Shared.Abstractions.Commands;
 using Confab.Shared.Abstractions.Messaging;
 
-namespace Confab.Modules.Agendas.Application.CallForProps.Commands.Handlers
+namespace Confab.Modules.Agendas.Application.CallForProps.Commands.Handlers;
+
+internal sealed class CloseCallForPapersHandler : ICommandHandler<CloseCallForPapers>
 {
-    internal sealed class CloseCallForPapersHandler : ICommandHandler<CloseCallForPapers>
+    private readonly IMessageBroker _messageBroker;
+    private readonly ICallForPapersRepository _repository;
+
+    public CloseCallForPapersHandler(ICallForPapersRepository repository, IMessageBroker messageBroker)
     {
-        private readonly IMessageBroker _messageBroker;
-        private readonly ICallForPapersRepository _repository;
+        _repository = repository;
+        _messageBroker = messageBroker;
+    }
 
-        public CloseCallForPapersHandler(ICallForPapersRepository repository, IMessageBroker messageBroker)
-        {
-            _repository = repository;
-            _messageBroker = messageBroker;
-        }
+    public async Task HandleAsync(CloseCallForPapers command)
+    {
+        var callForPapers = await _repository.GetAsync(command.ConferenceId);
+        if (callForPapers is null)
+            throw new CallForPapersNotFoundExistsException(command.ConferenceId);
 
-        public async Task HandleAsync(CloseCallForPapers command)
-        {
-            var callForPapers = await _repository.GetAsync(command.ConferenceId);
-            if (callForPapers is null)
-                throw new CallForPapersNotFoundExistsException(command.ConferenceId);
+        callForPapers.Close();
+        await _repository.UpdateAsync(callForPapers);
 
-            callForPapers.Close();
-            await _repository.UpdateAsync(callForPapers);
-
-            await _messageBroker.PublishAsync(new CallForPaperClosed(command.ConferenceId));
-        }
+        await _messageBroker.PublishAsync(new CallForPaperClosed(command.ConferenceId));
     }
 }

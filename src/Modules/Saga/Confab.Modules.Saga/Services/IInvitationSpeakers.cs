@@ -1,9 +1,8 @@
-﻿namespace Confab.Modules.Saga.Services
+﻿namespace Confab.Modules.Saga.Services;
+
+internal interface IInvitationSpeakers
 {
-    internal interface IInvitationSpeakers
-    {
-        bool IsInvited(string email);
-        string FullName(string email);
-        string SpeakerBio(string email);
-    }
+    bool IsInvited(string email);
+    string FullName(string email);
+    string SpeakerBio(string email);
 }

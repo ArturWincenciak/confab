@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace Confab.Shared.Kernel.Exceptions
+namespace Confab.Shared.Kernel.Exceptions;
+
+public abstract class ConfabException : Exception
 {
-    public abstract class ConfabException : Exception
+    protected ConfabException(string message)
+        : base(message)
     {
-        protected ConfabException(string message)
-            : base(message)
-        {
-        }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using Confab.Shared.Abstractions.Messaging;
 
-namespace Confab.Shared.Abstractions.Events
+namespace Confab.Shared.Abstractions.Events;
+
+public interface IEvent : IMessage
 {
-    public interface IEvent : IMessage
-    {
-    }
 }

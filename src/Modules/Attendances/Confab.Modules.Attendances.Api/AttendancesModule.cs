@@ -6,26 +6,25 @@ using Confab.Shared.Abstractions.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Attendances.Api
+namespace Confab.Modules.Attendances.Api;
+
+internal class AttendancesModule : IModule
 {
-    internal class AttendancesModule : IModule
+    public const string BasePath = "attendances-module";
+
+    public string Name { get; } = "Attendances";
+    public string Path => BasePath;
+
+    public IEnumerable<string> Policies { get; }
+
+    public void Register(IServiceCollection services)
     {
-        public const string BasePath = "attendances-module";
+        services.AddDomain()
+            .AddApplication()
+            .AddInfrastructure();
+    }
 
-        public string Name { get; } = "Attendances";
-        public string Path => BasePath;
-
-        public IEnumerable<string> Policies { get; }
-
-        public void Register(IServiceCollection services)
-        {
-            services.AddDomain()
-                .AddApplication()
-                .AddInfrastructure();
-        }
-
-        public void Use(IApplicationBuilder app)
-        {
-        }
+    public void Use(IApplicationBuilder app)
+    {
     }
 }

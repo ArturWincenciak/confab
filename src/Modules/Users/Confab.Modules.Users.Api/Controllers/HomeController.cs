@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Confab.Modules.Users.Api.Controllers
+namespace Confab.Modules.Users.Api.Controllers;
+
+[Route(UsersModule.BasePath)]
+internal class HomeController : UsersBaseController
 {
-    [Route(UsersModule.BasePath)]
-    internal class HomeController : UsersBaseController
-    {
-        [HttpGet]
+    [HttpGet]
 #pragma warning disable CA1822 // Mark members as static
-        public ActionResult<string> Get()
+    public ActionResult<string> Get()
 #pragma warning restore CA1822 // Mark members as static
-        {
-            return "Users API";
-        }
+    {
+        return "Users API";
     }
 }

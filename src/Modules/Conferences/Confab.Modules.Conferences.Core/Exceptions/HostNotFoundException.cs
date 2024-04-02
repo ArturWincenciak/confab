@@ -1,16 +1,13 @@
 ﻿using System;
 using Confab.Shared.Kernel.Exceptions;
 
-namespace Confab.Modules.Conferences.Core.Exceptions
-{
-    public class HostNotFoundException : ConfabException
-    {
-        public HostNotFoundException(Guid id)
-            : base($"Host with ID: '{id}' was not found.")
-        {
-            Id = id;
-        }
+namespace Confab.Modules.Conferences.Core.Exceptions;
 
-        public Guid Id { get; }
-    }
+public class HostNotFoundException : ConfabException
+{
+    public Guid Id { get; }
+
+    public HostNotFoundException(Guid id)
+        : base($"Host with ID: '{id}' was not found.") =>
+        Id = id;
 }

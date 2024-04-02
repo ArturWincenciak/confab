@@ -3,31 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Confab.Shared.Abstractions.Queries;
 
-namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO
+namespace Confab.Modules.Attendances.Application.Clients.Agendas.DTO;
+
+public sealed record AgendaTracksDto : IEnumerable<AgendaTracksDto.AgendaTrackDto>,
+    IModuleResponse
 {
-    public sealed record AgendaTracksDto : IEnumerable<AgendaTracksDto.AgendaTrackDto>, IModuleResponse
-    {
-        private readonly IEnumerable<AgendaTrackDto> _agendaTracks;
+    private readonly IEnumerable<AgendaTrackDto> _agendaTracks;
 
-        public AgendaTracksDto(IEnumerable<AgendaTrackDto> agendaTracks)
-        {
-            _agendaTracks = agendaTracks;
-        }
+    public AgendaTracksDto(IEnumerable<AgendaTrackDto> agendaTracks) =>
+        _agendaTracks = agendaTracks;
 
-        public IEnumerator<AgendaTrackDto> GetEnumerator()
-        {
-            return _agendaTracks.GetEnumerator();
-        }
+    public IEnumerator<AgendaTrackDto> GetEnumerator() =>
+        _agendaTracks.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _agendaTracks.GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator() =>
+        _agendaTracks.GetEnumerator();
 
-        public sealed record AgendaTrackDto(
-            Guid Id,
-            Guid ConferenceId,
-            string Name,
-            IEnumerable<RegularAgendaSlotDto> Slots);
-    }
+    public sealed record AgendaTrackDto(
+        Guid Id,
+        Guid ConferenceId,
+        string Name,
+        IEnumerable<RegularAgendaSlotDto> Slots);
 }

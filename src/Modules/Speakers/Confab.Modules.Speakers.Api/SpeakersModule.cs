@@ -7,29 +7,28 @@ using Confab.Shared.Infrastructure.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Modules.Speakers.Api
+namespace Confab.Modules.Speakers.Api;
+
+internal class SpeakersModule : IModule
 {
-    internal class SpeakersModule : IModule
+    public const string BasePath = "speakers-module";
+    public string Name { get; } = "Speakers";
+    public string Path { get; } = BasePath;
+
+    public IEnumerable<string> Policies { get; } = new[]
     {
-        public const string BasePath = "speakers-module";
-        public string Name { get; } = "Speakers";
-        public string Path { get; } = BasePath;
+        SpeakersController.Policy
+    };
 
-        public IEnumerable<string> Policies { get; } = new[]
-        {
-            SpeakersController.Policy
-        };
+    public void Register(IServiceCollection services)
+    {
+        services.AddCore();
+    }
 
-        public void Register(IServiceCollection services)
-        {
-            services.AddCore();
-        }
-
-        public void Use(IApplicationBuilder app)
-        {
-            app
-                .UseModuleRequests()
-                .MapRequest<SpeakerDto, Null>("speakers/create");
-        }
+    public void Use(IApplicationBuilder app)
+    {
+        app
+            .UseModuleRequests()
+            .MapRequest<SpeakerDto, Null>("speakers/create");
     }
 }

@@ -4,35 +4,29 @@ using System.Collections.Generic;
 using Confab.Modules.Attendances.Application.DTO;
 using Confab.Shared.Abstractions.Queries;
 
-namespace Confab.Modules.Attendances.Application.Queries
+namespace Confab.Modules.Attendances.Application.Queries;
+
+public class BrowseAttendances : IRequestMessage<BrowseAttendances.Result>
 {
-    public class BrowseAttendances : IRequestMessage<BrowseAttendances.Result>
+    public Guid UserId { get; set; }
+    public Guid ConferenceId { get; set; }
+
+    public class Result : IReadOnlyList<AttendanceDto>,
+        IResponseMessage
     {
-        public Guid UserId { get; set; }
-        public Guid ConferenceId { get; set; }
+        private readonly IReadOnlyList<AttendanceDto> _attendances;
 
-        public class Result : IReadOnlyList<AttendanceDto>, IResponseMessage
-        {
-            private readonly IReadOnlyList<AttendanceDto> _attendances;
+        public int Count => _attendances.Count;
 
-            public Result(IReadOnlyList<AttendanceDto> attendances)
-            {
-                _attendances = attendances;
-            }
+        public AttendanceDto this[int index] => _attendances[index];
 
-            public IEnumerator<AttendanceDto> GetEnumerator()
-            {
-                return _attendances.GetEnumerator();
-            }
+        public Result(IReadOnlyList<AttendanceDto> attendances) =>
+            _attendances = attendances;
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+        public IEnumerator<AttendanceDto> GetEnumerator() =>
+            _attendances.GetEnumerator();
 
-            public int Count => _attendances.Count;
-
-            public AttendanceDto this[int index] => _attendances[index];
-        }
+        IEnumerator IEnumerable.GetEnumerator() =>
+            GetEnumerator();
     }
 }

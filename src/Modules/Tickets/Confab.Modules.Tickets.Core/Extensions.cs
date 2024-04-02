@@ -9,20 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: InternalsVisibleTo("Confab.Modules.Tickets.Api")]
 [assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
-namespace Confab.Modules.Tickets.Core
+namespace Confab.Modules.Tickets.Core;
+
+internal static class Extensions
 {
-    internal static class Extensions
-    {
-        public static IServiceCollection AddCore(this IServiceCollection services)
-        {
-            return services
-                .AddScoped<ITicketService, TicketService>()
-                .AddScoped<ITicketSaleService, TicketSaleService>()
-                .AddScoped<IConferenceRepository, ConferenceRepository>()
-                .AddScoped<ITicketRepository, TicketRepository>()
-                .AddScoped<ITicketSaleRepository, TicketSaleRepository>()
-                .AddSingleton<ITicketGenerator, TicketGenerator>()
-                .AddPostgresDbContext<TicketsDbContext>();
-        }
-    }
+    public static IServiceCollection AddCore(this IServiceCollection services) =>
+        services
+            .AddScoped<ITicketService, TicketService>()
+            .AddScoped<ITicketSaleService, TicketSaleService>()
+            .AddScoped<IConferenceRepository, ConferenceRepository>()
+            .AddScoped<ITicketRepository, TicketRepository>()
+            .AddScoped<ITicketSaleRepository, TicketSaleRepository>()
+            .AddSingleton<ITicketGenerator, TicketGenerator>()
+            .AddPostgresDbContext<TicketsDbContext>();
 }

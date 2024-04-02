@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Confab.Modules.Conferences.Api.Controllers
+namespace Confab.Modules.Conferences.Api.Controllers;
+
+[Route(ConferencesModule.BasePath)]
+internal class HomeController : ConferencesControllerBase
 {
-    [Route(ConferencesModule.BasePath)]
-    internal class HomeController : ConferencesControllerBase
-    {
-        [HttpGet]
+    [HttpGet]
 #pragma warning disable CA1822 // Mark members as static
-        public ActionResult<string> Get()
+    public ActionResult<string> Get()
 #pragma warning restore CA1822 // Mark members as static
-        {
-            return "Conferences API";
-        }
+    {
+        return "Conferences API";
     }
 }

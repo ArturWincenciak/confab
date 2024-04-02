@@ -11,82 +11,81 @@ using Confab.Shared.Abstractions;
 using Confab.Shared.Abstractions.Messaging;
 using Microsoft.Extensions.Logging;
 
-namespace Confab.Modules.Tickets.Core.Services
+namespace Confab.Modules.Tickets.Core.Services;
+
+internal class TicketService : ITicketService
 {
-    internal class TicketService : ITicketService
+    private readonly IClock _clock;
+    private readonly IConferenceRepository _conferenceRepository;
+    private readonly ITicketGenerator _generator;
+    private readonly ILogger<TicketService> _logger;
+    private readonly IMessageBroker _messageBroker;
+    private readonly ITicketSaleRepository _saleRepository;
+    private readonly ITicketRepository _ticketRepository;
+
+    public TicketService(IClock clock, IConferenceRepository conferenceRepository,
+        ITicketRepository ticketRepository, ITicketSaleRepository ticketSaleRepository, ITicketGenerator generator,
+        ILogger<TicketService> logger, IMessageBroker messageBroker)
     {
-        private readonly IClock _clock;
-        private readonly IConferenceRepository _conferenceRepository;
-        private readonly ITicketGenerator _generator;
-        private readonly ILogger<TicketService> _logger;
-        private readonly ITicketRepository _ticketRepository;
-        private readonly ITicketSaleRepository _saleRepository;
-        private readonly IMessageBroker _messageBroker;
+        _clock = clock;
+        _conferenceRepository = conferenceRepository;
+        _ticketRepository = ticketRepository;
+        _saleRepository = ticketSaleRepository;
+        _generator = generator;
+        _logger = logger;
+        _messageBroker = messageBroker;
+    }
 
-        public TicketService(IClock clock, IConferenceRepository conferenceRepository,
-            ITicketRepository ticketRepository, ITicketSaleRepository ticketSaleRepository, ITicketGenerator generator,
-            ILogger<TicketService> logger, IMessageBroker messageBroker)
+    public async Task PurchaseAsync(Guid conferenceId, Guid userId)
+    {
+        var conference = await _conferenceRepository.GetAsync(conferenceId);
+        if (conference is null)
+            throw new ConferenceNotFoundException(conferenceId);
+
+        var ticket = await _ticketRepository.GetAsync(conferenceId, userId);
+        if (ticket is not null)
+            throw new TicketAlreadyPurchasedException(conferenceId, userId);
+
+        var now = _clock.CurrentDate();
+        var ticketSale = await _saleRepository.GetCurrentForConferencesIncludingTicketsAsync(conferenceId, now);
+        if (ticketSale is null)
+            throw new TicketSaleUnavailableException(conferenceId);
+
+        if (ticketSale.Amount.HasValue)
         {
-            _clock = clock;
-            _conferenceRepository = conferenceRepository;
-            _ticketRepository = ticketRepository;
-            _saleRepository = ticketSaleRepository;
-            _generator = generator;
-            _logger = logger;
-            _messageBroker = messageBroker;
+            await PurchaseAvailableAsync(ticketSale, userId, ticketSale.Price, now);
+            return;
         }
 
-        public async Task PurchaseAsync(Guid conferenceId, Guid userId)
-        {
-            var conference = await _conferenceRepository.GetAsync(conferenceId);
-            if (conference is null)
-                throw new ConferenceNotFoundException(conferenceId);
+        ticket = _generator.Generate(conferenceId, ticketSale.Id, ticketSale.Price);
+        ticket.Purchase(userId, now, ticketSale.Price);
+        await _ticketRepository.AddAsync(ticket);
+        await _messageBroker.PublishAsync(new TicketPurchased(ticket.Id, conferenceId, userId));
+    }
 
-            var ticket = await _ticketRepository.GetAsync(conferenceId, userId);
-            if (ticket is not null)
-                throw new TicketAlreadyPurchasedException(conferenceId, userId);
+    public async Task<IEnumerable<TicketDto>> GetForUserAsync(Guid userId)
+    {
+        var tickets = await _ticketRepository.GetForUserIncludingConferenceAsync(userId);
 
-            var now = _clock.CurrentDate();
-            var ticketSale = await _saleRepository.GetCurrentForConferencesIncludingTicketsAsync(conferenceId, now);
-            if (ticketSale is null)
-                throw new TicketSaleUnavailableException(conferenceId);
+        return tickets.Select(x => new TicketDto(x.Code, x.Price, x.PurchasedAt.Value,
+                Conference: new(x.ConferenceId, x.Conference.Name)))
+            .OrderBy(x => x.PurchasedAt);
+    }
 
-            if (ticketSale.Amount.HasValue)
-            {
-                await PurchaseAvailableAsync(ticketSale, userId, ticketSale.Price, now);
-                return;
-            }
+    private async Task PurchaseAvailableAsync(TicketSale ticketSale, Guid userId, decimal? price,
+        DateTime timestamp)
+    {
+        var conferenceId = ticketSale.ConferenceId;
+        var ticket = ticketSale.Tickets
+            .Where(x => x.UserId is null)
+            .OrderBy(_ => Guid.NewGuid())
+            .FirstOrDefault();
 
-            ticket = _generator.Generate(conferenceId, ticketSale.Id, ticketSale.Price);
-            ticket.Purchase(userId, now, ticketSale.Price);
-            await _ticketRepository.AddAsync(ticket);
-            await _messageBroker.PublishAsync(new TicketPurchased(ticket.Id, conferenceId, userId));
-        }
+        if (ticket is null)
+            throw new TicketSaleUnavailableException(conferenceId);
 
-        public async Task<IEnumerable<TicketDto>> GetForUserAsync(Guid userId)
-        {
-            var tickets = await _ticketRepository.GetForUserIncludingConferenceAsync(userId);
-
-            return tickets.Select(x => new TicketDto(x.Code, x.Price, x.PurchasedAt.Value,
-                    new ConferenceDto(x.ConferenceId, x.Conference.Name)))
-                .OrderBy(x => x.PurchasedAt);
-        }
-
-        private async Task PurchaseAvailableAsync(TicketSale ticketSale, Guid userId, decimal? price,
-            DateTime timestamp)
-        {
-            var conferenceId = ticketSale.ConferenceId;
-            var ticket = ticketSale.Tickets
-                .Where(x => x.UserId is null)
-                .OrderBy(_ => Guid.NewGuid())
-                .FirstOrDefault();
-
-            if (ticket is null)
-                throw new TicketSaleUnavailableException(conferenceId);
-
-            ticket.Purchase(userId, timestamp, price);
-            await _ticketRepository.UpdateAsync(ticket);
-            await _messageBroker.PublishAsync(new TicketPurchased(ticket.Id, conferenceId, userId));
-        }
+        ticket.Purchase(userId, timestamp, price);
+        await _ticketRepository.UpdateAsync(ticket);
+        await _messageBroker.PublishAsync(new TicketPurchased(ticket.Id, conferenceId, userId));
     }
 }

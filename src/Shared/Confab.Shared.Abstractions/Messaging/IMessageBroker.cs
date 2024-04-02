@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Confab.Shared.Abstractions.Messaging
+namespace Confab.Shared.Abstractions.Messaging;
+
+public interface IMessageBroker
 {
-    public interface IMessageBroker
-    {
-        Task PublishAsync(params IMessage[] messages);
-    }
+    Task PublishAsync(params IMessage[] messages);
 }

@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Confab.Shared.Kernel
+namespace Confab.Shared.Kernel;
+
+public interface IDomainEventDispatcher
 {
-    public interface IDomainEventDispatcher
-    {
-        Task SendAsync(params IDomainEvent[] events);
-    }
+    Task SendAsync(params IDomainEvent[] events);
 }

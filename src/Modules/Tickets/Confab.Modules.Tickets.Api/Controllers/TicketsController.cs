@@ -7,33 +7,30 @@ using Confab.Shared.Abstractions.Contexts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Confab.Modules.Tickets.Api.Controllers
+namespace Confab.Modules.Tickets.Api.Controllers;
+
+[Authorize]
+internal class TicketsController : TicketsControllerBase
 {
-    [Authorize]
-    internal class TicketsController : TicketsControllerBase
+    private readonly IContext _context;
+    private readonly ITicketService _ticketService;
+
+    public TicketsController(ITicketService ticketService, IContext context)
     {
-        private readonly IContext _context;
-        private readonly ITicketService _ticketService;
+        _ticketService = ticketService;
+        _context = context;
+    }
 
-        public TicketsController(ITicketService ticketService, IContext context)
-        {
-            _ticketService = ticketService;
-            _context = context;
-        }
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(401)]
+    public async Task<ActionResult<IReadOnlyList<TicketDto>>> Get() =>
+        Ok(await _ticketService.GetForUserAsync(_context.Identity.Id));
 
-        [HttpGet]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(401)]
-        public async Task<ActionResult<IReadOnlyList<TicketDto>>> Get()
-        {
-            return Ok(await _ticketService.GetForUserAsync(_context.Identity.Id));
-        }
-
-        [HttpPost("conferences/{conferenceId}/purchases")]
-        public async Task<ActionResult> Purchase(Guid conferenceId)
-        {
-            await _ticketService.PurchaseAsync(conferenceId, _context.Identity.Id);
-            return NoContent();
-        }
+    [HttpPost("conferences/{conferenceId}/purchases")]
+    public async Task<ActionResult> Purchase(Guid conferenceId)
+    {
+        await _ticketService.PurchaseAsync(conferenceId, _context.Identity.Id);
+        return NoContent();
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using Confab.Shared.Abstractions.Exceptions;
 
-namespace Confab.Shared.Infrastructure.Exceptions
+namespace Confab.Shared.Infrastructure.Exceptions;
+
+internal interface IExceptionCompositionRoot
 {
-    internal interface IExceptionCompositionRoot
-    {
-        ExceptionResponse Map(Exception ex);
-    }
+    ExceptionResponse Map(Exception ex);
 }

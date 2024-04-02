@@ -11,19 +11,18 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: InternalsVisibleTo("Confab.Modules.Users.Api")]
 [assembly: InternalsVisibleTo("Confab.Tests.Integrations")]
 
-namespace Confab.Modules.Users.Core
-{
-    internal static class Extensions
-    {
-        public static IServiceCollection AddCore(this IServiceCollection services)
-        {
-            services
-                .AddScoped<IUserRepository, UserRepository>()
-                .AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>()
-                .AddTransient<IIdentityService, IdentityService>()
-                .AddPostgresDbContext<UsersDbContext>();
+namespace Confab.Modules.Users.Core;
 
-            return services;
-        }
+internal static class Extensions
+{
+    public static IServiceCollection AddCore(this IServiceCollection services)
+    {
+        services
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>()
+            .AddTransient<IIdentityService, IdentityService>()
+            .AddPostgresDbContext<UsersDbContext>();
+
+        return services;
     }
 }

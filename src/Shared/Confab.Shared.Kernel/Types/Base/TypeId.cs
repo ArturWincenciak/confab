@@ -1,63 +1,50 @@
 ﻿using System;
 
-namespace Confab.Shared.Kernel.Types.Base
+namespace Confab.Shared.Kernel.Types.Base;
+
+public abstract class TypeId : IEquatable<TypeId>
 {
-    public abstract class TypeId : IEquatable<TypeId>
+    public Guid Value { get; }
+
+    public bool IsEmpty => Value == Guid.Empty;
+
+    protected TypeId(Guid id) =>
+        Value = id;
+
+    public bool Equals(TypeId other)
     {
-        protected TypeId(Guid id)
-        {
-            Value = id;
-        }
+        if (other is null)
+            return false;
+        if (ReferenceEquals(objA: this, other))
+            return true;
 
-        public Guid Value { get; }
-
-        public bool IsEmpty => Value == Guid.Empty;
-
-        public bool Equals(TypeId other)
-        {
-            if (other is null)
-                return false;
-            if (ReferenceEquals(this, other))
-                return true;
-
-            return Value.Equals(other.Value);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-                return false;
-            if (ReferenceEquals(this, obj))
-                return true;
-            if (obj.GetType() != GetType())
-                return false;
-
-            return Equals((TypeId) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Value.GetHashCode();
-        }
-
-        public static implicit operator Guid(TypeId id)
-        {
-            return id.Value;
-        }
-
-        public static bool operator ==(TypeId a, TypeId b)
-        {
-            return a.Equals(b);
-        }
-
-        public static bool operator !=(TypeId a, TypeId b)
-        {
-            return !(a == b);
-        }
-
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
+        return Value.Equals(other.Value);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is null)
+            return false;
+        if (ReferenceEquals(objA: this, obj))
+            return true;
+        if (obj.GetType() != GetType())
+            return false;
+
+        return Equals((TypeId) obj);
+    }
+
+    public override int GetHashCode() =>
+        Value.GetHashCode();
+
+    public static implicit operator Guid(TypeId id) =>
+        id.Value;
+
+    public static bool operator ==(TypeId a, TypeId b) =>
+        a.Equals(b);
+
+    public static bool operator !=(TypeId a, TypeId b) =>
+        !(a == b);
+
+    public override string ToString() =>
+        Value.ToString();
 }

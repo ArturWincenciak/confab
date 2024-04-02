@@ -3,25 +3,24 @@ using Confab.Shared.Infrastructure.Messaging.Brokers;
 using Confab.Shared.Infrastructure.Messaging.Dispatchers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Shared.Infrastructure.Messaging
+namespace Confab.Shared.Infrastructure.Messaging;
+
+internal static class Extensions
 {
-    internal static class Extensions
+    private const string Messaging = "messaging";
+
+    internal static IServiceCollection AddMessaging(this IServiceCollection services)
     {
-        private const string Messaging = "messaging";
+        services.AddSingleton<IMessageBroker, InMemoryMessageBroker>();
+        services.AddSingleton<IMessageChannel, MessageChannel>();
+        services.AddSingleton<IAsyncMessageDispatcher, AsyncMessageDispatcher>();
 
-        internal static IServiceCollection AddMessaging(this IServiceCollection services)
-        {
-            services.AddSingleton<IMessageBroker, InMemoryMessageBroker>();
-            services.AddSingleton<IMessageChannel, MessageChannel>();
-            services.AddSingleton<IAsyncMessageDispatcher, AsyncMessageDispatcher>();
+        var messagingOptions = services.GetOptions<MessagingOptions>(Messaging);
+        services.AddSingleton(messagingOptions);
 
-            var messagingOptions = services.GetOptions<MessagingOptions>(Messaging);
-            services.AddSingleton(messagingOptions);
+        if (messagingOptions.UseBackgroundDispatcher)
+            services.AddHostedService<BackgroundDispatcher>();
 
-            if (messagingOptions.UseBackgroundDispatcher)
-                services.AddHostedService<BackgroundDispatcher>();
-
-            return services;
-        }
+        return services;
     }
 }

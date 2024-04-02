@@ -1,9 +1,8 @@
-﻿namespace Confab.Shared.Abstractions.Contexts
+﻿namespace Confab.Shared.Abstractions.Contexts;
+
+public interface IContext
 {
-    public interface IContext
-    {
-        string RequestId { get; }
-        string TraceId { get; }
-        IIdentityContext Identity { get; }
-    }
+    string RequestId { get; }
+    string TraceId { get; }
+    IIdentityContext Identity { get; }
 }

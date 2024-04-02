@@ -1,6 +1,5 @@
-﻿namespace Confab.Shared.Abstractions.Queries
+﻿namespace Confab.Shared.Abstractions.Queries;
+
+public interface IModuleRequest
 {
-    public interface IModuleRequest
-    {
-    }
 }

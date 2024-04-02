@@ -1,12 +1,11 @@
 ﻿using Confab.Shared.Kernel.Exceptions;
 
-namespace Confab.Modules.Attendances.Domain.Exceptions
+namespace Confab.Modules.Attendances.Domain.Exceptions;
+
+public class NoFreeSlotsException : ConfabException
 {
-    public class NoFreeSlotsException : ConfabException
+    public NoFreeSlotsException()
+        : base("No free slots left.")
     {
-        public NoFreeSlotsException()
-            : base("No free slots left.")
-        {
-        }
     }
 }

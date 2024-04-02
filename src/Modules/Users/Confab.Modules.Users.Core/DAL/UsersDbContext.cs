@@ -1,21 +1,20 @@
 ﻿using Confab.Modules.Users.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Confab.Modules.Users.Core.DAL
+namespace Confab.Modules.Users.Core.DAL;
+
+internal class UsersDbContext : DbContext
 {
-    internal class UsersDbContext : DbContext
+    public DbSet<User> Users { get; set; }
+
+    public UsersDbContext(DbContextOptions<UsersDbContext> options)
+        : base(options)
     {
-        public UsersDbContext(DbContextOptions<UsersDbContext> options)
-            : base(options)
-        {
-        }
+    }
 
-        public DbSet<User> Users { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.HasDefaultSchema("users");
-            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
-        }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("users");
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
 }

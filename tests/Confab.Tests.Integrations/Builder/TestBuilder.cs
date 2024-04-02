@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -17,228 +16,228 @@ using Confab.Tests.Integrations.Builder.Api;
 using Confab.Tests.Integrations.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Confab.Tests.Integrations.Builder
+namespace Confab.Tests.Integrations.Builder;
+
+public class TestBuilder : IDisposable
 {
-    public class TestBuilder : IDisposable
+    private readonly static SignUpDto SignUpUser = new()
     {
-        private Uri _createdConferenceLocation;
-        private readonly List<Func<Task>> _actions = new();
-        private HttpClient _client;
-
-        private IServiceCollection _servicesCollection;
-
-        private static Configuration DbConnectionString(string dbName) =>
-            new("postgres:connectionString", $"Host=localhost;Database={dbName};Username=postgres;Password=");
-
-        private static readonly SignUpDto SignUpUser = new()
+        Email = "email@email.com",
+        Password = "strict",
+        Role = "user",
+        Claims = new()
         {
-            Email = "email@email.com",
-            Password = "strict",
-            Role = "user",
-            Claims = new Dictionary<string, IEnumerable<string>>
             {
+                "permissions",
+                new[]
                 {
-                    "permissions",
-                    new[]
-                    {
-                        "conferences", "hosts", "speakers", "users", "agendas", "cfps", "submissions", "ticket-sales"
-                    }
+                    "conferences", "hosts", "speakers", "users", "agendas", "cfps", "submissions", "ticket-sales"
                 }
             }
-        };
+        }
+    };
 
-        private static readonly SignInDto SignInUser = new()
-        {
-            Email = SignUpUser.Email,
-            Password = SignUpUser.Password
-        };
+    private readonly static SignInDto SignInUser = new()
+    {
+        Email = SignUpUser.Email,
+        Password = SignUpUser.Password
+    };
 
-        private static readonly HostDto Host = new()
-        {
-            Name = "Fowler Host",
-            Description = "Description of Fowler Host"
-        };
+    private readonly static HostDto Host = new()
+    {
+        Name = "Fowler Host",
+        Description = "Description of Fowler Host"
+    };
 
-        private static Uri _createdHostLocation;
+    private static Uri _createdHostLocation;
 
-        private static readonly AgendasController.CreateAgendaTrackCommand CreateTrackCommand =
-            new("Robert C. Martin Track");
+    private readonly static AgendasController.CreateAgendaTrackCommand CreateTrackCommand =
+        new("Robert C. Martin Track");
 
-        private CreateAgendaSlot CreateRegularSlotCommand => new(AgendaTrackId: ResolveTrackId(), From: StartFirstSlot,
-            To: EndFirstSlot, 50, "regular");
+    private readonly static DateTime StartConferenceTime =
+        new(year: 2022, month: 4, day: 5, hour: 9, minute: 0, second: 0);
 
-        private string _trackResourceId;
+    private readonly static DateTime EndConferenceTime =
+        new(year: 2022, month: 4, day: 5, hour: 17, minute: 0, second: 0);
 
-        private static readonly DateTime StartConferenceTime = new(2022, 4, 5, 9, 0, 0);
-        private static readonly DateTime EndConferenceTime = new(2022, 4, 5, 17, 0, 0);
-        private static readonly DateTime StartFirstSlot = StartConferenceTime;
-        private static readonly DateTime EndFirstSlot = StartConferenceTime.AddHours(1);
+    private readonly static DateTime StartFirstSlot = StartConferenceTime;
+    private readonly static DateTime EndFirstSlot = StartConferenceTime.AddHours(1);
+    private readonly List<Func<Task>> _actions = new();
 
-        private string _slotResourceId;
+    private readonly SpeakerDto _inputSpeakerDto = new()
+    {
+        FullName = "Konrad Kokosa",
+        Email = "konrad@kokosa.email",
+        Bio = "Garbage Collector Master of the Masters",
+        AvatarUrl = "https://konrad.kokosa.site.com"
+    };
 
-        private readonly SpeakerDto _inputSpeakerDto = new()
-        {
-            FullName = "Konrad Kokosa",
-            Email = "konrad@kokosa.email",
-            Bio = "Garbage Collector Master of the Masters",
-            AvatarUrl = "https://konrad.kokosa.site.com"
-        };
+    private HttpClient _client;
+    private Uri _createdConferenceLocation;
 
-        internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
-        {
-            _client = new TestApplicationFactory()
-                .WithSetting(DbConnectionString($"Test_{callerName}"))
-                .WithWebHostBuilder(builder =>
+    private IServiceCollection _servicesCollection;
+
+    private string _slotResourceId;
+
+    private string _trackResourceId;
+
+    private CreateAgendaSlot CreateRegularSlotCommand => new(AgendaTrackId: ResolveTrackId(), StartFirstSlot,
+        EndFirstSlot, ParticipantsLimit: 50, Type: "regular");
+
+    public void Dispose()
+    {
+        Db.EnsureDatabaseDeleted(_servicesCollection);
+        _client.Dispose();
+    }
+
+    private static Configuration DbConnectionString(string dbName) =>
+        new(Key: "postgres:connectionString", Value: $"Host=localhost;Database={dbName};Username=postgres;Password=");
+
+    internal async Task<TestingApplication> Build([CallerMemberName] string callerName = "Unknown")
+    {
+        _client = new TestApplicationFactory()
+            .WithSetting(DbConnectionString($"Test_{callerName}"))
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
                 {
-                    builder.ConfigureServices(services =>
-                    {
-                        _servicesCollection = services;
-                        Db.EnsureDatabaseDeleted(_servicesCollection);
-                    });
-                })
-                .CreateClient();
+                    _servicesCollection = services;
+                    Db.EnsureDatabaseDeleted(_servicesCollection);
+                });
+            })
+            .CreateClient();
 
-            foreach (var action in _actions)
-                await action();
+        foreach (var action in _actions)
+            await action();
 
-            return new TestingApplication(
-                _client,
-                SignUpUser,
-                Host,
-                _createdHostLocation,
-                ArrangeConference(),
-                _createdConferenceLocation,
-                CreateTrackCommand,
-                _trackResourceId,
-                CreateRegularSlotCommand,
-                _slotResourceId,
-                _inputSpeakerDto);
-        }
+        return new(
+            _client,
+            SignUpUser,
+            Host,
+            _createdHostLocation,
+            inputConferenceDto: ArrangeConference(),
+            _createdConferenceLocation,
+            CreateTrackCommand,
+            _trackResourceId,
+            CreateRegularSlotCommand,
+            _slotResourceId,
+            _inputSpeakerDto);
+    }
 
-        private Guid ResolveHostId(Uri hostLocation)
+    private Guid ResolveHostId(Uri hostLocation)
+    {
+        var id = hostLocation?.Segments.Last();
+        if (id is null)
+            return Guid.Empty;
+
+        return Guid.Parse(id);
+    }
+
+    private Guid ResolveTrackId()
+    {
+        if (string.IsNullOrWhiteSpace(_trackResourceId))
+            return Guid.Empty;
+
+        return Guid.Parse(_trackResourceId);
+    }
+
+    private ConferenceDetailsDto ArrangeConference() =>
+        new()
         {
-            var id = hostLocation?.Segments.Last();
-            if (id is null)
-                return Guid.Empty;
+            HostId = ResolveHostId(_createdHostLocation),
+            Name = "Kent Beck Conference",
+            Localization = "Melbourne",
+            LogoUrl = "http://logo.com/conf1.jpg",
+            ParticipantsLimit = 100,
+            From = StartConferenceTime,
+            To = EndConferenceTime,
+            Description = "Description of Kent Back Conference"
+        };
 
-            return Guid.Parse(id);
-        }
+    internal TestBuilder WithAuthentication()
+    {
+        WithSignUp();
+        WithSignIn();
+        return this;
+    }
 
-        private Guid ResolveTrackId()
+    internal TestBuilder WithSignUp()
+    {
+        _actions.Add(SignUp);
+        return this;
+
+        async Task SignUp()
         {
-            if (string.IsNullOrWhiteSpace(_trackResourceId))
-                return Guid.Empty;
-
-            return Guid.Parse(_trackResourceId);
+            var response = await _client.SignUp(SignUpUser);
+            response.EnsureSuccessStatusCode();
         }
+    }
 
-        private ConferenceDetailsDto ArrangeConference()
+    internal TestBuilder WithSignIn()
+    {
+        _actions.Add(SignIn);
+        return this;
+
+        async Task SignIn()
         {
-
-            return new ConferenceDetailsDto
-            {
-                HostId = ResolveHostId(_createdHostLocation),
-                Name = "Kent Beck Conference",
-                Localization = "Melbourne",
-                LogoUrl = "http://logo.com/conf1.jpg",
-                ParticipantsLimit = 100,
-                From = StartConferenceTime,
-                To = EndConferenceTime,
-                Description = "Description of Kent Back Conference"
-            };
+            var response = await _client.SignIn(SignInUser);
+            response.EnsureSuccessStatusCode();
+            var jwt = await response.Content.ReadFromJsonAsync<JsonWebToken>();
+            _client.DefaultRequestHeaders.Authorization = new(scheme: "Bearer", jwt.AccessToken);
         }
+    }
 
-        internal TestBuilder WithAuthentication()
+    public TestBuilder WithHost()
+    {
+        _actions.Add(CreateHost);
+        return this;
+
+        async Task CreateHost()
         {
-            WithSignUp();
-            WithSignIn();
-            return this;
+            var response = await _client.CreateHost(Host);
+            response.EnsureSuccessStatusCode();
+            _createdHostLocation = response.Headers.Location;
         }
+    }
 
-        internal TestBuilder WithSignUp()
+    public TestBuilder WithConference()
+    {
+        _actions.Add(CreateConference);
+        return this;
+
+        async Task CreateConference()
         {
-            _actions.Add(SignUp);
-            return this;
-
-            async Task SignUp()
-            {
-                var response = await _client.SignUp(SignUpUser);
-                response.EnsureSuccessStatusCode();
-            }
+            var response = await _client.CreateConference(ArrangeConference());
+            response.EnsureSuccessStatusCode();
+            _createdConferenceLocation = response.Headers.Location;
         }
+    }
 
-        internal TestBuilder WithSignIn()
+    public TestBuilder WithTrack()
+    {
+        _actions.Add(CreateTrack);
+        return this;
+
+        async Task CreateTrack()
         {
-            _actions.Add(SignIn);
-            return this;
-
-            async Task SignIn()
-            {
-                var response = await _client.SignIn(SignInUser);
-                response.EnsureSuccessStatusCode();
-                var jwt = await response.Content.ReadFromJsonAsync<JsonWebToken>();
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt.AccessToken);
-            }
+            var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
+            var response = await _client.CreateTrack(conferenceId, CreateTrackCommand);
+            response.EnsureSuccessStatusCode();
+            _trackResourceId = response.Headers.GetValues("Resource-ID").Single();
         }
+    }
 
-        public TestBuilder WithHost()
+    public TestBuilder WithRegularSlot()
+    {
+        _actions.Add(CreateRegularSlot);
+        return this;
+
+        async Task CreateRegularSlot()
         {
-            _actions.Add(CreateHost);
-            return this;
-
-            async Task CreateHost()
-            {
-                var response = await _client.CreateHost(Host);
-                response.EnsureSuccessStatusCode();
-                _createdHostLocation = response.Headers.Location;
-            }
-        }
-
-        public TestBuilder WithConference()
-        {
-            _actions.Add(CreateConference);
-            return this;
-
-            async Task CreateConference()
-            {
-                var response = await _client.CreateConference(ArrangeConference());
-                response.EnsureSuccessStatusCode();
-                _createdConferenceLocation = response.Headers.Location;
-            }
-        }
-
-        public TestBuilder WithTrack()
-        {
-            _actions.Add(CreateTrack);
-            return this;
-
-            async Task CreateTrack()
-            {
-                var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
-                var response = await _client.CreateTrack(conferenceId, CreateTrackCommand);
-                response.EnsureSuccessStatusCode();
-                _trackResourceId = response.Headers.GetValues("Resource-ID").Single();
-            }
-        }
-
-        public TestBuilder WithRegularSlot()
-        {
-            _actions.Add(CreateRegularSlot);
-            return this;
-
-            async Task CreateRegularSlot()
-            {
-                var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
-                var response = await _client.CreateSlot(conferenceId, CreateRegularSlotCommand);
-                response.EnsureSuccessStatusCode();
-                _slotResourceId = response.Headers.GetValues("Resource-ID").Single();
-            }
-        }
-
-        public void Dispose()
-        {
-            Db.EnsureDatabaseDeleted(_servicesCollection);
-            _client.Dispose();
+            var conferenceId = Guid.Parse(_createdConferenceLocation.Segments.Last());
+            var response = await _client.CreateSlot(conferenceId, CreateRegularSlotCommand);
+            response.EnsureSuccessStatusCode();
+            _slotResourceId = response.Headers.GetValues("Resource-ID").Single();
         }
     }
 }

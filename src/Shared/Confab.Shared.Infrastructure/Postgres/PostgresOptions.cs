@@ -1,7 +1,6 @@
-﻿namespace Confab.Shared.Infrastructure.Postgres
+﻿namespace Confab.Shared.Infrastructure.Postgres;
+
+internal class PostgresOptions
 {
-    internal class PostgresOptions
-    {
-        public string ConnectionString { get; set; }
-    }
+    public string ConnectionString { get; set; }
 }
