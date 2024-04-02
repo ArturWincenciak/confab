@@ -84,8 +84,10 @@ public static class Extensions
         services.AddAuthorization(authrization =>
         {
             foreach (var policy in policies)
+            {
                 authrization.AddPolicy(policy,
                     configurePolicy: policyBuilder => policyBuilder.RequireClaim(claimType: "permissions", policy));
+            }
         });
 
         return services;
