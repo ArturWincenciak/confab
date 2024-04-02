@@ -45,7 +45,7 @@ internal sealed class DomainEventDispatcher : IDomainEventDispatcher
                 {
                     var method = handlerType.GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync));
                     _logger.LogTrace($"Executing handler: '{handler}', with event: '{@event}'.");
-                    var task = (Task) method.Invoke(handler, parameters: new[] {@event});
+                    var task = (Task) method.Invoke(handler, parameters: [@event]);
                     tasks.Add(task);
                 }
 

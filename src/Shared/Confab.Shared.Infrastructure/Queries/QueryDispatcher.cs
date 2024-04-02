@@ -28,7 +28,7 @@ internal sealed class QueryDispatcher : IQueryDispatcher
             var handler = scope.ServiceProvider.GetRequiredService(handlerType);
             var handleMethod =
                 handlerType.GetMethod(nameof(IQueryHandler<IRequestMessage<TResult>, TResult>.HandleAsync));
-            var result = handleMethod.Invoke(handler, parameters: new[] {query});
+            var result = handleMethod.Invoke(handler, parameters: [query]);
             return await (result as Task<TResult>);
         }
         catch (Exception ex)

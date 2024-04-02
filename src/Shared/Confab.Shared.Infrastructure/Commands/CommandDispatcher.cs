@@ -27,7 +27,7 @@ internal sealed class CommandDispatcher : ICommandDispatcher
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
             var handler = scope.ServiceProvider.GetRequiredService(handlerType);
             var handleMethod = handlerType.GetMethod(nameof(ICommandHandler<ICommand>.HandleAsync));
-            var result = handleMethod.Invoke(handler, parameters: new[] {command});
+            var result = handleMethod.Invoke(handler, parameters: [command]);
             await (Task) result;
 
             _logger.LogInformation($"Command has been dispatched: '{command}'.");
@@ -48,7 +48,7 @@ internal sealed class CommandDispatcher : ICommandDispatcher
             var handlerType = typeof(ICommandHandler<,>).MakeGenericType(command.GetType(), typeof(TResult));
             var handler = scope.ServiceProvider.GetRequiredService(handlerType);
             var method = handlerType.GetMethod(nameof(ICommandHandler<ICommand<TResult>, TResult>.HandleAsync));
-            var result = method.Invoke(handler, parameters: new[] {command});
+            var result = method.Invoke(handler, parameters: [command]);
             return await (result as Task<TResult>);
         }
         catch (Exception ex)

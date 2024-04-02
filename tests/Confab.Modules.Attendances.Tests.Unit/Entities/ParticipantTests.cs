@@ -19,7 +19,7 @@ public class ParticipantTests
     {
         var conferenceId = new ConferenceId(Guid.Parse("B8036804-9E9E-4A17-B1B8-93F5686390C4"));
         _userId = Guid.Parse("90D9EC92-417A-4811-BCE7-B9E56BAFA595");
-        _attendances = new();
+        _attendances = [];
         _participant = Participant.Create(conferenceId, userId: new(_userId), _attendances);
     }
 
@@ -92,20 +92,20 @@ public class ParticipantTests
 
     public static IEnumerable<object[]> WithCollidingDates()
     {
-        yield return new object[] {GetDate(8), GetDate(hour: 10, minute: 30)};
-        yield return new object[] {GetDate(8), GetDate(hour: 11, minute: 30)};
-        yield return new object[] {GetDate(9), GetDate(hour: 10, minute: 30)};
-        yield return new object[] {GetDate(9), GetDate(hour: 11, minute: 30)};
-        yield return new object[] {GetDate(10), GetDate(hour: 10, minute: 30)};
-        yield return new object[] {GetDate(10), GetDate(hour: 11, minute: 30)};
+        yield return [GetDate(8), GetDate(hour: 10, minute: 30)];
+        yield return [GetDate(8), GetDate(hour: 11, minute: 30)];
+        yield return [GetDate(9), GetDate(hour: 10, minute: 30)];
+        yield return [GetDate(9), GetDate(hour: 11, minute: 30)];
+        yield return [GetDate(10), GetDate(hour: 10, minute: 30)];
+        yield return [GetDate(10), GetDate(hour: 11, minute: 30)];
     }
 
     public static IEnumerable<object[]> WithAvailableDates()
     {
-        yield return new object[] {GetDate(8), GetDate(9)};
-        yield return new object[] {GetDate(7), GetDate(hour: 8, minute: 30)};
-        yield return new object[] {GetDate(hour: 10, minute: 30), GetDate(12)};
-        yield return new object[] {GetDate(hour: 11, minute: 30), GetDate(12)};
+        yield return [GetDate(8), GetDate(9)];
+        yield return [GetDate(7), GetDate(hour: 8, minute: 30)];
+        yield return [GetDate(hour: 10, minute: 30), GetDate(12)];
+        yield return [GetDate(hour: 11, minute: 30), GetDate(12)];
     }
 
     private static DateTime GetDate(int hour, int minute = 0, int second = 0) =>

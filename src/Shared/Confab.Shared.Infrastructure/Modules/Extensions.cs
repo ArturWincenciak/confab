@@ -124,7 +124,7 @@ public static class Extensions
                     {
                         var methodInfo = eventDispatcherType.GetMethod(nameof(eventDispatcher.PublishAsync));
                         var genericMethodInfo = methodInfo.MakeGenericMethod(eventType);
-                        var methodResult = genericMethodInfo.Invoke(eventDispatcher, parameters: new[] {@event});
+                        var methodResult = genericMethodInfo.Invoke(eventDispatcher, parameters: [@event]);
                         return (Task) methodResult;
                     });
             }
